@@ -3,15 +3,22 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
+using System.Collections;
+using UIAssistant;
 
-public class ClickableTextMeshPro : MonoBehaviour, IPointerClickHandler
+public class LinkHandler : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] public LevelLoader start;
     [SerializeField] GameObject email;
     [SerializeField] GameObject prompt;
     [SerializeField] GameObject notif;
+    [SerializeField] GameObject dialogueBG;
     [SerializeField] public Button myButton;
+
+    public TextRevealer textReveal;
     private TMP_Text textMeshPro;
+
+    public PromptDialogue dialogue;
 
     private void Start()
     {
@@ -35,9 +42,19 @@ public class ClickableTextMeshPro : MonoBehaviour, IPointerClickHandler
                 email.gameObject.SetActive(false);
                 prompt.gameObject.SetActive(true);
                 notif.gameObject.SetActive(true);
+                dialogueBG.gameObject.SetActive(false);
+
+                Invoke("NextDialogue", 4);
+
                 myButton.onClick.AddListener(OnButtonClick);
             }
         }
+    }
+
+    public void NextDialogue()
+    {
+        dialogue.showDialogue();
+        dialogue.nextDialogue();
     }
 
     void OnButtonClick()

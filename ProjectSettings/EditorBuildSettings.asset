@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Desktop.unity
     guid: e5e24bbe8294a4d4eb15b9ae90fe30fb
   - enabled: 1
+    path: Assets/Scenes/Enemy.unity
+    guid: 82f4c27a7c8470a449c41635700c0634
+  - enabled: 1
     path: Assets/Scenes/Cards.unity
     guid: 07df128d48fdc294bb811aef67e956b1
   m_configObjects: {}

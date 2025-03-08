@@ -10,7 +10,7 @@ public class UserManager : MonoBehaviour
     [SerializeField] GameObject play;
 
     public TextMeshProUGUI text;
-    public TextMeshProUGUI username;
+    public TMP_InputField username;
 
     private void Start()
     {
@@ -19,9 +19,17 @@ public class UserManager : MonoBehaviour
 
     public void SignIn()
     {
+        string playerName = username.text;
+
+        if (!string.IsNullOrEmpty(playerName))
+        {
+            PlayerPrefs.SetString("PlayerName", playerName);
+            PlayerPrefs.Save();
+        }
+
         start.gameObject.SetActive(false);
         play.gameObject.SetActive(true);
 
-        text.SetText("Welcome, " + username.text);
+        text.SetText("Welcome, " + playerName);
     }
 }
