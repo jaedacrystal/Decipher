@@ -9,6 +9,7 @@ public class NPCDialogue : MonoBehaviour
 {
     public int dialogueCounter;
     public TextMeshProUGUI interact;
+    public GameObject cardClass;
     public DialogueSystem dialogue;
 
     private bool isPlayerNear;
@@ -17,6 +18,7 @@ public class NPCDialogue : MonoBehaviour
 
     private void Start()
     {
+        cardClass.gameObject.SetActive(false);
         interact.gameObject.SetActive(false);
         dialogue = FindObjectOfType<DialogueSystem>();
     }
@@ -25,16 +27,17 @@ public class NPCDialogue : MonoBehaviour
     {
         if (isPlayerNear && Input.GetKeyDown(KeyCode.F))
         {
+            interact.gameObject.SetActive(false);
             dialogue.listCounter = dialogueCounter;
             dialogue.showDialogue();
         }
     }
-
+        
     public void CheckDialogueEnd()
     {
         if (dialogue.listCounter == dialogueCounter && dialogue.counter == 0)
         {
-            start.LoadNextScene();
+            cardClass.gameObject.SetActive(true);
         }
     }
 

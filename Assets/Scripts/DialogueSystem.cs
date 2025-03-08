@@ -9,7 +9,7 @@ public class DialogueSystem : MonoBehaviour
     public int counter;
     public int listCounter;
     [HideInInspector] public bool canTalk;
-    public bool playerCheck;
+    private bool playerCheck;
 
     public GameObject dialogueBG;
     public TextMeshProUGUI player;
