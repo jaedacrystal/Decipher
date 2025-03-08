@@ -9,29 +9,45 @@ using UnityEngine.EventSystems;
 
 public class CardManager : MonoBehaviour
 {
-    [SerializeField] GameObject cardPrefab;
-    [SerializeField] List<Cards> listOfCards;
-    [SerializeField] GameObject hand;
-    [SerializeField] GameObject deck;
+    [SerializeField] private GameObject cardPrefab;
+    [SerializeField] private List<Cards> listOfCards;
+    [SerializeField] private GameObject hand;
+    [SerializeField] private GameObject deck;
     [SerializeField] private int maxHandSize;
 
     public List<GameObject> card = new();
 
     private void Start()
     {
+        InitializeDeck();
+    }
+
+    private void InitializeDeck()
+    {
         for (int i = 0; i < maxHandSize; i++)
         {
-            GameObject g = Spawn();
+            int randomIndex = Random.Range(0, listOfCards.Count);
+            Cards selectedCardData = listOfCards[randomIndex];
 
-            g.transform.SetParent(deck.transform, false);
+            GameObject g = Instantiate(cardPrefab, deck.transform);
             g.SetActive(false);
+
+            CardDisplay cardDisplay = g.GetComponent<CardDisplay>();
+            if (cardDisplay != null)
+            {
+                cardDisplay.SetCard(selectedCardData);
+            }
+
             card.Add(g);
         }
     }
 
     public void DrawCard()
     {
-        GameObject g = AddCard();
+        if (card.Count == 0) return;
+
+        GameObject g = card[0];
+        card.RemoveAt(0);
 
         g.transform.SetParent(hand.transform);
         g.SetActive(true);
@@ -40,14 +56,6 @@ public class CardManager : MonoBehaviour
 
         CardPosition();
     }
-
-    public GameObject AddCard()
-    {
-        GameObject g = card[0];
-        card.RemoveAt(0);
-        return g;
-    }
-
 
     public GameObject Spawn()
     {
@@ -58,7 +66,7 @@ public class CardManager : MonoBehaviour
     {
         if (card.Count == 0) return;
 
-        for (int i = 0; i < maxHandSize; i++)
+        for (int i = 0; i < card.Count; i++)
         {
             float center = (card.Count - 1) / 2f;
             float interval = 100f;
@@ -77,6 +85,13 @@ public class CardManager : MonoBehaviour
         }
     }
 }
+
+
+
+
+
+
+
 
 
 

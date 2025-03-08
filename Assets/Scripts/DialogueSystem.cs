@@ -16,6 +16,7 @@ public class DialogueSystem : MonoBehaviour
     public TextMeshProUGUI dialogue;
     public TextReveal textReveal;
 
+
     [Serializable]
     public class DialogueList
     {
@@ -87,7 +88,7 @@ public class DialogueSystem : MonoBehaviour
         {
             counter++;
 
-            if(counter == 1)
+            if (counter == 1)
             {
                 Invoke("hideDialogue", 5);
             }
@@ -110,6 +111,8 @@ public class DialogueSystem : MonoBehaviour
             counter = 0;
             dialogueBG.SetActive(false);
             dialogue.text = "";
+
+            FindObjectOfType<NPCDialogue>().CheckDialogueEnd();
         }
     }
 }

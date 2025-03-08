@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class NPCDialogue : MonoBehaviour
 {
     public int dialogueCounter;
     public TextMeshProUGUI interact;
     public DialogueSystem dialogue;
+
     private bool isPlayerNear;
+
+    [SerializeField] public LevelLoader start;
 
     private void Start()
     {
@@ -21,7 +25,16 @@ public class NPCDialogue : MonoBehaviour
     {
         if (isPlayerNear && Input.GetKeyDown(KeyCode.F))
         {
+            dialogue.listCounter = dialogueCounter;
             dialogue.showDialogue();
+        }
+    }
+
+    public void CheckDialogueEnd()
+    {
+        if (dialogue.listCounter == dialogueCounter && dialogue.counter == 0)
+        {
+            start.LoadNextScene();
         }
     }
 
