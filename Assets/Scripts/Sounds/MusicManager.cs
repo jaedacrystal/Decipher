@@ -31,6 +31,10 @@ public class MusicManager : MonoBehaviour
         if (bgm != null)
         {
             PlayBGM(false, bgm);
+
+        } else
+        {
+            PlayBGM(true, bgm);
         }
             musicSlider.onValueChanged.AddListener(delegate { SetVolume(musicSlider.value); });
             SetVolume(musicSlider.value = 2);

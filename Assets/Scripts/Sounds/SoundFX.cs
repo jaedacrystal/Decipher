@@ -88,6 +88,17 @@ public class SoundFX : MonoBehaviour
         volumeText.text = (volume * 10).ToString("0") + "%";
     }
 
+    public void LowerVolume()
+    {
+        if(volumeSlider.value == 0)
+        {
+            SetVolume(volumeSlider.value-- + 1);
+        } else
+        {
+            SetVolume(volumeSlider.value-- - 1);
+        }
+    }
+
 }
 
 [System.Serializable]

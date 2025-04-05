@@ -9,6 +9,7 @@ public class Email : MonoBehaviour
     public GameObject text;
     public TextReveal textReveal;
     public LeanTweenUIManager dialogue;
+    public LeanTweenUIManager tween;
 
     void Start()
     {
@@ -35,7 +36,7 @@ public class Email : MonoBehaviour
     public void hideEmail()
     {
         SoundFX.Play("Click");
-        email.gameObject.SetActive(false);
+        tween.PlayEndAnimation(() => email.SetActive(false));
         notif.gameObject.SetActive(false);
     }
 }
