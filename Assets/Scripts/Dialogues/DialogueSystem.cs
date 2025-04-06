@@ -53,6 +53,11 @@ public class DialogueSystem : MonoBehaviour
             player.text = dialogueList[listCounter].dialogues[counter].playerName;
         }
 
+        if (player == null)
+        {
+            return;
+        }
+
         Invoke("ShowDialogue", 1);
         dialogue.text = "";
     }
@@ -124,7 +129,8 @@ public class DialogueSystem : MonoBehaviour
             dialogueBG.SetActive(false);
             dialogue.text = "";
 
-            FindObjectOfType<NPCDialogue>().CheckDialogueEnd();
+            //FindObjectOfType<NPCDialogue>().CheckDialogueEnd();
+            
         }
     }
 

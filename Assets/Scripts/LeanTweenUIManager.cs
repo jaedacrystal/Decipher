@@ -163,8 +163,6 @@ public class LeanTweenUIManager : MonoBehaviour
         }
     }
 
-
-
     private void PlayTween(AnimationType type, Vector3 from, Vector3 to, float duration, float delay)
     {
         switch (type)

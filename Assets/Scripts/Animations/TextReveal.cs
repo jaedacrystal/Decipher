@@ -26,6 +26,7 @@ public class TextReveal : MonoBehaviour
 
     public void StartReveal(string text)
     {
+        if (!gameObject.activeInHierarchy) return;
         if (revealCoroutine != null)
         {
             StopCoroutine(revealCoroutine);

@@ -78,6 +78,30 @@ public class MusicManager : MonoBehaviour
         audioSource.Pause();
     }
 
+    public void LowerVolume()
+    {
+        if (musicSlider.value == 0)
+        {
+            SetVolume(musicSlider.value = 0);
+        }
+        else
+        {
+            SetVolume(musicSlider.value-- - 1);
+        }
+    }
+
+    public void IncreaseVolume()
+    {
+        if (musicSlider.value == 10)
+        {
+            SetVolume(musicSlider.value = 10);
+        }
+        else
+        {
+            SetVolume(musicSlider.value++ + 1);
+        }
+    }
+
     private IEnumerator FadeInVolume(float targetVolume, float duration)
     {
         float startVolume = audioSource.volume;

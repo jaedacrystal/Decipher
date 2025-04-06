@@ -1,6 +1,8 @@
-using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class HackExit : MonoBehaviour
@@ -8,8 +10,11 @@ public class HackExit : MonoBehaviour
     public GameObject hidePrompt;
     public GameObject btn;
     public Image folder;
+    public Button folderButton;
     public Sprite folderChange;
     public TextMeshProUGUI text;
+
+    public PlayableDirector playableDirector;
 
     [HideInInspector] public bool exit;
 
@@ -23,8 +28,15 @@ public class HackExit : MonoBehaviour
         folder.GetComponent<Image>().sprite = folderChange;
         SoundFX.Play("Click");
         hidePrompt.SetActive(false);
+
+        folderButton.onClick.AddListener(OnButtonClick);
+        Play();
     }
 
+    void OnButtonClick()
+    {
+        SceneManager.LoadScene("BattleTutorial");
+    }
 
     public void Hide()
     {
@@ -50,5 +62,10 @@ public class HackExit : MonoBehaviour
         }
 
         return true;
+    }
+
+    private void Play()
+    {
+        playableDirector.Play();
     }
 }

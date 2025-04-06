@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PromptDialogue : MonoBehaviour
@@ -28,9 +29,10 @@ public class PromptDialogue : MonoBehaviour
         dialogue.text = "";
     }
 
-    public void showDialogue()
+    public void ShowDialogue()
     {
         dialogueBG.SetActive(true);
+        dialogue.gameObject.SetActive(true);
         counter = 0;
 
         string soundToPlay = GetTypingSound();
@@ -38,22 +40,16 @@ public class PromptDialogue : MonoBehaviour
         textReveal.StartReveal(dialogues[counter].dialogue);
     }
 
-    public void nextDialogue()
-    {
-        if (counter < dialogues.Count - 1)
-        {
-            counter++;
 
-            string soundToPlay = GetTypingSound();
-            textReveal.SetTypingSound(soundToPlay);
-            textReveal.StartReveal(dialogues[counter].dialogue);
-        }
-        else
-        {
-            counter = 0;
-            dialogueBG.SetActive(false);
-            dialogue.text = "";
-        }
+    public void NextDialogue()
+    {
+        dialogueBG.SetActive(true);
+        dialogue.gameObject.SetActive(true);
+        counter = 1;
+
+        string soundToPlay = GetTypingSound();
+        textReveal.SetTypingSound(soundToPlay);
+        textReveal.StartReveal(dialogues[counter].dialogue);
     }
 
     private string GetTypingSound()

@@ -92,10 +92,22 @@ public class SoundFX : MonoBehaviour
     {
         if(volumeSlider.value == 0)
         {
-            SetVolume(volumeSlider.value-- + 1);
+            SetVolume(volumeSlider.value = 0);
         } else
         {
             SetVolume(volumeSlider.value-- - 1);
+        }
+    }
+
+    public void IncreaseVolume()
+    {
+        if (volumeSlider.value == 10)
+        {
+            SetVolume(volumeSlider.value = 10);
+        }
+        else
+        {
+            SetVolume(volumeSlider.value++ + 1);
         }
     }
 
