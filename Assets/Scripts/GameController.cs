@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     private static GameController instance;
+
     private void Awake()
     {
         if (instance == null)

@@ -35,6 +35,8 @@ public class Settings : MonoBehaviour
         }
 
         SoundFX.Play("Click");
+
+        Debug.Log("Called ToggleMenu");
     }
 
     public void ToggleButton()

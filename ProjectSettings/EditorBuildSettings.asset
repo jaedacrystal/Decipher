@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Desktop.unity
     guid: b72cba460ec959d40ba5aa8b3cd9ce05
   - enabled: 1
+    path: Assets/Scenes/Multiplayer.unity
+    guid: 764937af92e6ced46ba4a295a49e20a9
+  - enabled: 1
     path: Assets/Scenes/BattleTutorial.unity
     guid: a46848d9017d9b94b833a1feeba58af1
   m_configObjects: {}
