@@ -2768,7 +2768,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   volumeSlider: {fileID: 3054045335296535112}
-  volumeText: {fileID: 59626124382735395}
+  volumeText: {fileID: 313323882271628139}
   soundEffectGroups:
   - name: Click
     audioClips:

@@ -1333,7 +1333,7 @@ MonoBehaviour:
   targetGraphic: {fileID: 0}
   targetLayout: {fileID: 0}
   startFromValue: {x: 0, y: -270, z: 0}
-  startToValue: {x: 0, y: -70, z: 0}
+  startToValue: {x: 0, y: -80, z: 0}
   startDuration: 0.3
   startDelay: 0.6
   endFromValue: {x: 0, y: 0, z: 0}
@@ -1915,6 +1915,7 @@ MonoBehaviour:
   img: {fileID: 1216296616}
   newImg: {fileID: -2079082128, guid: 5d04957f2a4e991489d075b79653323b, type: 3}
   oldImg: {fileID: -1438181908, guid: 5d04957f2a4e991489d075b79653323b, type: 3}
+  scene: 
 --- !u!1 &1321844205
 GameObject:
   m_ObjectHideFlags: 0
@@ -2010,7 +2011,7 @@ MonoBehaviour:
   m_ChildAlignment: 1
   m_Spacing: 80
   m_ChildForceExpandWidth: 0
-  m_ChildForceExpandHeight: 0
+  m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
@@ -2241,7 +2242,7 @@ MonoBehaviour:
   targetGraphic: {fileID: 0}
   targetLayout: {fileID: 0}
   startFromValue: {x: 0, y: -340, z: 0}
-  startToValue: {x: 0, y: -140, z: 0}
+  startToValue: {x: 0, y: -160, z: 0}
   startDuration: 0.3
   startDelay: 1.2
   endFromValue: {x: 0, y: 0, z: 0}
