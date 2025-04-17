@@ -23,7 +23,6 @@ public class Email : MonoBehaviour
             notif.gameObject.SetActive(false);
             text.gameObject.SetActive(false);
 
-            LeanTween.cancel(dialogue.gameObject);
             dialogue.PlayEndAnimation();
 
             LeanTween.delayedCall(dialogue.endDuration + dialogue.endDelay, () =>
@@ -36,7 +35,7 @@ public class Email : MonoBehaviour
     public void hideEmail()
     {
         SoundFX.Play("Click");
-        tween.PlayEndAnimation(() => email.SetActive(false));
+        tween.PlayEndAnimation();
         notif.gameObject.SetActive(false);
     }
 }

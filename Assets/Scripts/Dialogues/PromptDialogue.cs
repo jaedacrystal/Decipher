@@ -16,6 +16,8 @@ public class PromptDialogue : MonoBehaviour
 
     public List<Dialogue> dialogues;
 
+    public Class classSelect;
+
     [Serializable]
     public class Dialogue
     {
@@ -41,11 +43,22 @@ public class PromptDialogue : MonoBehaviour
     }
 
 
-    public void NextDialogue()
+    public void SecondDialogue()
     {
         dialogueBG.SetActive(true);
         dialogue.gameObject.SetActive(true);
         counter = 1;
+
+        string soundToPlay = GetTypingSound();
+        textReveal.SetTypingSound(soundToPlay);
+        textReveal.StartReveal(dialogues[counter].dialogue);
+    }
+
+    public void SelectDialogue()
+    {
+        dialogueBG.SetActive(true);
+        dialogue.gameObject.SetActive(true);
+        counter = classSelect.dialogueCounter;
 
         string soundToPlay = GetTypingSound();
         textReveal.SetTypingSound(soundToPlay);

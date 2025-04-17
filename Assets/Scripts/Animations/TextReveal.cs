@@ -10,7 +10,7 @@ public class TextReveal : MonoBehaviour
 
     private string soundName;
     private Coroutine revealCoroutine;
-    public bool isRevealing;
+    [HideInInspector] public bool isRevealing;
 
     public bool IsFinished => !isRevealing;
 

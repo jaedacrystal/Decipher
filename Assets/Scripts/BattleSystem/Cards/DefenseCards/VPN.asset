@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b28249a3ae785594488413d142c6a257, type: 3}
+  m_Name: VPN
+  m_EditorClassIdentifier: 
+  artwork: {fileID: 1988983389, guid: 85c910f6d5d42d645ba521cac7445a42, type: 3}
+  cardName: VPN
+  desc: allows the player to see one card from the opponent
+  bandwidth: 4
+  attack: 0
+  defense: 0
+  classType: 0

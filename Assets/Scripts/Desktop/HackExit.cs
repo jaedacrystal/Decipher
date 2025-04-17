@@ -1,26 +1,40 @@
+using DG.Tweening;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class HackExit : MonoBehaviour
 {
     public GameObject hidePrompt;
     public GameObject btn;
+    public TextMeshProUGUI text;
+    public GameObject dialogueText;
+
+    [Header("Folder")]
     public Image folder;
     public Button folderButton;
     public Sprite folderChange;
-    public TextMeshProUGUI text;
 
+    [Header("Prompts")]
+    public GameObject dialoguePrompt;
+    public GameObject classSelectPrompt;
+
+    [Header("Scripts")]
+    public Class classSelect;
     public PlayableDirector playableDirector;
+    public PromptDialogue dialogueSystem;
+    public LeanTweenUIManager dialogueTween;
 
     [HideInInspector] public bool exit;
 
     private void Start()
     {
         btn.SetActive(false);
+        dialogueSystem.GetComponent<PromptDialogue>();
     }
 
     public void ExitPrompt()
@@ -35,7 +49,18 @@ public class HackExit : MonoBehaviour
 
     void OnButtonClick()
     {
-        SceneManager.LoadScene("BattleTutorial");
+        dialogueTween.PlayEndAnimation();
+        dialogueText.SetActive(false);
+        classSelectPrompt.SetActive(true);
+        Invoke("Next", 1f);
+    }
+
+    void Next()
+    {
+        dialogueSystem.ShowDialogue();
+        classSelectPrompt.LeanMoveLocalY(158, 0.3f).setEaseOutCirc();
+        classSelect.dialogueCounter = 2;
+        dialogueSystem.SelectDialogue();
     }
 
     public void Hide()
