@@ -21,7 +21,7 @@ public class Class : MonoBehaviour
     [Header("Prompts")]
     public GameObject selectPrompt;
     public GameObject classPrompt;
-    public GameObject selectedClassWindow;
+    public GameObject game;
 
     [Header("Button")]
     public Button yesButton;
@@ -32,19 +32,11 @@ public class Class : MonoBehaviour
     public LeanTweenUIManager classTween;
     public LevelLoader levelLoader;
 
-    [Header("Text")]
-    public GameObject selectedClassPrompt;
-    public GameObject loading;
-    public TextReveal textReveal;
-    public TextMeshProUGUI loadingText;
-    public TextMeshProUGUI selectedClass;
-
     private void Start()
     {
-        selectedClassWindow.SetActive(false);
         classPrompt.SetActive(false);
         selectPrompt.gameObject.SetActive(false);
-        loading.SetActive(false);
+        game.SetActive(false);
     }
 
     public void Offense()
@@ -84,9 +76,7 @@ public class Class : MonoBehaviour
     public void SaveOffense()
     {
         SaveClass(ClassType.Offense, offenseCards);
-        selectedClassWindow.SetActive(true);
-        selectedClass.text = "Offense";
-        Invoke("NextPrompt", 3f);
+        NextPrompt();
 
         selectPrompt.SetActive(false);
         classPrompt.SetActive(false);
@@ -95,9 +85,7 @@ public class Class : MonoBehaviour
     public void SaveBalanced()
     {
         SaveClass(ClassType.Balance, balanceCards);
-        selectedClassWindow.SetActive(true);
-        selectedClass.text = "Balanced";
-        Invoke("NextPrompt", 3f);
+        NextPrompt();
 
         selectPrompt.SetActive(false);
         classPrompt.SetActive(false);
@@ -106,9 +94,7 @@ public class Class : MonoBehaviour
     public void SaveDefense()
     {
         SaveClass(ClassType.Defense, defenseCards);
-        selectedClassWindow.SetActive(true);
-        selectedClass.text = "Defense";
-        Invoke("NextPrompt", 3f);
+        NextPrompt();
 
         selectPrompt.SetActive(false);
         classPrompt.SetActive(false);
@@ -123,9 +109,7 @@ public class Class : MonoBehaviour
 
     void NextPrompt()
     {
-        selectedClassPrompt.SetActive(false);
-        loading.SetActive(true);
-        textReveal.StartReveal(loadingText.text);
+        game.SetActive(true);
         Invoke("LoadScene", 3f);
     }
 

@@ -12,8 +12,8 @@ public class Health : MonoBehaviour
     public int currentHealth;
     public string ownerTag;
 
-    [Header("Text Placeholders")]
-    public TextMeshProUGUI prompt;
+    //[Header("Text Placeholders")]
+    //public TextMeshProUGUI prompt;
     public TextMeshProUGUI turnText;
 
     [Header("Health")]
@@ -35,12 +35,12 @@ public class Health : MonoBehaviour
     public Color flashColor;
     public float flashDuration;
 
-    public GameObject retry;
+    //public GameObject retry;
 
     private void Start()
     {
-        retry.SetActive(false);
-        prompt.gameObject.SetActive(false);
+        //retry.SetActive(false);
+        //prompt.gameObject.SetActive(false);
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
         healthBar.gameObject.SetActive(true);
@@ -103,8 +103,8 @@ public class Health : MonoBehaviour
         playerCheck = isPlayer;
         playerName = playerCheck ? PlayerPrefs.GetString("PlayerName", "Player") : ownerTag;
 
-        prompt.text = playerName + " has been defeated";
-        prompt.gameObject.SetActive(true);
+        //prompt.text = playerName + " has been defeated";
+        //prompt.gameObject.SetActive(true);
         turnText.gameObject.SetActive(false);
 
         transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBack);
@@ -114,13 +114,13 @@ public class Health : MonoBehaviour
             healthBar.gameObject.SetActive(false);
         });
 
-        if (isPlayer)
-        {
-            retry.gameObject.SetActive(true);
-            prompt.gameObject.SetActive(false);
-        } else
-        {
-            start.LoadNextScene();
-        }
+        //if (isPlayer)
+        //{
+        //    retry.gameObject.SetActive(true);
+        //    prompt.gameObject.SetActive(false);
+        //} else
+        //{
+        //    start.LoadNextScene();
+        //}
     }
 }

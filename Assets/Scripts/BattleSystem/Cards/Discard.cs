@@ -10,7 +10,7 @@ public class Discard : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoint
     public TextMeshProUGUI counterText;
     public int graveyardCounter;
 
-    public CardDrag card;
+    private CardDrag card;
 
     public void OnDrop(PointerEventData eventData)
     {
@@ -55,7 +55,7 @@ public class Discard : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoint
 
         for (int i = 0; i < graveyardCounter; i++)
         {
-            counterText.transform.DOScale(0.6f, 0.2f);
+            counterText.transform.DOScale(1f, 0.2f);
         }
 
         counterText.transform.localScale = Vector3.zero;

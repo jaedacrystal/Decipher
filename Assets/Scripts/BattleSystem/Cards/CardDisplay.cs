@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +16,14 @@ public class CardDisplay : MonoBehaviour
     public TextMeshProUGUI descText;
     public TextMeshProUGUI bandwidth;
 
+    public LeanTweenUIManager tween;
+    public GameObject descPrompt;
+
+    private void Start()
+    {
+        descPrompt = GameObject.Find("DescriptionPrompt");
+        tween = descPrompt.GetComponent<LeanTweenUIManager>();
+    }
 
     public void SetCard(Cards cardData)
     {

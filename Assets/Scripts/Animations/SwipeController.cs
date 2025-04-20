@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class SwipeController : MonoBehaviour
+public class SwipeController : MonoBehaviour, IEndDragHandler
 {
     [SerializeField] private int maxPage = 3;
     [SerializeField] private int currentPage = 0;
@@ -13,12 +14,15 @@ public class SwipeController : MonoBehaviour
     [SerializeField] public RectTransform pagesRect;
     [SerializeField] float duration;
 
+    private float dragThreshold;
+
     public TextMeshProUGUI className;
 
     private void Awake()
     {
         currentPage = 1;
         targetPos = pagesRect.localPosition;
+        dragThreshold = Screen.width / 15;
     }
 
     private void Update()
@@ -58,5 +62,17 @@ public class SwipeController : MonoBehaviour
     void MovePage()
     {
         pagesRect.LeanMoveLocal(targetPos, duration).setEaseOutCirc();
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (Mathf.Abs(eventData.position.x - eventData.pressPosition.x) > dragThreshold)
+        {
+            if(eventData.position.x > eventData.pressPosition.x) Previous();
+            else Next();
+        } else
+        {
+            MovePage();
+        }
     }
 }

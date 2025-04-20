@@ -41,16 +41,25 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnDrag(PointerEventData eventData)
     {
-        transform.position = eventData.position;
+        Vector3 worldPoint;
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        Canvas canvas = GetComponentInParent<Canvas>();
+
+        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(rectTransform, eventData.position, canvas.worldCamera, out worldPoint))
+        {
+            transform.position = worldPoint;
+        }
+
         transform.SetAsLastSibling();
     }
+
 
     public void OnEndDrag(PointerEventData eventData)
     {
         isDragging = false;
         canvasGroup.blocksRaycasts = true;
 
-        if (IsOverPlayArea())
+        if (IsOverPlayArea(eventData))
         {
             PlayCard();
         }
@@ -60,10 +69,11 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         }
     }
 
-    private bool IsOverPlayArea()
+    private bool IsOverPlayArea(PointerEventData eventData)
     {
-        return playArea != null && RectTransformUtility.RectangleContainsScreenPoint(playArea, Input.mousePosition);
+        return playArea != null && RectTransformUtility.RectangleContainsScreenPoint(playArea, eventData.position, GetComponentInParent<Canvas>().worldCamera);
     }
+
 
     private void PlayCard()
     {
