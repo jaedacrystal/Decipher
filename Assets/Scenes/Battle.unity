@@ -1358,12 +1358,12 @@ MonoBehaviour:
   bandwidthText: {fileID: 259564215}
   isPlayer: 1
   bandwidthIconArray:
-  - {fileID: -1793736451, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
-  - {fileID: -260568449, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
-  - {fileID: 1179638487, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
-  - {fileID: 152230502, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
-  - {fileID: -2032579697, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
-  - {fileID: -205315477, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
+  - {fileID: 1184321575, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
+  - {fileID: -389521242, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
+  - {fileID: -433669208, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
+  - {fileID: 572327056, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
+  - {fileID: -451217994, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
+  - {fileID: -825574965, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
   bandwidthIcon: {fileID: 2044135230}
   cardManager: {fileID: 525159615}
 --- !u!114 &488449500
@@ -3469,12 +3469,12 @@ MonoBehaviour:
   bandwidthText: {fileID: 259564215}
   isPlayer: 1
   bandwidthIconArray:
-  - {fileID: -1793736451, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
-  - {fileID: -260568449, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
-  - {fileID: 1179638487, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
-  - {fileID: 152230502, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
-  - {fileID: -2032579697, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
-  - {fileID: -205315477, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
+  - {fileID: 1184321575, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
+  - {fileID: -389521242, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
+  - {fileID: -433669208, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
+  - {fileID: 572327056, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
+  - {fileID: -451217994, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
+  - {fileID: -825574965, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
   bandwidthIcon: {fileID: 2044135230}
   cardManager: {fileID: 525159615}
 --- !u!114 &1120444742
@@ -5804,7 +5804,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -205315477, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
+  m_Sprite: {fileID: -825574965, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Pun;
+using UnityEngine.SceneManagement;
 
-public class UserManager : MonoBehaviour
+public class UserManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] GameObject start;
     [SerializeField] GameObject play;
@@ -33,5 +35,15 @@ public class UserManager : MonoBehaviour
         play.gameObject.SetActive(true);
 
         text.SetText("Welcome, " + playerName);
+    }
+    public void OnClickConnect()
+    {
+        PhotonNetwork.NickName = username.text;
+        PhotonNetwork.ConnectUsingSettings();
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        SceneManager.LoadScene("Multiplayer"); 
     }
 }

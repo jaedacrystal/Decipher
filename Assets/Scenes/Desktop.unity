@@ -1425,7 +1425,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1175501810, guid: 661bf96ef83ea92428a1e8b264bec173, type: 3}
+  m_Sprite: {fileID: 2042628237, guid: 81214937aebf75f42a06bcd4e8ad71fc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2725,7 +2725,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 696961363, guid: 661bf96ef83ea92428a1e8b264bec173, type: 3}
+  m_Sprite: {fileID: 724340341, guid: 81214937aebf75f42a06bcd4e8ad71fc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6406,7 +6406,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1716616767, guid: 661bf96ef83ea92428a1e8b264bec173, type: 3}
+  m_Sprite: {fileID: 941863512, guid: 81214937aebf75f42a06bcd4e8ad71fc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8468,6 +8468,7 @@ MonoBehaviour:
   - dialogue: 'Defense: Has 2 Defensive Cards and 1 Utility.'
     typewriterSoundName: 
   classSelect: {fileID: 1813129371}
+  classSelectMultiplayer: {fileID: 0}
 --- !u!320 &1737283652
 PlayableDirector:
   m_ObjectHideFlags: 0

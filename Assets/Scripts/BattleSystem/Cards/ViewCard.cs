@@ -1,9 +1,6 @@
 using DG.Tweening;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class ViewCard : MonoBehaviour
 {
@@ -26,6 +23,8 @@ public class ViewCard : MonoBehaviour
 
     public bool isClicked;
 
+    private static ViewCard currentlyViewedCard;
+
     private void Start()
     {
         transformObject = GetComponent<RectTransform>();
@@ -39,22 +38,20 @@ public class ViewCard : MonoBehaviour
         cardDisplay.descPrompt.gameObject.SetActive(false);
     }
 
-
-
     public void cardClicked()
     {
         if (isClicked)
         {
-            transform.DOLocalMove(originalLocalPosition, transitionSpeed);
-            transform.DOScale(initialScale, transitionSpeed);
-
-            transform.SetSiblingIndex(originalSiblingIndex);
-            isClicked = false;
-
-            cardDisplay.tween.PlayEndAnimation();
+            ResetCard();
         }
         else
         {
+            if (currentlyViewedCard != null && currentlyViewedCard != this)
+            {
+                currentlyViewedCard.ResetCard();
+            }
+
+            currentlyViewedCard = this;
             originalLocalPosition = transformObject.localPosition;
 
             Vector3 targetPosition = new Vector3(0, 600f, 0);
@@ -66,7 +63,23 @@ public class ViewCard : MonoBehaviour
 
             cardDisplay.descPrompt.gameObject.SetActive(true);
             desc.text = cardData.descText.text;
+        }
+    }
 
+    private void ResetCard()
+    {
+        transform.DOLocalMove(originalLocalPosition, transitionSpeed);
+        transform.DOScale(initialScale, transitionSpeed);
+
+        transform.SetSiblingIndex(originalSiblingIndex);
+        isClicked = false;
+
+        cardDisplay.descPrompt.gameObject.SetActive(false);
+        cardDisplay.tween.PlayEndAnimation();
+
+        if (currentlyViewedCard == this)
+        {
+            currentlyViewedCard = null;
         }
     }
 }

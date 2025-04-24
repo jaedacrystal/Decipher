@@ -7,7 +7,7 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 {
     public bool isDragging;
 
-    [SerializeField] private GameObject graveyard;
+    private GameObject graveyard;
     private TextMeshProUGUI errorText;
 
     private CanvasGroup canvasGroup;
@@ -19,6 +19,8 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     private RectTransform playArea;
     private Discard discard;
 
+    private ViewCard viewCard;
+
     private void Start()
     {
         canvasGroup = GetComponent<CanvasGroup>();
@@ -28,19 +30,29 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         discard = GetComponent<Discard>();
         graveyard = GameObject.Find("Graveyard");
         errorText = GameObject.Find("BandwidthErrorText").GetComponent<TextMeshProUGUI>();
+
+        viewCard = GetComponent<ViewCard>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (viewCard != null && viewCard.isClicked) return;
+
         isDragging = true;
-        canvasGroup.blocksRaycasts = false;
-        originalParent = transform.parent;
-        originalPosition = transform.localPosition;
-        transform.SetParent(originalParent.parent);
+
+        if (isDragging)
+        {
+            canvasGroup.blocksRaycasts = false;
+            originalParent = transform.parent;
+            originalPosition = transform.localPosition;
+            transform.SetParent(originalParent.parent);
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (viewCard != null && viewCard.isClicked) return;
+
         Vector3 worldPoint;
         RectTransform rectTransform = GetComponent<RectTransform>();
         Canvas canvas = GetComponentInParent<Canvas>();
@@ -56,6 +68,8 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (viewCard != null && viewCard.isClicked) return;
+
         isDragging = false;
         canvasGroup.blocksRaycasts = true;
 
@@ -71,12 +85,14 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     private bool IsOverPlayArea(PointerEventData eventData)
     {
+        if (viewCard != null && viewCard.isClicked) return false;
         return playArea != null && RectTransformUtility.RectangleContainsScreenPoint(playArea, eventData.position, GetComponentInParent<Canvas>().worldCamera);
     }
 
 
     private void PlayCard()
     {
+        if (viewCard != null && viewCard.isClicked) return;
         if (cardDisplay == null || cardDisplay.card == null) return;
 
         PlayerStats playerStats = cardManager.player.GetComponent<PlayerStats>();

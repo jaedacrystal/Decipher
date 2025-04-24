@@ -27,6 +27,8 @@ public class SwipeController : MonoBehaviour, IEndDragHandler
 
     private void Update()
     {
+        if (className == null) return;
+
         if (currentPage == 1)
         {
             className.text = "Offense";

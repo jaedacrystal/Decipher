@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class PromptDialogue : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class PromptDialogue : MonoBehaviour
     public List<Dialogue> dialogues;
 
     public Class classSelect;
+    public ClassSelectMultiplayer classSelectMultiplayer;
 
     [Serializable]
     public class Dialogue
@@ -29,6 +31,29 @@ public class PromptDialogue : MonoBehaviour
     {
         dialogueBG.SetActive(false);
         dialogue.text = "";
+
+        if (classSelectMultiplayer.gameObject.activeInHierarchy)
+        {
+            if (classSelectMultiplayer == null)
+            {
+                return;
+            }
+            else
+            {
+                classSelectMultiplayer = FindObjectOfType<ClassSelectMultiplayer>();
+            }
+        }
+        else
+        {
+            if (classSelect == null)
+            {
+                return;
+            }
+            else
+            {
+                classSelect = FindObjectOfType<Class>();
+            }
+        }
     }
 
     public void ShowDialogue()
@@ -56,13 +81,30 @@ public class PromptDialogue : MonoBehaviour
 
     public void SelectDialogue()
     {
-        dialogueBG.SetActive(true);
-        dialogue.gameObject.SetActive(true);
-        counter = classSelect.dialogueCounter;
+        if (classSelect != null)
+        {
+            dialogueBG.SetActive(true);
+            dialogue.gameObject.SetActive(true);
+            counter = classSelect.dialogueCounter;
 
-        string soundToPlay = GetTypingSound();
-        textReveal.SetTypingSound(soundToPlay);
-        textReveal.StartReveal(dialogues[counter].dialogue);
+            string soundToPlay = GetTypingSound();
+            textReveal.SetTypingSound(soundToPlay);
+            textReveal.StartReveal(dialogues[counter].dialogue);
+        }
+    }
+
+    public void SelectDialogueMultiplayer()
+    {
+        if (classSelectMultiplayer != null)
+        {
+            dialogueBG.SetActive(true);
+            dialogue.gameObject.SetActive(true);
+            counter = classSelectMultiplayer.dialogueCounter;
+
+            string soundToPlay = GetTypingSound();
+            textReveal.SetTypingSound(soundToPlay);
+            textReveal.StartReveal(dialogues[counter].dialogue);
+        }
     }
 
     private string GetTypingSound()

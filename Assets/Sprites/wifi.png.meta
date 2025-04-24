@@ -124,8 +124,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8a5926adbf7ecdf4c9f526b1231c4644
-      internalID: -1793736451
+      spriteID: 94155feeb9c298040a78f3909d6a8167
+      internalID: 1184321575
       vertices: []
       indices: 
       edges: []
@@ -145,8 +145,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 28a014ae695df6147b242de30dedc239
-      internalID: -260568449
+      spriteID: 76bb97fa8d2e7cf4ba0823f2a958e22c
+      internalID: -389521242
       vertices: []
       indices: 
       edges: []
@@ -166,8 +166,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 639a322f98dc56b4baa96b827bdcdfa7
-      internalID: 1179638487
+      spriteID: 778c424a811ddb64bb55b89b47d932bf
+      internalID: -433669208
       vertices: []
       indices: 
       edges: []
@@ -187,8 +187,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8386a3d1028dd5d4cb2f6d1f2b9d30af
-      internalID: 152230502
+      spriteID: fe6c33f843850424b8dad03b0bf7f2fc
+      internalID: 572327056
       vertices: []
       indices: 
       edges: []
@@ -208,8 +208,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b96891d8a91a66a418a7e152f8d67ae3
-      internalID: -2032579697
+      spriteID: f21b093f1497af94592c23835d5e896b
+      internalID: -451217994
       vertices: []
       indices: 
       edges: []
@@ -229,8 +229,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a2ffa10b135b0764399db95fffa93151
-      internalID: -205315477
+      spriteID: 2969a1154d1dbb64c92966a593f4ff69
+      internalID: -825574965
       vertices: []
       indices: 
       edges: []
@@ -246,12 +246,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      wifi_0: -1793736451
-      wifi_1: -260568449
-      wifi_2: 1179638487
-      wifi_3: 152230502
-      wifi_4: -2032579697
-      wifi_5: -205315477
+      wifi_0: 1184321575
+      wifi_1: -389521242
+      wifi_2: -433669208
+      wifi_3: 572327056
+      wifi_4: -451217994
+      wifi_5: -825574965
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
