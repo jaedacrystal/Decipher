@@ -15,6 +15,7 @@ MonoBehaviour:
   artwork: {fileID: 726669219, guid: 81214937aebf75f42a06bcd4e8ad71fc, type: 3}
   cardName: Two Factor Authentication
   desc: Blocks all incoming damage for a turn and inflicts 5 damage after usage
+  flavorTxt: Adds an extra layer of security by requiring extra verification on sign-in.
   bandwidth: 3
   effectValue: 5
   classType: 1

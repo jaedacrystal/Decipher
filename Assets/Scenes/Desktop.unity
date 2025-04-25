@@ -1458,6 +1458,7 @@ MonoBehaviour:
   initialScale: 1
   finalScale: 1.2
   transitionSpeed: 0.3
+  buttonHover: 1
 --- !u!114 &349284987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2758,6 +2759,7 @@ MonoBehaviour:
   initialScale: 1
   finalScale: 1.2
   transitionSpeed: 0.3
+  buttonHover: 1
 --- !u!114 &630403035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6439,6 +6441,7 @@ MonoBehaviour:
   initialScale: 1
   finalScale: 1.2
   transitionSpeed: 0.3
+  buttonHover: 1
 --- !u!114 &1347352495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8693,7 +8696,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defenseCards:
   - {fileID: 11400000, guid: 52e627ef3d8db1e4892645f743ac531e, type: 2}
-  - {fileID: 11400000, guid: 52e627ef3d8db1e4892645f743ac531e, type: 2}
+  - {fileID: 11400000, guid: 55f3e0d406d8e9a44867c0b338e16ba6, type: 2}
   - {fileID: 11400000, guid: 52e627ef3d8db1e4892645f743ac531e, type: 2}
   offenseCards:
   - {fileID: 11400000, guid: 11cc32260f2721841817f8d6f5f1a642, type: 2}

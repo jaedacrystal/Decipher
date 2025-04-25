@@ -16,21 +16,19 @@ public class ClassSelectMultiplayer : MonoBehaviour
     public PromptDialogue dialogue;
     public int dialogueCounter;
 
-    [Header("Prompts")]
-    public GameObject classPrompt;
-
     [Header("Button")]
     public Sprite[] classIconArray;
     public GameObject classIcon;
     public Button confirm;
     public TextMeshProUGUI classBtnText;
 
+    public GameObject classSelection;
     public Profile multiClass;
     public LeanTweenUIManager tween;
 
     private void Start()
     {
-        classPrompt.SetActive(false);
+        classSelection.SetActive(false);
         classIcon.SetActive(false);
     }
 
@@ -40,6 +38,8 @@ public class ClassSelectMultiplayer : MonoBehaviour
         dialogue.SelectDialogueMultiplayer();
         classBtnText.text = "Confirm";
 
+        multiClass.btHover.buttonHover = true;
+        confirm.enabled = true;
         confirm.onClick.AddListener(SaveOffense);
     }
 
@@ -49,6 +49,8 @@ public class ClassSelectMultiplayer : MonoBehaviour
         dialogue.SelectDialogueMultiplayer();
         classBtnText.text = "Confirm";
 
+        multiClass.btHover.buttonHover = true;
+        confirm.enabled = true;
         confirm.onClick.AddListener(SaveBalanced);
     }
 
@@ -58,6 +60,8 @@ public class ClassSelectMultiplayer : MonoBehaviour
         dialogue.SelectDialogueMultiplayer();
         classBtnText.text = "Confirm";
 
+        multiClass.btHover.buttonHover = true;
+        confirm.enabled = true;
         confirm.onClick.AddListener(SaveDefense);
     }
 
@@ -70,6 +74,7 @@ public class ClassSelectMultiplayer : MonoBehaviour
 
         Invoke("MoveProfile", 0.5f);
         multiClass.dialogue.dialogue.text = "";
+        classSelection.SetActive(false);
         tween.PlayEndAnimation();
     }
 
@@ -82,6 +87,7 @@ public class ClassSelectMultiplayer : MonoBehaviour
 
         Invoke("MoveProfile", 0.5f);
         multiClass.dialogue.dialogue.text = "";
+        classSelection.SetActive(false);
         tween.PlayEndAnimation();
     }
 
@@ -94,6 +100,7 @@ public class ClassSelectMultiplayer : MonoBehaviour
 
         Invoke("MoveProfile", 0.5f);
         multiClass.dialogue.dialogue.text = "";
+        classSelection.SetActive(false);
         tween.PlayEndAnimation();
     }
 
@@ -101,6 +108,18 @@ public class ClassSelectMultiplayer : MonoBehaviour
     {
         multiClass.profile.LeanMoveLocalY(0, 0.3f).setEaseOutCirc();
         classBtnText.text = "Change Class";
+
+        multiClass.btHover.buttonHover = true;
+        confirm.enabled = true;
+        multiClass.classBtn.onClick.AddListener(ChangeClass);
+    }
+
+    public void ChangeClass()
+    {
+        classBtnText.text = "Choose Class";
+        classIcon.SetActive(false);
+
+        multiClass.ShowClassSelect();
     }
 
     void SaveClass(ClassType chosenClass, List<Cards> chosenCards)

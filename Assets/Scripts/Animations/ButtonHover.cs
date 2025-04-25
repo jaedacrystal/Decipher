@@ -10,6 +10,7 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] public float initialScale;
     [SerializeField] public float finalScale;
     [SerializeField] public float transitionSpeed;
+    public bool buttonHover = true; 
 
     private RectTransform transformObject;
 
@@ -20,11 +21,24 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
     {
-        transformObject.DOScale(new Vector3(finalScale, finalScale, finalScale), transitionSpeed);
+        if (buttonHover == true) 
+        {
+            transformObject.DOScale(new Vector3(finalScale, finalScale, finalScale), transitionSpeed);
+        } else
+        {
+            return;
+        }
     }
 
     void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
     {
-        transformObject.DOScale(new Vector3(initialScale, initialScale, initialScale), transitionSpeed);
+        if (buttonHover == true)
+        {
+            transformObject.DOScale(new Vector3(initialScale, initialScale, initialScale), transitionSpeed);
+        } else
+        {
+            return;
+        }
+
     }
 }

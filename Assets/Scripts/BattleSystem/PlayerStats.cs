@@ -28,6 +28,11 @@ public class PlayerStats : MonoBehaviour
         defense += amount;
     }
 
+    public void IncreaseDefenseAndDebuff(int amount)
+    {
+        defense += amount;
+    }
+
     public bool CanPlayCard(int cardBandwidth)
     {
         return currentBandwidth >= cardBandwidth;

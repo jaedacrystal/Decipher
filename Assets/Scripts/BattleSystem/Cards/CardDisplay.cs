@@ -14,6 +14,7 @@ public class CardDisplay : MonoBehaviour
     [Header("Text")]
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI descText;
+    public TextMeshProUGUI flavorText;
     public TextMeshProUGUI bandwidth;
 
     public LeanTweenUIManager tween;
@@ -31,6 +32,7 @@ public class CardDisplay : MonoBehaviour
 
         card = cardData;
 
+        flavorText.text = card.flavorTxt;
         img.sprite = card.artwork;
         nameText.text = card.cardName;
         descText.text = card.desc;

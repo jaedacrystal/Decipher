@@ -412,9 +412,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: JoinLobby, Assembly-CSharp
-        m_MethodName: JoinLobbyButtonPressed
+      - m_Target: {fileID: 8260034734301018405}
+        m_TargetAssemblyTypeName: RoomItem, Assembly-CSharp
+        m_MethodName: OnClickRoom
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -437,3 +437,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomName: {fileID: 8865143511450927826}
+  roomPlayers: {fileID: 1206932928571120245}

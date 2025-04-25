@@ -16,10 +16,9 @@ public class ViewCard : MonoBehaviour
 
     [Header("Description Prompt")]
     private CardDisplay cardDisplay;
+    private CardDisplay cardData;
     public TextMeshProUGUI desc;
     public GameObject cardDesc;
-
-    public CardDisplay cardData;
 
     public bool isClicked;
 
@@ -62,7 +61,7 @@ public class ViewCard : MonoBehaviour
             isClicked = true;
 
             cardDisplay.descPrompt.gameObject.SetActive(true);
-            desc.text = cardData.descText.text;
+            desc.text = cardData.flavorText.text;
         }
     }
 
@@ -74,7 +73,6 @@ public class ViewCard : MonoBehaviour
         transform.SetSiblingIndex(originalSiblingIndex);
         isClicked = false;
 
-        cardDisplay.descPrompt.gameObject.SetActive(false);
         cardDisplay.tween.PlayEndAnimation();
 
         if (currentlyViewedCard == this)

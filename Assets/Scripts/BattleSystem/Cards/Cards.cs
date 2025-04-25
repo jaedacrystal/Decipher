@@ -9,6 +9,8 @@ public class Cards : ScriptableObject
 
     [TextArea(3, 3)]
     public string desc;
+    [TextArea(3, 3)]
+    public string flavorTxt;
 
     public int bandwidth;
     public int effectValue;
@@ -37,6 +39,10 @@ public class Cards : ScriptableObject
 
             case EffectType.Defense:
                 targetStats.IncreaseDefense(effectValue);
+                break;
+
+            case EffectType.DefenseAndDebuff:
+                targetStats.IncreaseDefenseAndDebuff(effectValue);
                 break;
 
             case EffectType.Heal:
@@ -82,6 +88,7 @@ public enum EffectType
     None,
     Attack,
     Defense,
+    DefenseAndDebuff,
     Heal,
     Draw,
     ShieldAndRetaliate

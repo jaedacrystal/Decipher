@@ -16,6 +16,7 @@ public class Profile : MonoBehaviour
     [Header("Scripts")]
     public ClassSelectMultiplayer classSelect;
     public PromptDialogue dialogue;
+    public ButtonHover btHover;
 
     void Start()
     {
@@ -25,11 +26,6 @@ public class Profile : MonoBehaviour
         player.text = playerName;
     }
 
-    public void ClassSelect()
-    {
-        classBtn.onClick.AddListener(ShowClassSelect);
-    }
-
     public void ShowClassSelect()
     {
         initialClassIcon.gameObject.SetActive(false);
@@ -37,11 +33,14 @@ public class Profile : MonoBehaviour
         profile.LeanMoveLocalY(160, 0.3f).setEaseOutCirc();
 
         Invoke("Next", 0.3f);
-        classBtn.onClick.RemoveAllListeners();
+        classBtn.enabled = false;
+        btHover.buttonHover = false;
     }
 
     void Next()
     {
+        classBtn.onClick.RemoveAllListeners();
+
         dialogue.ShowDialogue();
         classSelect.dialogueCounter = 2;
         dialogue.SelectDialogueMultiplayer();

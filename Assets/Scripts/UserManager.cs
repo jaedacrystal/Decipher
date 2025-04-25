@@ -8,14 +8,16 @@ using UnityEngine.SceneManagement;
 
 public class UserManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] GameObject start;
-    [SerializeField] GameObject play;
+    [SerializeField] private GameObject start;
+    [SerializeField] private GameObject play;
+    [SerializeField] private GameObject connecting;
 
     public TextMeshProUGUI text;
     public TMP_InputField username;
 
     private void Start()
     {
+        connecting.SetActive(false);
         play.gameObject.SetActive(false);
     }
 

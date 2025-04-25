@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 146fcfd642f3fa84d8bba2dbca8504d2, type: 3}
-  m_Name: CodeInjection
+  m_Name: FirewallBreach
   m_EditorClassIdentifier: 
-  artwork: {fileID: 1461408084, guid: 81214937aebf75f42a06bcd4e8ad71fc, type: 3}
-  cardName: Code Injection
-  desc: Injects malicious code to the target's system dealing 4 damage
-  flavorTxt: Exposes a user's sensitive information.
-  bandwidth: 2
-  effectValue: 4
+  artwork: {fileID: 0}
+  cardName: Firewall Breach
+  desc: applies 2 damage per turn for 3 turns.
+  flavorTxt: Bypasses a network's firewall to gain access to their data.
+  bandwidth: 4
+  effectValue: 2
   classType: 1
   effectType: 1
   target: 0
