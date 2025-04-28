@@ -41,6 +41,7 @@ public class UserManager : MonoBehaviourPunCallbacks
     public void OnClickConnect()
     {
         PhotonNetwork.NickName = username.text;
+        PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.ConnectUsingSettings();
     }
 

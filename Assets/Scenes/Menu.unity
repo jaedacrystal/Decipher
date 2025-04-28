@@ -331,7 +331,7 @@ MonoBehaviour:
   targetCanvasGroup: {fileID: 0}
   targetGraphic: {fileID: 0}
   targetLayout: {fileID: 0}
-  startFromValue: {x: 0, y: -200, z: 0}
+  startFromValue: {x: 0, y: -100, z: 0}
   startToValue: {x: 0, y: 0, z: 0}
   startDuration: 0.3
   startDelay: 0
@@ -345,7 +345,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!1 &290396571
 GameObject:
   m_ObjectHideFlags: 0
@@ -838,7 +840,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!1 &733301929 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4721942379121342532, guid: d9c42e4581d52f345ae25b71e0148837, type: 3}
@@ -931,7 +935,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 1
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!114 &748427778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1625,10 +1631,10 @@ MonoBehaviour:
   targetCanvasGroup: {fileID: 0}
   targetGraphic: {fileID: 0}
   targetLayout: {fileID: 0}
-  startFromValue: {x: 0, y: -270, z: 0}
+  startFromValue: {x: 0, y: -190, z: 0}
   startToValue: {x: 0, y: -90, z: 0}
   startDuration: 0.3
-  startDelay: 0.6
+  startDelay: 0.5
   endFromValue: {x: 0, y: 0, z: 0}
   endToValue: {x: 0, y: 0, z: 0}
   endDuration: 0.3
@@ -1639,7 +1645,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!1 &1125655560
 GameObject:
   m_ObjectHideFlags: 0
@@ -2583,10 +2591,10 @@ MonoBehaviour:
   targetCanvasGroup: {fileID: 0}
   targetGraphic: {fileID: 0}
   targetLayout: {fileID: 0}
-  startFromValue: {x: 0, y: -340, z: 0}
+  startFromValue: {x: 0, y: -280, z: 0}
   startToValue: {x: 0, y: -180, z: 0}
   startDuration: 0.3
-  startDelay: 1.2
+  startDelay: 0.7
   endFromValue: {x: 0, y: 0, z: 0}
   endToValue: {x: 0, y: 0, z: 0}
   endDuration: 0.3
@@ -2597,7 +2605,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!114 &1370974055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3209,7 +3219,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!1 &1899461148
 GameObject:
   m_ObjectHideFlags: 0

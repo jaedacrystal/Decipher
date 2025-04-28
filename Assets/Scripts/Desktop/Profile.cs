@@ -17,6 +17,7 @@ public class Profile : MonoBehaviour
     public ClassSelectMultiplayer classSelect;
     public PromptDialogue dialogue;
     public ButtonHover btHover;
+    public LeanTweenUIManager tween;
 
     void Start()
     {

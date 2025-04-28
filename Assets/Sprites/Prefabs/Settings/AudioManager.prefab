@@ -257,6 +257,18 @@ MonoBehaviour:
     audioClips:
     - {fileID: 8300000, guid: 9aade07288bc6cb47b385f1b05e48f1e, type: 3}
     randomPitch: 0
+  - name: Hit
+    audioClips:
+    - {fileID: 8300000, guid: 53c3038c83ef08e41beab8e3583a9655, type: 3}
+    randomPitch: 0
+  - name: Heal
+    audioClips:
+    - {fileID: 8300000, guid: 42fba37a837361246b5b76fb083bf6cf, type: 3}
+    randomPitch: 0
+  - name: Ping
+    audioClips:
+    - {fileID: 8300000, guid: fd9bd78dd2f219447a3a7b411be6df88, type: 3}
+    randomPitch: 0
 --- !u!1 &4745371615877095708
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,7 +293,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4745371615877095708}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

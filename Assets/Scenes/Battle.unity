@@ -360,8 +360,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4280817943
+  m_fontColor: {r: 0.09019608, g: 0.098039225, b: 0.15686275, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -622,7 +622,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 226425308}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 488449500}
+        m_TargetAssemblyTypeName: Health, Assembly-CSharp
+        m_MethodName: Retry
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &226425308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1382,6 +1394,10 @@ PrefabInstance:
     - target: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424541493866647223, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
+      propertyPath: sceneViewId
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8406938579341507665, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2177,34 +2193,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4416772114723302841, guid: cdd5080affb6eee4ab2c875643a77088, type: 3}
-      propertyPath: soundEffectGroups.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 4416772114723302841, guid: cdd5080affb6eee4ab2c875643a77088, type: 3}
-      propertyPath: soundEffectGroups.Array.data[4].name
-      value: Hit
-      objectReference: {fileID: 0}
-    - target: {fileID: 4416772114723302841, guid: cdd5080affb6eee4ab2c875643a77088, type: 3}
-      propertyPath: soundEffectGroups.Array.data[5].name
-      value: Heal
-      objectReference: {fileID: 0}
-    - target: {fileID: 4416772114723302841, guid: cdd5080affb6eee4ab2c875643a77088, type: 3}
-      propertyPath: soundEffectGroups.Array.data[4].audioClips.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4416772114723302841, guid: cdd5080affb6eee4ab2c875643a77088, type: 3}
-      propertyPath: soundEffectGroups.Array.data[5].audioClips.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4416772114723302841, guid: cdd5080affb6eee4ab2c875643a77088, type: 3}
-      propertyPath: soundEffectGroups.Array.data[4].audioClips.Array.data[0]
-      value: 
-      objectReference: {fileID: 8300000, guid: 53c3038c83ef08e41beab8e3583a9655, type: 3}
-    - target: {fileID: 4416772114723302841, guid: cdd5080affb6eee4ab2c875643a77088, type: 3}
-      propertyPath: soundEffectGroups.Array.data[5].audioClips.Array.data[0]
-      value: 
-      objectReference: {fileID: 8300000, guid: 42fba37a837361246b5b76fb083bf6cf, type: 3}
     - target: {fileID: 4745371615877095708, guid: cdd5080affb6eee4ab2c875643a77088, type: 3}
       propertyPath: m_Name
       value: AudioManager
@@ -3137,7 +3125,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 1
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!1 &873071993
 GameObject:
   m_ObjectHideFlags: 0
@@ -3491,6 +3481,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 2424541493866647223, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
+      propertyPath: sceneViewId
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8406938579341507665, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4
@@ -3634,7 +3628,7 @@ MonoBehaviour:
   start: {fileID: 1233601258}
   impactFlash: {fileID: 1120444740}
   spriteRenderer: {fileID: 1120444747}
-  flashColor: {r: 1, g: 0, b: 0, a: 0}
+  flashColor: {r: 1, g: 1, b: 1, a: 0}
   flashDuration: 0.3
   retry: {fileID: 1292135905}
 --- !u!114 &1120444743
@@ -3932,7 +3926,7 @@ MonoBehaviour:
   startFromValue: {x: 0, y: 0, z: 0}
   startToValue: {x: 0, y: 0, z: 0}
   startDuration: 0.3
-  startDelay: 0
+  startDelay: 0.5
   endFromValue: {x: 0, y: 0, z: 0}
   endToValue: {x: 0, y: 0, z: 0}
   endDuration: 0.3
@@ -3943,7 +3937,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!1 &1320201362
 GameObject:
   m_ObjectHideFlags: 0
@@ -6187,9 +6183,11 @@ MonoBehaviour:
   isPlayerTurn: 1
   playerStats: {fileID: 488449499}
   opponent: {fileID: 1120444743}
+  health: {fileID: 488449500}
   turnText: {fileID: 463479763}
   opponentCardText: {fileID: 838308141}
   cardManager: {fileID: 0}
+  turnButton: {fileID: 764982659}
 --- !u!1 &2116246075
 GameObject:
   m_ObjectHideFlags: 0

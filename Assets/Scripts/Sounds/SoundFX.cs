@@ -46,9 +46,12 @@ public class SoundFX : MonoBehaviour
         {
             volumeSlider.onValueChanged.AddListener(SetVolume);
             volumeText.text = (volumeSlider.value * 10).ToString("0") + "%";
+        } else
+        {
+            return;
         }
 
-        SetVolume(volumeSlider.value);
+            SetVolume(volumeSlider.value);
     }
 
     private void InitializeDictionary()
@@ -90,27 +93,40 @@ public class SoundFX : MonoBehaviour
 
     public void LowerVolume()
     {
-        if(volumeSlider.value == 0)
+        if (volumeText != null)
         {
-            SetVolume(volumeSlider.value = 0);
+            if (volumeSlider.value == 0)
+            {
+                SetVolume(volumeSlider.value = 0);
+            }
+            else
+            {
+                SetVolume(volumeSlider.value-- - 1);
+            }
         } else
         {
-            SetVolume(volumeSlider.value-- - 1);
+            return;
         }
+
     }
 
     public void IncreaseVolume()
     {
-        if (volumeSlider.value == 10)
+        if (volumeText != null)
         {
-            SetVolume(volumeSlider.value = 10);
-        }
-        else
+            if (volumeSlider.value == 10)
+            {
+                SetVolume(volumeSlider.value = 10);
+            }
+            else
+            {
+                SetVolume(volumeSlider.value++ + 1);
+            }
+        } else
         {
-            SetVolume(volumeSlider.value++ + 1);
+            return;
         }
     }
-
 }
 
 [System.Serializable]

@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3879256
 RectTransform:
   m_ObjectHideFlags: 0
@@ -189,6 +189,7 @@ MonoBehaviour:
   classSelect: {fileID: 890866212}
   dialogue: {fileID: 566417915}
   btHover: {fileID: 2031523735}
+  tween: {fileID: 1738193213}
 --- !u!1 &36618230
 GameObject:
   m_ObjectHideFlags: 0
@@ -889,7 +890,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 1
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!114 &133307815
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1013,7 +1016,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!114 &138339198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1429,7 +1434,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!1 &189472178
 GameObject:
   m_ObjectHideFlags: 0
@@ -1711,7 +1718,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!114 &273087473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1994,7 +2003,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!1 &325620999
 GameObject:
   m_ObjectHideFlags: 0
@@ -2516,7 +2527,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!1 &459442727
 GameObject:
   m_ObjectHideFlags: 0
@@ -2933,7 +2946,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 1
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!1 &562885202
 GameObject:
   m_ObjectHideFlags: 0
@@ -3007,7 +3022,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!114 &562885205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3056,6 +3073,8 @@ GameObject:
   m_Component:
   - component: {fileID: 566417913}
   - component: {fileID: 566417915}
+  - component: {fileID: 566417916}
+  - component: {fileID: 566417917}
   m_Layer: 0
   m_Name: DialogueSystem
   m_TagString: Untagged
@@ -3102,8 +3121,7 @@ MonoBehaviour:
   useSingleSound: 1
   singleTypewriterSound: Computer
   dialogues:
-  - dialogue: It seems that you received an email! Click on the "email" app to check
-      it out!
+  - dialogue: Choose a class using the "Profile" app before joining a lobby.
     typewriterSoundName: 
   - dialogue: It looks like a new file was added to your folder, click on it to check
       it out!
@@ -3118,6 +3136,55 @@ MonoBehaviour:
     typewriterSoundName: 
   classSelect: {fileID: 0}
   classSelectMultiplayer: {fileID: 890866212}
+--- !u!320 &566417916
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 566417912}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 719c809372d03fe44b7ae8ede2d4fe4f, type: 2}
+  m_InitialState: 1
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: -326251263196324674, guid: 719c809372d03fe44b7ae8ede2d4fe4f, type: 2}
+    value: {fileID: 566417917}
+  m_ExposedReferences:
+    m_References: []
+--- !u!114 &566417917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 566417912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: f95bbfc4d9f012a4cb884e909fb21e57, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 566417915}
+          m_TargetAssemblyTypeName: PromptDialogue, Assembly-CSharp
+          m_MethodName: ShowDialogue
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &583302281
 GameObject:
   m_ObjectHideFlags: 0
@@ -3284,8 +3351,8 @@ RectTransform:
   m_Children:
   - {fileID: 464751978}
   - {fileID: 653524099}
-  - {fileID: 566417913}
   - {fileID: 1412853187}
+  - {fileID: 566417913}
   - {fileID: 3879256}
   - {fileID: 154449433}
   m_Father: {fileID: 373639582}
@@ -3624,7 +3691,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 800, y: 200}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &703448141
 MonoBehaviour:
@@ -4055,7 +4122,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!114 &803894599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4361,7 +4430,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 1
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!114 &857505890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4637,17 +4708,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defenseCards:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 55f3e0d406d8e9a44867c0b338e16ba6, type: 2}
+  - {fileID: 11400000, guid: 52e627ef3d8db1e4892645f743ac531e, type: 2}
+  - {fileID: 11400000, guid: 52e627ef3d8db1e4892645f743ac531e, type: 2}
   offenseCards:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 11cc32260f2721841817f8d6f5f1a642, type: 2}
+  - {fileID: 11400000, guid: 11cc32260f2721841817f8d6f5f1a642, type: 2}
+  - {fileID: 11400000, guid: 11cc32260f2721841817f8d6f5f1a642, type: 2}
   balanceCards:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 52e627ef3d8db1e4892645f743ac531e, type: 2}
+  - {fileID: 11400000, guid: 55f3e0d406d8e9a44867c0b338e16ba6, type: 2}
+  - {fileID: 11400000, guid: 11cc32260f2721841817f8d6f5f1a642, type: 2}
   dialogue: {fileID: 566417915}
   dialogueCounter: 0
   classIconArray:
@@ -4658,7 +4729,7 @@ MonoBehaviour:
   confirm: {fileID: 2031523732}
   classBtnText: {fileID: 755183034}
   classSelection: {fileID: 890866208}
-  multiClass: {fileID: 3879259}
+  profile: {fileID: 3879259}
   tween: {fileID: 1738193213}
 --- !u!1 &914797690
 GameObject:
@@ -4741,7 +4812,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!1 &919031002
 GameObject:
   m_ObjectHideFlags: 0
@@ -4753,7 +4826,7 @@ GameObject:
   - component: {fileID: 919031003}
   - component: {fileID: 919031006}
   - component: {fileID: 919031005}
-  - component: {fileID: 919031004}
+  - component: {fileID: 919031007}
   m_Layer: 5
   m_Name: Design2
   m_TagString: Untagged
@@ -4780,41 +4853,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &919031004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 919031002}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87536be375cb8fe4196aba0f5d6ecb45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startAnimationType: 0
-  endAnimationType: 0
-  animationDirection: 0
-  easeType: 2
-  targetRectTransform: {fileID: 0}
-  targetCanvasGroup: {fileID: 0}
-  targetGraphic: {fileID: 0}
-  targetLayout: {fileID: 0}
-  startFromValue: {x: 100, y: 0, z: 0}
-  startToValue: {x: 0, y: 0, z: 0}
-  startDuration: 0.3
-  startDelay: 0.3
-  endFromValue: {x: 0, y: 0, z: 0}
-  endToValue: {x: 0, y: 0, z: 0}
-  endDuration: 0.3
-  endDelay: 0
-  fadeIn: 1
-  fadeOut: 0
-  fadeDuration: 0.5
-  loop: 0
-  pingPong: 0
-  playEndAnimation: 0
-  animDuration: 0
 --- !u!114 &919031005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4853,6 +4891,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919031002}
   m_CullTransparentMesh: 1
+--- !u!114 &919031007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919031002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &949912929
 GameObject:
   m_ObjectHideFlags: 0
@@ -5019,9 +5077,9 @@ RectTransform:
   - {fileID: 459442728}
   m_Father: {fileID: 703448140}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 100, y: -100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &993373137
@@ -5305,7 +5363,7 @@ GameObject:
   - component: {fileID: 1050974421}
   - component: {fileID: 1050974424}
   - component: {fileID: 1050974423}
-  - component: {fileID: 1050974422}
+  - component: {fileID: 1050974425}
   m_Layer: 5
   m_Name: Design
   m_TagString: Untagged
@@ -5332,41 +5390,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1050974422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1050974420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87536be375cb8fe4196aba0f5d6ecb45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startAnimationType: 0
-  endAnimationType: 0
-  animationDirection: 0
-  easeType: 2
-  targetRectTransform: {fileID: 0}
-  targetCanvasGroup: {fileID: 0}
-  targetGraphic: {fileID: 0}
-  targetLayout: {fileID: 0}
-  startFromValue: {x: -100, y: 0, z: 0}
-  startToValue: {x: 0, y: 0, z: 0}
-  startDuration: 0.3
-  startDelay: 0.3
-  endFromValue: {x: 0, y: 0, z: 0}
-  endToValue: {x: 0, y: 0, z: 0}
-  endDuration: 0.3
-  endDelay: 0
-  fadeIn: 1
-  fadeOut: 0
-  fadeDuration: 0.5
-  loop: 0
-  pingPong: 0
-  playEndAnimation: 0
-  animDuration: 0
 --- !u!114 &1050974423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5405,6 +5428,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1050974420}
   m_CullTransparentMesh: 1
+--- !u!114 &1050974425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1050974420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &1064778096
 GameObject:
   m_ObjectHideFlags: 0
@@ -6005,6 +6048,7 @@ MonoBehaviour:
   pagesRect: {fileID: 703448140}
   duration: 0.3
   className: {fileID: 0}
+  selectPrompt: {fileID: 0}
 --- !u!114 &1242243717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6138,9 +6182,9 @@ RectTransform:
   - {fileID: 1394096722}
   m_Father: {fileID: 703448140}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1282797062
@@ -6279,7 +6323,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!1 &1357512886
 GameObject:
   m_ObjectHideFlags: 0
@@ -6623,7 +6669,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!1 &1385978629
 GameObject:
   m_ObjectHideFlags: 0
@@ -6990,7 +7038,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!1 &1401911918
 GameObject:
   m_ObjectHideFlags: 0
@@ -7101,7 +7151,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!1 &1405747956
 GameObject:
   m_ObjectHideFlags: 0
@@ -7335,7 +7387,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1972431441}
   - {fileID: 2042480674}
   - {fileID: 2135247006}
   - {fileID: 1851528506}
@@ -7394,7 +7445,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 1
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!114 &1485488297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7511,7 +7564,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 1
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!114 &1490310060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8214,7 +8269,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!1 &1631362098 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2957007002696317143, guid: bc9419856b1293347b0313ddf179ea7c, type: 3}
@@ -8380,7 +8437,7 @@ GameObject:
   - component: {fileID: 1680421845}
   - component: {fileID: 1680421848}
   - component: {fileID: 1680421847}
-  - component: {fileID: 1680421846}
+  - component: {fileID: 1680421849}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -8407,41 +8464,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1680421846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1680421844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87536be375cb8fe4196aba0f5d6ecb45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startAnimationType: 0
-  endAnimationType: 0
-  animationDirection: 0
-  easeType: 2
-  targetRectTransform: {fileID: 0}
-  targetCanvasGroup: {fileID: 0}
-  targetGraphic: {fileID: 0}
-  targetLayout: {fileID: 0}
-  startFromValue: {x: 0, y: 8, z: 0}
-  startToValue: {x: 0, y: 8, z: 0}
-  startDuration: 0.3
-  startDelay: 0.5
-  endFromValue: {x: 0, y: 0, z: 0}
-  endToValue: {x: 0, y: 0, z: 0}
-  endDuration: 0.3
-  endDelay: 0
-  fadeIn: 1
-  fadeOut: 0
-  fadeDuration: 0.5
-  loop: 0
-  pingPong: 0
-  playEndAnimation: 0
-  animDuration: 0
 --- !u!114 &1680421847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8539,6 +8561,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1680421844}
   m_CullTransparentMesh: 1
+--- !u!114 &1680421849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1680421844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &1697495457
 GameObject:
   m_ObjectHideFlags: 0
@@ -8894,8 +8936,10 @@ MonoBehaviour:
   fadeDuration: 0.5
   loop: 0
   pingPong: 0
-  playEndAnimation: 0
+  playEndAnimation: 1
+  isDialogue: 1
   animDuration: 0
+  dialogue: {fileID: 566417915}
 --- !u!1 &1784235456
 GameObject:
   m_ObjectHideFlags: 0
@@ -8928,9 +8972,9 @@ RectTransform:
   - {fileID: 325621000}
   m_Father: {fileID: 703448140}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 700, y: -100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1784235459
@@ -9090,7 +9134,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!114 &1851528508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9219,7 +9265,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7304889847902321678, guid: bc9419856b1293347b0313ddf179ea7c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7304889847902321678, guid: bc9419856b1293347b0313ddf179ea7c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -9234,6 +9280,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7304889847902321678, guid: bc9419856b1293347b0313ddf179ea7c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7304889847902321678, guid: bc9419856b1293347b0313ddf179ea7c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 3891044716332205930}
@@ -9244,7 +9294,11 @@ PrefabInstance:
     - target: {fileID: 7304889847902321678, guid: bc9419856b1293347b0313ddf179ea7c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 3879259}
+      objectReference: {fileID: 1738193213}
+    - target: {fileID: 7304889847902321678, guid: bc9419856b1293347b0313ddf179ea7c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 566417912}
     - target: {fileID: 7304889847902321678, guid: bc9419856b1293347b0313ddf179ea7c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -9258,6 +9312,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7304889847902321678, guid: bc9419856b1293347b0313ddf179ea7c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7304889847902321678, guid: bc9419856b1293347b0313ddf179ea7c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: Play
       objectReference: {fileID: 0}
@@ -9267,7 +9325,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7304889847902321678, guid: bc9419856b1293347b0313ddf179ea7c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: ClassSelect
+      value: PreviewEndAnimation
       objectReference: {fileID: 0}
     - target: {fileID: 7304889847902321678, guid: bc9419856b1293347b0313ddf179ea7c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -9279,7 +9337,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7304889847902321678, guid: bc9419856b1293347b0313ddf179ea7c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
-      value: MultiplayerClass, Assembly-CSharp
+      value: LeanTweenUIManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7304889847902321678, guid: bc9419856b1293347b0313ddf179ea7c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      value: LeanTweenUIManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7304889847902321678, guid: bc9419856b1293347b0313ddf179ea7c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
@@ -9455,7 +9517,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!1 &1919338819
 GameObject:
   m_ObjectHideFlags: 0
@@ -9583,139 +9647,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 1
+  isDialogue: 0
   animDuration: 0
---- !u!1 &1972431440
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1972431441}
-  - component: {fileID: 1972431444}
-  - component: {fileID: 1972431443}
-  - component: {fileID: 1972431442}
-  m_Layer: 0
-  m_Name: Exit
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1972431441
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1972431440}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.00008, y: 1.00008, z: 1.00008}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1485488294}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 40, y: 55.28}
-  m_Pivot: {x: 1, y: 1}
---- !u!114 &1972431442
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1972431440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 1972431443}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1485488295}
-        m_TargetAssemblyTypeName: ToggleWindow, Assembly-CSharp
-        m_MethodName: ToggleMenu
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1972431443
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1972431440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1972431444
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1972431440}
-  m_CullTransparentMesh: 1
+  dialogue: {fileID: 0}
 --- !u!1 &2016397274
 GameObject:
   m_ObjectHideFlags: 0
@@ -10685,7 +10619,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!1 &2127036694
 GameObject:
   m_ObjectHideFlags: 0
@@ -10805,7 +10741,9 @@ MonoBehaviour:
   loop: 0
   pingPong: 0
   playEndAnimation: 0
+  isDialogue: 0
   animDuration: 0
+  dialogue: {fileID: 0}
 --- !u!114 &2135247008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10850,9 +10788,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2140191525}
-        m_TargetAssemblyTypeName: TestLobby, Assembly-CSharp
-        m_MethodName: ShowAndCreateLobbyList
+      - m_Target: {fileID: 2140191526}
+        m_TargetAssemblyTypeName: LobbyManager, Assembly-CSharp
+        m_MethodName: OnClickPlayButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10909,7 +10847,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2140191524}
-  - component: {fileID: 2140191525}
   - component: {fileID: 2140191526}
   m_Layer: 0
   m_Name: Lobby
@@ -10933,33 +10870,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2140191525
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2140191523}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cca9d3a0ac97d794bba58a99c3e36276, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lobbyList: {fileID: 529319137}
-  createLobbyPrompt: {fileID: 489324715}
-  optionPrompt: {fileID: 2127036694}
-  lobbyNameField: {fileID: 1357512888}
-  lobbyPasswordField: {fileID: 727382416}
-  joinedLobbyID: 
-  lobbyItem: {fileID: 1360582343054565149, guid: dd3b8d55bbd93974faec7c1248f5e79c, type: 3}
-  lobbyName: {fileID: 0}
-  lobbyPlayerCount: {fileID: 0}
-  lobbyParent: {fileID: 1012190570}
-  profileName: {fileID: 873070377}
-  joinedLobby: {fileID: 1114800472}
-  playerItemPrefab: {fileID: 4723970652577958794, guid: 0d299183dcbe225469fe34f7fc82f7fe, type: 3}
-  playerListParent: {fileID: 1703203199}
-  joinedLobbyNameText: {fileID: 1680421847}
 --- !u!114 &2140191526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10980,8 +10890,10 @@ MonoBehaviour:
   roomItemPrefab: {fileID: 8260034734301018405, guid: dd3b8d55bbd93974faec7c1248f5e79c, type: 3}
   contentObject: {fileID: 1012190570}
   timeUpdates: 1.5
+  playButton: {fileID: 2135247005}
   playerPrefab: {fileID: 3532764615139216329, guid: 0d299183dcbe225469fe34f7fc82f7fe, type: 3}
   playerParent: {fileID: 1703203199}
+  tween: {fileID: 529319140}
 --- !u!1001 &3891044716332205929
 PrefabInstance:
   m_ObjectHideFlags: 0

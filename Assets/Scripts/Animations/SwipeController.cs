@@ -17,6 +17,12 @@ public class SwipeController : MonoBehaviour, IEndDragHandler
     private float dragThreshold;
 
     public TextMeshProUGUI className;
+    public Class selectPrompt;
+
+    private void Start()
+    {
+        selectPrompt = FindObjectOfType<Class>();
+    }
 
     private void Awake()
     {
@@ -64,6 +70,7 @@ public class SwipeController : MonoBehaviour, IEndDragHandler
     void MovePage()
     {
         pagesRect.LeanMoveLocal(targetPos, duration).setEaseOutCirc();
+        selectPrompt.NoButton();
     }
 
     public void OnEndDrag(PointerEventData eventData)

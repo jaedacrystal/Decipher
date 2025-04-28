@@ -20,7 +20,7 @@ public class Opponent : MonoBehaviour
 
     private IEnumerator PerformActions()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1f);
 
         List<Cards> playableCards = GetPlayableCards();
 
@@ -33,9 +33,10 @@ public class Opponent : MonoBehaviour
 
             TurnManager.Instance.DisplayPlayedCard("Opponent", chosenCard.cardName);
 
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(1f);
             playableCards = GetPlayableCards();
         }
+
         TurnManager.Instance.StartPlayerTurn();
     }
 

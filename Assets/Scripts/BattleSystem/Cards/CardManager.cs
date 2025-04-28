@@ -100,10 +100,6 @@ public class CardManager : MonoBehaviour
 
     public void DrawCard()
     {
-        if (TurnManager.Instance == null || !TurnManager.Instance.isPlayerTurn) return;
-
-        if (cardInstances.Count == 0 || hand.transform.childCount >= maxHandSize) return;
-
         GameObject drawnCard = cardInstances[0];
         cardInstances.RemoveAt(0);
 
@@ -113,15 +109,21 @@ public class CardManager : MonoBehaviour
         drawnCard.transform.localScale = Vector3.zero;
         drawnCard.transform.DOScale(Vector3.one, 0.3f);
 
+        Debug.Log($"Player drew card: {drawnCard.GetComponent<CardDisplay>().card.cardName}");
         CardPosition();
         UpdateDeckCounter();
     }
 
     public void DrawMultipleCards(int count)
     {
+        Debug.Log($"Drawing {count} cards...");
         for (int i = 0; i < count; i++)
         {
-            if (cardInstances.Count == 0 || hand.transform.childCount >= maxHandSize) break;
+            if (cardInstances.Count == 0 || hand.transform.childCount >= maxHandSize)
+            {
+                Debug.LogWarning("Cannot draw more cards. Either deck is empty or hand is full.");
+                break;
+            }
             DrawCard();
         }
     }
@@ -176,5 +178,6 @@ public class CardManager : MonoBehaviour
             counterText.text = "0";
         }
     }
+
 }
 

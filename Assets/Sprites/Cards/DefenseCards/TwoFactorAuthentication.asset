@@ -19,5 +19,5 @@ MonoBehaviour:
   bandwidth: 3
   effectValue: 5
   classType: 1
-  effectType: 5
+  effectType: 6
   target: 0

@@ -83,9 +83,11 @@ public class LeanTweenUIManager : MonoBehaviour
 
     [Header("Configurations")]
     public bool playEndAnimation;
+    public bool isDialogue = false;
     public float animDuration;
 
     private LTDescr tween;
+    public PromptDialogue dialogue;
 
     void OnEnable()
     {
@@ -224,6 +226,11 @@ public class LeanTweenUIManager : MonoBehaviour
 
     private void Hide()
     {
+        if (isDialogue == true)
+        {
+            dialogue.dialogue.text = "";
+        }
+
         gameObject.SetActive(false);
     }
 

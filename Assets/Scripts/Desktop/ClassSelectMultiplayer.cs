@@ -4,6 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
 public class ClassSelectMultiplayer : MonoBehaviour
 {
@@ -23,7 +24,7 @@ public class ClassSelectMultiplayer : MonoBehaviour
     public TextMeshProUGUI classBtnText;
 
     public GameObject classSelection;
-    public Profile multiClass;
+    public Profile profile;
     public LeanTweenUIManager tween;
 
     private void Start()
@@ -38,7 +39,7 @@ public class ClassSelectMultiplayer : MonoBehaviour
         dialogue.SelectDialogueMultiplayer();
         classBtnText.text = "Confirm";
 
-        multiClass.btHover.buttonHover = true;
+        profile.btHover.buttonHover = true;
         confirm.enabled = true;
         confirm.onClick.AddListener(SaveOffense);
     }
@@ -49,7 +50,7 @@ public class ClassSelectMultiplayer : MonoBehaviour
         dialogue.SelectDialogueMultiplayer();
         classBtnText.text = "Confirm";
 
-        multiClass.btHover.buttonHover = true;
+        profile.btHover.buttonHover = true;
         confirm.enabled = true;
         confirm.onClick.AddListener(SaveBalanced);
     }
@@ -60,7 +61,7 @@ public class ClassSelectMultiplayer : MonoBehaviour
         dialogue.SelectDialogueMultiplayer();
         classBtnText.text = "Confirm";
 
-        multiClass.btHover.buttonHover = true;
+        profile.btHover.buttonHover = true;
         confirm.enabled = true;
         confirm.onClick.AddListener(SaveDefense);
     }
@@ -73,7 +74,8 @@ public class ClassSelectMultiplayer : MonoBehaviour
         classIcon.GetComponent<Image>().sprite = classIconArray[0];
 
         Invoke("MoveProfile", 0.5f);
-        multiClass.dialogue.dialogue.text = "";
+        profile.dialogue.dialogue.text = "";
+
         classSelection.SetActive(false);
         tween.PlayEndAnimation();
     }
@@ -86,7 +88,8 @@ public class ClassSelectMultiplayer : MonoBehaviour
         classIcon.GetComponent<Image>().sprite = classIconArray[1];
 
         Invoke("MoveProfile", 0.5f);
-        multiClass.dialogue.dialogue.text = "";
+        profile.dialogue.dialogue.text = "";
+
         classSelection.SetActive(false);
         tween.PlayEndAnimation();
     }
@@ -99,19 +102,21 @@ public class ClassSelectMultiplayer : MonoBehaviour
         classIcon.GetComponent<Image>().sprite = classIconArray[2];
 
         Invoke("MoveProfile", 0.5f);
-        multiClass.dialogue.dialogue.text = "";
+        profile.dialogue.dialogue.text = "";
+
         classSelection.SetActive(false);
         tween.PlayEndAnimation();
     }
 
     public void MoveProfile()
     {
-        multiClass.profile.LeanMoveLocalY(0, 0.3f).setEaseOutCirc();
+        profile.profile.LeanMoveLocalY(0, 0.3f).setEaseOutCirc();
         classBtnText.text = "Change Class";
 
-        multiClass.btHover.buttonHover = true;
+        profile.btHover.buttonHover = true;
         confirm.enabled = true;
-        multiClass.classBtn.onClick.AddListener(ChangeClass);
+
+        profile.classBtn.onClick.AddListener(ChangeClass);
     }
 
     public void ChangeClass()
@@ -119,7 +124,7 @@ public class ClassSelectMultiplayer : MonoBehaviour
         classBtnText.text = "Choose Class";
         classIcon.SetActive(false);
 
-        multiClass.ShowClassSelect();
+        profile.ShowClassSelect();
     }
 
     void SaveClass(ClassType chosenClass, List<Cards> chosenCards)
@@ -128,6 +133,10 @@ public class ClassSelectMultiplayer : MonoBehaviour
 
         string cardsJson = JsonUtility.ToJson(new CardListWrapper { cards = chosenCards });
         PlayerPrefs.SetString("ChosenClassCards", cardsJson);
+
+        ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable();
+        playerProperties["playerClass"] = chosenClass.ToString();
+        PhotonNetwork.SetPlayerCustomProperties(playerProperties);
 
         PlayerPrefs.Save();
     }

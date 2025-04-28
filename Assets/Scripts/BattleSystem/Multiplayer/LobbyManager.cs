@@ -20,21 +20,39 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     List<RoomItem> roomItems = new List<RoomItem>();
     public Transform contentObject;
 
-    public float timeUpdates = 1.5f;
+    public float timeUpdates = 0.5f;
     float nextUpdateTime;
 
+    public GameObject playButton;
+
+    [Header("Player")]
     private List<PlayerItem> playerItemsList = new List<PlayerItem>();
     public PlayerItem playerPrefab;
     public Transform playerParent;
 
+    public LeanTweenUIManager tween;
+
     private void Start()
     {
         PhotonNetwork.JoinLobby();
+        tween = FindObjectOfType<LeanTweenUIManager>();
+    }
+
+    private void Update()
+    {
+        if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        {
+            playButton.SetActive(true);
+        }
+        else
+        {
+            playButton.SetActive(false);
+        }
     }
 
     public void CreateLobby()
     {
-        PhotonNetwork.CreateRoom(lobbyNameField.text, new RoomOptions { MaxPlayers = 2 });
+        PhotonNetwork.CreateRoom(lobbyNameField.text, new RoomOptions { MaxPlayers = 2, BroadcastPropsChangeToAll = true });
     }
 
     public override void OnJoinedRoom()
@@ -74,7 +92,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         foreach (RoomInfo room in list)
         {
-            //if (room.RemovedFromList) continue;
             RoomItem newRoomItem = Instantiate(roomItemPrefab, contentObject);
             newRoomItem.SetRoomName(room.Name);
             newRoomItem.SetRoomPlayers(room.PlayerCount);
@@ -84,6 +101,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void JoinRoom(string roomName)
     {
+        lobbyPanel.SetActive(false);
         PhotonNetwork.JoinRoom(roomName);
     }
 
@@ -92,10 +110,19 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LeaveRoom();
     }
 
+    public void OnClickPlayButton()
+    {
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        {
+            PhotonNetwork.LoadLevel("MultiplayerBattle");
+        }
+    }
+
     public override void OnLeftRoom()
     {
         roomPanel.SetActive(false);
         lobbyPanel.SetActive(true);
+        tween.PlayEndAnimation();
     }
 
     public override void OnConnectedToMaster()
@@ -103,7 +130,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinLobby();
     }
 
-    void UpdatePlayerList()
+    public void UpdatePlayerList()
     {
         foreach (PlayerItem item in playerItemsList)
         {

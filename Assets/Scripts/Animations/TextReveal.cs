@@ -9,7 +9,7 @@ public class TextReveal : MonoBehaviour
     public float punctuationPause;
 
     private string soundName;
-    private Coroutine revealCoroutine;
+    public Coroutine revealCoroutine;
     [HideInInspector] public bool isRevealing;
 
     public bool IsFinished => !isRevealing;

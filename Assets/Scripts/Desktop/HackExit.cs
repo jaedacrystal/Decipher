@@ -43,6 +43,7 @@ public class HackExit : MonoBehaviour
         hidePrompt.SetActive(false);
 
         folderButton.onClick.AddListener(OnButtonClick);
+        SoundFX.Play("Ping");
         Play();
     }
 

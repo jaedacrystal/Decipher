@@ -8,10 +8,12 @@ public class ToggleWindow : MonoBehaviour
     public GameObject window;
 
     LeanTweenUIManager tween;
+    PromptDialogue dialogue;
 
     private void Start()
     {
         tween = GetComponent<LeanTweenUIManager>();
+        dialogue = GetComponent<PromptDialogue>();
         window.SetActive(false);
     }
 

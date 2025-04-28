@@ -5,13 +5,18 @@ using DG.Tweening;
 public class TurnManager : MonoBehaviour
 {
     public static TurnManager Instance;
+
+    [Header("Player")]
     public bool isPlayerTurn = true;
     public PlayerStats playerStats;
     public Opponent opponent;
+    public Health health;
 
+    [Header("Game Objects")]
     public TextMeshProUGUI turnText;
     public TextMeshProUGUI opponentCardText;
-    public CardManager cardManager;
+    [HideInInspector] public CardManager cardManager;
+    public GameObject turnButton;
 
     private void Awake()
     {
@@ -27,6 +32,7 @@ public class TurnManager : MonoBehaviour
 
     private void Start()
     {
+        health = FindObjectOfType<Health>();
         turnText.color = new Color(turnText.color.r, turnText.color.g, turnText.color.b, 1);
         UpdateTurnText();
     }
@@ -44,50 +50,63 @@ public class TurnManager : MonoBehaviour
 
     private void OpponentTurn()
     {
-        UpdateTurnText();
+        if (health.currentHealth > 0)
+        {
+            UpdateTurnText();
 
-        opponent.ExecuteTurn();
-        opponent.RestoreBandwidth();
+            turnButton.SetActive(false);
+            opponent.ExecuteTurn();
+            opponent.RestoreBandwidth();
+        }
     }
 
 
     public void StartPlayerTurn()
     {
-        isPlayerTurn = true;
-        playerStats.RestoreBandwidth();
+        if (health.currentHealth > 0)
+        {
+            isPlayerTurn = true;
+            playerStats.RestoreBandwidth();
 
-        CardManager cardManager = FindObjectOfType<CardManager>();
-        cardManager.DrawMultipleCards(4);
+            CardManager cardManager = FindObjectOfType<CardManager>();
+            cardManager.DrawMultipleCards(4);
 
-        UpdateTurnText();
+            turnButton.SetActive(true);
+            UpdateTurnText();
+        }
     }
 
 
     private void UpdateTurnText()
     {
-        Debug.Log("Turn Update - isPlayerTurn: " + isPlayerTurn);
+        if (health.currentHealth > 0)
+        {
+            Debug.Log("Turn Update - isPlayerTurn: " + isPlayerTurn);
 
-        turnText.text = isPlayerTurn ? "Player's Turn" : "Opponent's Turn";
-        turnText.color = new Color(turnText.color.r, turnText.color.g, turnText.color.b, 1);
-        turnText.gameObject.SetActive(true);
-        turnText.DOFade(1, 0.2f);
+            turnText.text = isPlayerTurn ? "Player's Turn" : "Opponent's Turn";
+            turnText.color = new Color(turnText.color.r, turnText.color.g, turnText.color.b, 1);
+            turnText.gameObject.SetActive(true);
+            turnText.DOFade(1, 1f);
 
-        Invoke("HideTurnText", 2);
+            Invoke("HideTurnText", 1);
+        }
     }
-
 
     private void HideTurnText()
     {
-        turnText.DOFade(0, 0.5f).OnComplete(() => turnText.gameObject.SetActive(false));
+        turnText.DOFade(0, 1f).OnComplete(() => turnText.gameObject.SetActive(false));
     }
 
     public void DisplayPlayedCard(string playerName, string cardName)
     {
-        if (playerName == "Opponent" && opponentCardText != null)
+        if (health.currentHealth > 0)
         {
-            opponentCardText.text = "Opponent played: " + cardName;
-            AnimateText(opponentCardText);
-            Invoke("HideOpponentCardText", 3);
+            if (playerName == "Opponent" && opponentCardText != null)
+            {
+                opponentCardText.text = "Opponent played: " + cardName;
+                AnimateText(opponentCardText);
+                Invoke("HideOpponentCardText", 1.2f);
+            }
         }
     }
 

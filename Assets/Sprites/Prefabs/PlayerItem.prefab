@@ -405,3 +405,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: {fileID: 3214312932828923090}
   playerClass: {fileID: 7485460560604672634}
+  highlightColor: {r: 0, g: 0.952065, b: 1, a: 0}
+  background: {fileID: 1767654611019839190}

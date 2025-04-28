@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Cinemachine;
+using UnityEngine.SceneManagement;
 
 public class Health : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class Health : MonoBehaviour
     [Header("Flash")]
     public ImpactFlash impactFlash;
     public SpriteRenderer spriteRenderer;
-    public Color flashColor;
+    [HideInInspector] public Color flashColor;
     public float flashDuration;
 
     public GameObject retry;
@@ -54,31 +55,33 @@ public class Health : MonoBehaviour
     {
         PlayerStats stats = GetComponent<PlayerStats>();
 
-        CameraShakeManager.instance.CameraShake(impulseSource);
-        SoundFX.Play("Hit");
-
-        impactFlash.Flash(spriteRenderer, flashDuration, flashColor, 0.1f, ImpactFlash.FlashType.Damage);
-
-
-        if (stats != null && stats.isInvulnerable)
+        if (currentHealth > 0)
         {
-            Debug.Log(stats.name + " blocked the damage!");
-            return;
-        }
+            CameraShakeManager.instance.CameraShake(impulseSource);
+            SoundFX.Play("Hit");
 
-        int previousHealth = currentHealth;
-        currentHealth -= damage;
-        if (currentHealth < 0) currentHealth = 0;
+            impactFlash.Flash(spriteRenderer, flashDuration, flashColor, 0.1f, ImpactFlash.FlashType.Damage);
 
-        DOTween.To(() => previousHealth, x =>
-        {
-            healthBar.SetHealth(x);
-            healthBarText.text = $"{x}/{maxHealth}";
-        }, currentHealth, 0.5f).SetEase(Ease.OutQuad);
+            if (stats != null && stats.isInvulnerable)
+            {
+                Debug.Log(stats.name + " blocked the damage!");
+                return;
+            }
 
-        if (currentHealth <= 0)
-        {
-            Die();
+            int previousHealth = currentHealth;
+            currentHealth -= damage;
+            if (currentHealth < 0) currentHealth = 0;
+
+            DOTween.To(() => previousHealth, x =>
+            {
+                healthBar.SetHealth(x);
+                healthBarText.text = $"{x}/{maxHealth}";
+            }, currentHealth, 0.5f).SetEase(Ease.OutQuad);
+
+            if (currentHealth <= 0)
+            {
+                Die();
+            }
         }
     }
 
@@ -118,10 +121,16 @@ public class Health : MonoBehaviour
         {
             retry.gameObject.SetActive(true);
             prompt.gameObject.SetActive(false);
-        } else
+        }
+        else
         {
             Invoke("LoadScene", 2f);
         }
+    }
+
+    public void Retry()
+    {
+        SceneManager.LoadScene("Battle");
     }
 
     void LoadScene()
@@ -129,3 +138,5 @@ public class Health : MonoBehaviour
         start.LoadNextScene();
     }
 }
+
+

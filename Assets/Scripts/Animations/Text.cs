@@ -7,7 +7,7 @@ public class Text : MonoBehaviour
     public TextReveal textReveal;
     public string typingSoundName;
 
-    void Start()
+    void OnEnable()
     {
         textReveal.StartReveal(text.text);
         textReveal.SetTypingSound(typingSoundName);

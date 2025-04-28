@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -16,6 +17,7 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     private CardDisplay cardDisplay;
     private CardManager cardManager;
+    private MultiCardManager multiCardManager;
     private RectTransform playArea;
     private Discard discard;
 
@@ -26,6 +28,7 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         canvasGroup = GetComponent<CanvasGroup>();
         cardDisplay = GetComponent<CardDisplay>();
         cardManager = FindObjectOfType<CardManager>();
+        multiCardManager = FindObjectOfType<MultiCardManager>();
         playArea = GameObject.Find("PlayArea").GetComponent<RectTransform>();
         discard = GetComponent<Discard>();
         graveyard = GameObject.Find("Graveyard");
