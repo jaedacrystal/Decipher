@@ -1,5 +1,4 @@
 using DG.Tweening;
-using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -30,8 +29,8 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         cardManager = FindObjectOfType<CardManager>();
         multiCardManager = FindObjectOfType<MultiCardManager>();
         playArea = GameObject.Find("PlayArea").GetComponent<RectTransform>();
-        discard = GetComponent<Discard>();
         graveyard = GameObject.Find("Graveyard");
+        discard = graveyard.GetComponent<Discard>();
         errorText = GameObject.Find("BandwidthErrorText").GetComponent<TextMeshProUGUI>();
 
         viewCard = GetComponent<ViewCard>();
@@ -59,6 +58,7 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         Vector3 worldPoint;
         RectTransform rectTransform = GetComponent<RectTransform>();
         Canvas canvas = GetComponentInParent<Canvas>();
+        Camera cam = canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera;
 
         if (RectTransformUtility.ScreenPointToWorldPointInRectangle(rectTransform, eventData.position, canvas.worldCamera, out worldPoint))
         {
@@ -86,10 +86,20 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         }
     }
 
+    //private bool IsOverPlayArea(PointerEventData eventData)
+    //{
+    //    if (viewCard != null && viewCard.isClicked) return false;
+    //    return playArea != null && RectTransformUtility.RectangleContainsScreenPoint(playArea, eventData.position, GetComponentInParent<Canvas>().worldCamera);
+    //}
+
     private bool IsOverPlayArea(PointerEventData eventData)
     {
-        if (viewCard != null && viewCard.isClicked) return false;
-        return playArea != null && RectTransformUtility.RectangleContainsScreenPoint(playArea, eventData.position, GetComponentInParent<Canvas>().worldCamera);
+        if (playArea == null) return false;
+
+        Canvas canvas = GetComponentInParent<Canvas>();
+        Camera cam = canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera;
+
+        return RectTransformUtility.RectangleContainsScreenPoint(playArea, eventData.position, cam);
     }
 
 

@@ -110,7 +110,9 @@ public class Class : MonoBehaviour
     void NextPrompt()
     {
         game.SetActive(true);
-        Invoke("LoadScene", 3f);
+
+        GameManager.Instance.IsSingleplayer = true;
+        Invoke("LoadScene", 7f);
     }
 
     void LoadScene()

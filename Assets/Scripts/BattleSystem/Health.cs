@@ -38,6 +38,8 @@ public class Health : MonoBehaviour
 
     public GameObject retry;
 
+    public Cards cards;
+
     private void Start()
     {
         retry.SetActive(false);
@@ -48,6 +50,9 @@ public class Health : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag("Player");
         impulseSource = GetComponent<CinemachineImpulseSource>();
+
+        cards = GetComponent<Cards>();
+        cards.isSingleplayer = true;
     }
 
 
@@ -62,14 +67,22 @@ public class Health : MonoBehaviour
 
             impactFlash.Flash(spriteRenderer, flashDuration, flashColor, 0.1f, ImpactFlash.FlashType.Damage);
 
-            if (stats != null && stats.isInvulnerable)
+            if (stats != null && stats.isStrongPasswordActive)
             {
-                Debug.Log(stats.name + " blocked the damage!");
+                damage = Mathf.CeilToInt(damage * 0.5f);
+                Debug.Log($"{stats.name} is protected by Strong Password! Incoming damage reduced by 50%. New damage: {damage}");
+            }
+
+            if (stats != null && stats.isProtected)
+            {
+                Debug.Log(stats.name + " is protected, damage blocked!");
                 return;
             }
 
+            float effectiveDamage = damage * stats.damageTakenMultiplier;
+
             int previousHealth = currentHealth;
-            currentHealth -= damage;
+            currentHealth -= Mathf.CeilToInt(effectiveDamage);
             if (currentHealth < 0) currentHealth = 0;
 
             DOTween.To(() => previousHealth, x =>
@@ -99,6 +112,18 @@ public class Health : MonoBehaviour
             healthBar.SetHealth(x);
             healthBarText.text = $"{x}/{maxHealth}";
         }, currentHealth, 0.5f).SetEase(Ease.OutQuad);
+    }
+
+    public void Buff()
+    {
+        impactFlash.Flash(spriteRenderer, flashDuration, flashColor, 0.1f, ImpactFlash.FlashType.Buff);
+        SoundFX.Play("Buff");
+    }
+
+    public void Debuff()
+    {
+        impactFlash.Flash(spriteRenderer, flashDuration, flashColor, 0.1f, ImpactFlash.FlashType.Debuff);
+        SoundFX.Play("Debuff");
     }
 
     private void Die()
@@ -135,7 +160,7 @@ public class Health : MonoBehaviour
 
     void LoadScene()
     {
-        start.LoadNextScene();
+        start.LoadSelectedScene();
     }
 }
 

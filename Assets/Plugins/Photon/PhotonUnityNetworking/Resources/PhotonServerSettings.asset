@@ -48,6 +48,14 @@ MonoBehaviour:
   - EndTurn
   - RPC_ReceiveOpponentDeck
   - RPC_PlayCardOnOtherClient
+  - RPC_UpdatePlayerNames
+  - RPC_DrawCardForEnemy
+  - SetEnemyNameText
+  - AssignOwnershipRPC
+  - RPC_PlayCard
+  - RPC_RestoreBandwidth
+  - SyncBandwidth
+  - RestoreBandwidth
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

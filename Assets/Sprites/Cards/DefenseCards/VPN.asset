@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 146fcfd642f3fa84d8bba2dbca8504d2, type: 3}
   m_Name: VPN
   m_EditorClassIdentifier: 
-  artwork: {fileID: 0}
+  artwork: {fileID: -678026466, guid: 81214937aebf75f42a06bcd4e8ad71fc, type: 3}
   cardName: VPN
-  desc: allows the player to see one card from the opponent
+  desc: heals 5 health of the player
   flavorTxt: Encrypts your internet connection and hides your IP Address.
   bandwidth: 2
-  effectValue: 0
+  effectValue: 5
+  effectRounds: 0
   classType: 0
-  effectType: 0
-  target: 0
+  effectType: 3
+  target: 1
+  isSingleplayer: 1
+  cardText: {fileID: 0}

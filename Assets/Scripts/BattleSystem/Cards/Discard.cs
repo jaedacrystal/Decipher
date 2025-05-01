@@ -2,10 +2,11 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 using DG.Tweening;
+using ExitGames.Client.Photon;
 
 public class Discard : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] GameObject graveyard;
+    public GameObject graveyard;
 
     public TextMeshProUGUI counterText;
     public int graveyardCounter;

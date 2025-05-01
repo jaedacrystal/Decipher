@@ -114,6 +114,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
+            GameManager.Instance.IsSingleplayer = false;
             PhotonNetwork.LoadLevel("MultiplayerBattle");
         }
     }

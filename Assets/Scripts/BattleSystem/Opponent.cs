@@ -36,7 +36,6 @@ public class Opponent : MonoBehaviour
             yield return new WaitForSeconds(1f);
             playableCards = GetPlayableCards();
         }
-
         TurnManager.Instance.StartPlayerTurn();
     }
 

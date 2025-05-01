@@ -19,7 +19,6 @@ public class ComputerPopUp : MonoBehaviour
     void Start()
     {
         computerLight.gameObject.SetActive(false);
-        canvas.gameObject.SetActive(false);
         start = FindObjectOfType<LevelLoader>();
 
         interactButton.SetActive(false);
@@ -53,7 +52,6 @@ public class ComputerPopUp : MonoBehaviour
 
             if (collision.IsTouching(popupTrigger))
             {
-                //canvas.gameObject.SetActive(true);
                 isPlayerInside = true;
                 interactButton.SetActive(true);
             }
@@ -66,7 +64,6 @@ public class ComputerPopUp : MonoBehaviour
         {
             if (!collision.IsTouching(popupTrigger))
             {
-                //canvas.gameObject.SetActive(false);
                 interactButton.SetActive(false);
             }
         }

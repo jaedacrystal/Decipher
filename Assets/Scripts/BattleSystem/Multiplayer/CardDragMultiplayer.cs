@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CardDragMultiplayer : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class CardDragMultiplayer : MonoBehaviourPunCallbacks, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public bool isDragging;
 
@@ -24,17 +24,15 @@ public class CardDragMultiplayer : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     private ViewCard viewCard;
 
-
     private void Start()
     {
         canvasGroup = GetComponent<CanvasGroup>();
         cardDisplay = GetComponent<CardDisplay>();
         multiCardManager = FindObjectOfType<MultiCardManager>();
-        playArea = GameObject.Find("PlayArea").GetComponent<RectTransform>();
+        playArea = GameObject.Find("PlayArea")?.GetComponent<RectTransform>();
         discard = GetComponent<Discard>();
         graveyard = GameObject.Find("Graveyard");
-        errorText = GameObject.Find("BandwidthErrorText").GetComponent<TextMeshProUGUI>();
-
+        errorText = GameObject.Find("BandwidthErrorText")?.GetComponent<TextMeshProUGUI>();
         viewCard = GetComponent<ViewCard>();
     }
 
@@ -69,7 +67,6 @@ public class CardDragMultiplayer : MonoBehaviour, IBeginDragHandler, IDragHandle
         transform.SetAsLastSibling();
     }
 
-
     public void OnEndDrag(PointerEventData eventData)
     {
         if (viewCard != null && viewCard.isClicked) return;
@@ -98,54 +95,78 @@ public class CardDragMultiplayer : MonoBehaviour, IBeginDragHandler, IDragHandle
         if (viewCard != null && viewCard.isClicked) return;
         if (cardDisplay == null || cardDisplay.card == null) return;
 
-        PlayerStats playerStats = MultiTurnManager.Instance.playerStats;
-        GameObject opponent = FindOpponent();
+        GameObject player = multiCardManager?.myPlayer;
+        GameObject opponent = multiCardManager?.enemyPlayer;
 
-        if (playerStats != null && opponent != null)
+        if (player == null || opponent == null)
+        {
+            Debug.LogError("MultiCardManager failed to assign myPlayer or enemyPlayer!");
+            ReturnToOriginalPosition();
+            return;
+        }
+
+        PlayerStats playerStats = player.GetComponent<PlayerStats>();
+
+        if (playerStats != null)
         {
             if (playerStats.CanPlayCard(cardDisplay.card.bandwidth))
             {
                 playerStats.UseBandwidth(cardDisplay.card.bandwidth);
-                cardDisplay.card.ApplyEffect(MultiTurnManager.Instance.gameObject, opponent);
-
+                cardDisplay.card.ApplyEffect(player, opponent);
                 MoveToGraveyard(this);
+
+                PhotonView.Get(this).RPC("RPC_PlayCardOnOtherClient", RpcTarget.Others,
+                    cardDisplay.card.cardName, cardDisplay.card.isSingleplayer,
+                    cardDisplay.card.effectValue, cardDisplay.card.target);
             }
             else
             {
-                ShowError("Not enough bandwidth!");
+                ShowError($"Not enough bandwidth!");
                 Invoke("ReturnToOriginalPosition", 0.5f);
             }
         }
         else
         {
-            Debug.LogError("PlayerStats or Opponent not found!");
+            Debug.LogError("PlayerStats component not found on the player GameObject!");
             ReturnToOriginalPosition();
         }
     }
 
-    public GameObject FindOpponent()
-    {
-        MultiplayerHealth[] healths = FindObjectsOfType<MultiplayerHealth>();
-
-        foreach (var h in healths)
-        {
-            if (h != MultiTurnManager.Instance.health)
-            {
-                return h.gameObject;
-            }
-        }
-        Debug.LogWarning("Opponent not found!");
-        return null;
-    }
-
     [PunRPC]
-    public void RPC_PlayCardOnOtherClient(string cardName)
+    public void RPC_PlayCardOnOtherClient(string cardName, bool isSingleplayer, int effectValue, TargetType target)
     {
         Debug.Log($"Opponent played: {cardName}");
 
         if (multiCardManager != null)
         {
             multiCardManager.HandleOpponentPlayedCard(cardName);
+
+            GameObject player = multiCardManager.enemyPlayer;
+            GameObject opponent = multiCardManager.myPlayer;
+
+            if (player != null && opponent != null)
+            {
+                Cards card = multiCardManager.listOfCards.Find(c => c.cardName == cardName);
+                if (card != null)
+                {
+                    if (isSingleplayer)
+                    {
+                        Health targetHealth = target == TargetType.Player ? player.GetComponent<Health>() : opponent.GetComponent<Health>();
+                        PlayerStats targetStats = target == TargetType.Player ? player.GetComponent<PlayerStats>() : opponent.GetComponent<PlayerStats>();
+                        card.ApplyEffect(targetHealth.gameObject, opponent);
+                    }
+                    else
+                    {
+                        MultiplayerHealth targetHealth = target == TargetType.Player ? player.GetComponent<MultiplayerHealth>() : opponent.GetComponent<MultiplayerHealth>();
+                        PlayerStats targetStats = target == TargetType.Player ? player.GetComponent<PlayerStats>() : opponent.GetComponent<PlayerStats>();
+                        card.ApplyEffect(targetHealth.gameObject, opponent);
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning($"Card {cardName} not found in the listOfCards!");
+                }
+            }
         }
     }
 
@@ -153,7 +174,11 @@ public class CardDragMultiplayer : MonoBehaviour, IBeginDragHandler, IDragHandle
     {
         card.transform.SetParent(graveyard.transform, false);
         card.gameObject.SetActive(false);
-        FindObjectOfType<Discard>().UpdateGraveyardCounter();
+
+        if (discard != null)
+        {
+            discard.UpdateGraveyardCounter();
+        }
     }
 
     private void ReturnToOriginalPosition()
@@ -185,5 +210,4 @@ public class CardDragMultiplayer : MonoBehaviour, IBeginDragHandler, IDragHandle
             errorText.gameObject.SetActive(false);
         });
     }
-
 }

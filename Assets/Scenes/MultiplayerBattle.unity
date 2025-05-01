@@ -1447,6 +1447,7 @@ PrefabInstance:
     - {fileID: 1960412545635928663, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
     - {fileID: 8075824250391752346, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
     - {fileID: 4255367001523079529, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
+    - {fileID: 2424541493866647223, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8406938579341507665, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
@@ -1593,23 +1594,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f3597a3730b3704c922b468ffdf7e76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 20
   currentHealth: 0
-  ownerTag: Player
+  ownerTag: Player1
   prompt: {fileID: 2116246077}
   turnText: {fileID: 463479763}
   playerNameText: {fileID: 835947197}
   enemyNameText: {fileID: 877865686}
   healthBar: {fileID: 754433311}
   healthBarText: {fileID: 754433310}
-  isPlayer: 1
-  isEnemyPlayer: 0
-  start: {fileID: 1233601258}
   impactFlash: {fileID: 488449498}
   spriteRenderer: {fileID: 488449504}
   flashColor: {r: 0, g: 0, b: 0, a: 0}
   flashDuration: 0.3
   retry: {fileID: 1292135905}
+  levelLoader: {fileID: 0}
+  isPlayer: 1
+  isEnemyPlayer: 0
 --- !u!114 &488449511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1626,7 +1627,7 @@ MonoBehaviour:
   Group: 0
   prefixField: -1
   Synchronization: 3
-  OwnershipTransfer: 0
+  OwnershipTransfer: 2
   observableSearch: 2
   ObservedComponents: []
   sceneViewId: 1
@@ -2301,6 +2302,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 111643595}
+    - target: {fileID: 959811623143533342, guid: 3ea78df6f8c26b44fa843b46eff6e7d4, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1219642350024624595, guid: 3ea78df6f8c26b44fa843b46eff6e7d4, type: 3}
       propertyPath: m_fontSize
       value: 50
@@ -3392,7 +3397,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_TargetDisplay: 0
 --- !u!224 &873071997
 RectTransform:
@@ -3851,6 +3856,7 @@ PrefabInstance:
     - {fileID: 1960412545635928663, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
     - {fileID: 8075824250391752346, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
     - {fileID: 4255367001523079529, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
+    - {fileID: 2424541493866647223, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8406938579341507665, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
@@ -3997,23 +4003,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f3597a3730b3704c922b468ffdf7e76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 20
   currentHealth: 0
-  ownerTag: 
+  ownerTag: Player2
   prompt: {fileID: 2116246077}
   turnText: {fileID: 463479763}
   playerNameText: {fileID: 877865686}
   enemyNameText: {fileID: 835947197}
   healthBar: {fileID: 922524240}
   healthBarText: {fileID: 323272562}
-  isPlayer: 0
-  isEnemyPlayer: 1
-  start: {fileID: 1233601258}
   impactFlash: {fileID: 1120444740}
   spriteRenderer: {fileID: 1120444747}
   flashColor: {r: 0, g: 0, b: 0, a: 0}
   flashDuration: 0.3
   retry: {fileID: 1292135905}
+  levelLoader: {fileID: 0}
+  isPlayer: 0
+  isEnemyPlayer: 1
 --- !u!114 &1120444755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4071,17 +4077,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 90}
   m_SizeDelta: {x: 1600, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1233601258 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6628862113208020479, guid: b3f2d4ef0671ae14e9cd0fd162f2233a, type: 3}
-  m_PrefabInstance: {fileID: 524553977}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11a5f029c592d7d4caf78dff720f8f52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1233629729
 GameObject:
   m_ObjectHideFlags: 0
@@ -5640,6 +5635,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 111643595}
+    - target: {fileID: 959811623143533342, guid: 3ea78df6f8c26b44fa843b46eff6e7d4, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1184345560364147721, guid: 3ea78df6f8c26b44fa843b46eff6e7d4, type: 3}
       propertyPath: m_Name
       value: EnemyHealthBar
@@ -6519,6 +6518,8 @@ MonoBehaviour:
   isPlayerTurn: 0
   playerStats: {fileID: 488449499}
   health: {fileID: 488449510}
+  myPlayer: {fileID: 488449497}
+  opponent: {fileID: 1120444739}
   turnText: {fileID: 463479763}
   opponentCardText: {fileID: 838308141}
   turnButton: {fileID: 764982659}

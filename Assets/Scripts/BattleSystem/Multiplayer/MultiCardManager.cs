@@ -11,7 +11,7 @@ public class MultiCardManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private Transform hand;
     [SerializeField] private Transform deck;
-    [SerializeField] private List<Cards> listOfCards;
+    [SerializeField] public List<Cards> listOfCards;
     [SerializeField] private int maxHandSize;
 
     [Header("Card Counter")]
@@ -28,32 +28,25 @@ public class MultiCardManager : MonoBehaviourPunCallbacks
     private List<Cards> selectedClassCards = new();
     private List<Cards> opponentDeck = new();
 
+    private bool isPlayerTurn = false;
+
     private void Start()
     {
-        if (photonView.IsMine)
+        AssignPlayers();
+
+        photonView.RPC("RPC_UpdatePlayerNames", RpcTarget.AllBuffered, PhotonNetwork.NickName);
+
+        string savedClass = PlayerPrefs.GetString("ChosenClass", "None");
+        if (savedClass != "None" && Enum.TryParse(savedClass, out ClassType chosenClass))
         {
-            AssignPlayers();
-
-            string savedClass = PlayerPrefs.GetString("ChosenClass", "None");
-            if (savedClass == "None") return;
-
-            if (Enum.TryParse(savedClass, out ClassType chosenClass))
-            {
-                InitializeDeck(chosenClass);
-                SendDeckToOpponent();
-            }
-
-            if (player == null)
-            {
-                player = PhotonNetwork.LocalPlayer.TagObject as GameObject;
-            }
-
-            UpdateDeckCounter();
+            InitializeDeck(chosenClass);
             DrawMultipleCards(maxHandSize);
         }
+
+        UpdateDeckCounter();
     }
 
-    private void AssignPlayers()
+    public void AssignPlayers()
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
@@ -65,15 +58,44 @@ public class MultiCardManager : MonoBehaviourPunCallbacks
                 if (view.IsMine)
                 {
                     myPlayer = p;
+                    Debug.Log($"Assigned myPlayer: {myPlayer.name}");
+
+                    MultiplayerHealth health = myPlayer.GetComponent<MultiplayerHealth>();
+                    if (health != null)
+                    {
+                        health.isPlayer = true;
+                        health.isEnemyPlayer = false;
+                        health.playerNameText.text = PhotonNetwork.NickName;
+                        Debug.Log("Initialized MultiplayerHealth for local player.");
+                    }
                 }
                 else
                 {
                     enemyPlayer = p;
+                    Debug.Log($"Assigned enemyPlayer: {enemyPlayer.name}");
+
+                    MultiplayerHealth health = enemyPlayer.GetComponent<MultiplayerHealth>();
+                    if (health != null)
+                    {
+                        health.isPlayer = false;
+                        health.isEnemyPlayer = true;
+                        health.enemyNameText.text = view.Owner.NickName;
+                        Debug.Log("Initialized MultiplayerHealth for enemy player.");
+                    }
                 }
             }
         }
-    }
 
+        if (enemyPlayer != null)
+        {
+            PhotonView enemyPhotonView = enemyPlayer.GetComponent<PhotonView>();
+            if (enemyPhotonView != null && enemyPhotonView.IsMine)
+            {
+                Debug.LogWarning("Enemy PhotonView is incorrectly marked as mine. Fixing ownership.");
+                enemyPhotonView.TransferOwnership(enemyPhotonView.Owner.ActorNumber);
+            }
+        }
+    }
 
     private void Update()
     {
@@ -103,6 +125,11 @@ public class MultiCardManager : MonoBehaviourPunCallbacks
 
         mergedDeck = new List<Cards>(selectedClassCards);
         mergedDeck.AddRange(listOfCards);
+
+        foreach (var card in mergedDeck)
+        {
+            card.isSingleplayer = GameManager.Instance.IsSingleplayer;
+        }
 
         ShuffleDeck();
         InstantiateDeckCards();
@@ -190,19 +217,51 @@ public class MultiCardManager : MonoBehaviourPunCallbacks
 
         Debug.Log($"[{PhotonNetwork.NickName}] drew card: {drawnCard.GetComponent<CardDisplay>().card.cardName}");
 
+        photonView.RPC("RPC_DrawCardForEnemy", RpcTarget.Others);
+
         CardPosition();
         UpdateDeckCounter();
     }
 
+    public void SetPlayerTurn(bool isTurn)
+    {
+        isPlayerTurn = isTurn;
+    }
+
     public void DrawMultipleCards(int count)
     {
+        if (!photonView.IsMine) return;
+        if (!isPlayerTurn) return;
+
         for (int i = 0; i < count; i++)
         {
             if (cardInstances.Count == 0 || hand.childCount >= maxHandSize)
-            {
                 break;
-            }
+
             DrawCard();
+        }
+    }
+
+
+
+    [PunRPC]
+    private void RPC_DrawCardForEnemy()
+    {
+        if (!photonView.IsMine && cardInstances.Count > 0)
+        {
+            GameObject drawnCard = cardInstances[0];
+            cardInstances.RemoveAt(0);
+
+            drawnCard.transform.SetParent(hand);
+            drawnCard.SetActive(true);
+
+            drawnCard.transform.localScale = Vector3.zero;
+            drawnCard.transform.DOScale(Vector3.one, 0.3f);
+
+            Debug.Log($"Enemy drew card: {drawnCard.GetComponent<CardDisplay>().card.cardName}");
+
+            CardPosition();
+            UpdateDeckCounter();
         }
     }
 
@@ -221,7 +280,6 @@ public class MultiCardManager : MonoBehaviourPunCallbacks
             Debug.LogWarning($"Card {cardName} not found in opponent deck!");
         }
     }
-
 
     public void CardPosition()
     {
@@ -276,4 +334,36 @@ public class MultiCardManager : MonoBehaviourPunCallbacks
             counterText.text = "0";
         }
     }
+
+    [PunRPC]
+    private void RPC_UpdatePlayerNames(string senderPlayerName)
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (var playerGO in players)
+        {
+            PhotonView playerView = playerGO.GetComponent<PhotonView>();
+
+            if (playerView.Owner.NickName == senderPlayerName)
+            {
+                if (playerView.IsMine)
+                {
+                    MultiplayerHealth health = playerGO.GetComponent<MultiplayerHealth>();
+                    if (health != null)
+                    {
+                        health.playerNameText.text = "You";
+                    }
+                }
+                else
+                {
+                    MultiplayerHealth health = playerGO.GetComponent<MultiplayerHealth>();
+                    if (health != null)
+                    {
+                        health.enemyNameText.text = senderPlayerName;
+                    }
+                }
+            }
+        }
+    }
+
 }

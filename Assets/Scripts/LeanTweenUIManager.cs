@@ -127,7 +127,10 @@ public class LeanTweenUIManager : MonoBehaviour
                 return;
             } else
             {
-                Invoke("PlayEndAnimation", endDuration);
+                LeanTween.delayedCall(animDuration, () =>
+                {
+                    PlayEndAnimation(); 
+                });
             }
         }
     }

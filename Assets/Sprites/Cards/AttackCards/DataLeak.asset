@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 146fcfd642f3fa84d8bba2dbca8504d2, type: 3}
+  m_Name: DataLeak
+  m_EditorClassIdentifier: 
+  artwork: {fileID: -785726967, guid: 81214937aebf75f42a06bcd4e8ad71fc, type: 3}
+  cardName: Data Leak
+  desc: the target is vulnerable to damage by 20%
+  flavorTxt: Exposes a user's sensitive information
+  bandwidth: 2
+  effectValue: 0
+  effectRounds: 0
+  classType: 1
+  effectType: 7
+  target: 0
+  isSingleplayer: 1

@@ -269,6 +269,14 @@ MonoBehaviour:
     audioClips:
     - {fileID: 8300000, guid: fd9bd78dd2f219447a3a7b411be6df88, type: 3}
     randomPitch: 0
+  - name: Debuff
+    audioClips:
+    - {fileID: 8300000, guid: e2823f703d3e97f4ab1505aaf48a8525, type: 3}
+    randomPitch: 0
+  - name: Buff
+    audioClips:
+    - {fileID: 8300000, guid: 9fee85f071ed8c04abf989332ab01181, type: 3}
+    randomPitch: 0
 --- !u!1 &4745371615877095708
 GameObject:
   m_ObjectHideFlags: 0

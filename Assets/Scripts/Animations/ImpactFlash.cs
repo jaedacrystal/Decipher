@@ -7,6 +7,8 @@ public class ImpactFlash : MonoBehaviour
 
     public Color healColor = Color.green;
     public Color damageColor = Color.red;
+    public Color buffColor = Color.yellow;
+    public Color debuffColor = Color.blue;
 
     public void Flash(SpriteRenderer spriteRenderer, float duration, Color flashColor, float fadeDuration = 0.1f, FlashType flashType = FlashType.Damage)
     {
@@ -28,6 +30,12 @@ public class ImpactFlash : MonoBehaviour
                 break;
             case FlashType.Damage:
                 targetColor = damageColor;
+                break;
+            case FlashType.Buff:
+                targetColor = buffColor;
+                break;
+            case FlashType.Debuff:
+                targetColor = debuffColor;
                 break;
         }
 

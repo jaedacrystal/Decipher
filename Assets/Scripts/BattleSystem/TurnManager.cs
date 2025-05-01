@@ -18,6 +18,9 @@ public class TurnManager : MonoBehaviour
     [HideInInspector] public CardManager cardManager;
     public GameObject turnButton;
 
+    public GameObject opponentPrefab;
+    public GameObject playerPrefab;
+
     private void Awake()
     {
         if (Instance == null)
@@ -57,9 +60,21 @@ public class TurnManager : MonoBehaviour
             turnButton.SetActive(false);
             opponent.ExecuteTurn();
             opponent.RestoreBandwidth();
+
+            BurnEffectTrigger();
         }
     }
 
+    private void BurnEffectTrigger()
+    {
+        PlayerStats playerStats = FindObjectOfType<PlayerStats>();
+
+        var target = FindObjectOfType<PlayerStats>();
+        if (target != null && target.isBurning)
+        {
+            playerStats.StartBurnEffect(3, 5);
+        }
+    }
 
     public void StartPlayerTurn()
     {

@@ -1,4 +1,7 @@
 using System.Collections;
+using DG.Tweening;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Card", menuName = "Card")]
@@ -14,98 +17,80 @@ public class Cards : ScriptableObject
 
     public int bandwidth;
     public int effectValue;
+    public int effectRounds;
 
+    [Header("Class Effects")]
     public ClassType classType;
     public EffectType effectType;
     public TargetType target;
 
-    //public void ApplyEffect(GameObject player, GameObject opponent)
-    //{
-    //    MultiplayerHealth playerHealth = player.GetComponent<MultiplayerHealth>();
-    //    PlayerStats playerStats = player.GetComponent<PlayerStats>();
-    //    MultiplayerHealth opponentHealth = opponent.GetComponent<MultiplayerHealth>();
-    //    PlayerStats opponentStats = opponent.GetComponent<PlayerStats>();
-
-    //    GameObject targetObject = target == TargetType.Player ? player : opponent;
-    //    MultiplayerHealth targetHealth = targetObject.GetComponent<MultiplayerHealth>();
-    //    PlayerStats targetStats = targetObject.GetComponent<PlayerStats>();
-
-    //    switch (effectType)
-    //    {
-    //        case EffectType.Attack:
-    //            targetHealth.TakeDamage(effectValue);
-    //            Debug.Log(targetObject.name + " took " + effectValue + " damage!");
-    //            break;
-
-    //        case EffectType.Defense:
-    //            targetStats.IncreaseDefense(effectValue);
-    //            break;
-
-    //        case EffectType.DefenseAndDebuff:
-    //            targetStats.IncreaseDefenseAndDebuff(effectValue);
-    //            break;
-
-    //        case EffectType.Heal:
-    //            targetHealth.Heal(effectValue);
-    //            break;
-
-    //        case EffectType.Draw:
-    //            CardManager cardManager = FindObjectOfType<CardManager>();
-    //            cardManager.DrawMultipleCards(effectValue);
-    //            break;
-
-    //        case EffectType.ShieldAndRetaliate:
-    //            TurnManager turnManager = TurnManager.Instance;
-    //            turnManager.StartCoroutine(ApplyShieldAndRetaliate(playerHealth, opponentStats, effectValue));
-    //            break;
-
-    //        default:
-    //            break;
-    //    }
-    //}
+    public bool isSingleplayer = true;
+    public TextMeshProUGUI cardText;
 
     public void ApplyEffect(GameObject player, GameObject opponent)
     {
-        if (player == null || opponent == null)
+        if (isSingleplayer)
         {
-            Debug.LogError("Player or opponent GameObject is null!");
-            return;
+            Health playerHealth = player.GetComponent<Health>();
+            PlayerStats playerStats = player.GetComponent<PlayerStats>();
+            Health opponentHealth = opponent.GetComponent<Health>();
+            PlayerStats opponentStats = opponent.GetComponent<PlayerStats>();
+
+            Debug.Log($"PlayerHealth: {playerHealth}, PlayerStats: {playerStats}");
+            Debug.Log($"OpponentHealth: {opponentHealth}, OpponentStats: {opponentStats}");
+
+            GameObject targetObject = target == TargetType.Player ? player : opponent;
+            Health targetHealth = targetObject.GetComponent<Health>();
+            PlayerStats targetStats = targetObject.GetComponent<PlayerStats>();
+
+            if (targetHealth == null || targetStats == null)
+            {
+                Debug.LogError("Target (player or opponent) is missing required components in singleplayer mode!");
+                return;
+            }
+
+            ApplyEffectLogic(targetHealth, targetStats);
         }
-
-        MultiplayerHealth playerHealth = player.GetComponent<MultiplayerHealth>();
-        PlayerStats playerStats = player.GetComponent<PlayerStats>();
-        MultiplayerHealth opponentHealth = opponent.GetComponent<MultiplayerHealth>();
-        PlayerStats opponentStats = opponent.GetComponent<PlayerStats>();
-
-        if (playerHealth == null || playerStats == null || opponentHealth == null || opponentStats == null)
+        else
         {
-            Debug.LogError("One or more required components are missing from player or opponent!");
-            return;
+            MultiplayerHealth playerHealth = player.GetComponent<MultiplayerHealth>();
+            PlayerStats playerStats = player.GetComponent<PlayerStats>();
+            MultiplayerHealth opponentHealth = opponent.GetComponent<MultiplayerHealth>();
+            PlayerStats opponentStats = opponent.GetComponent<PlayerStats>();
+
+            Debug.Log($"PlayerHealth: {playerHealth}, PlayerStats: {playerStats}");
+            Debug.Log($"OpponentHealth: {opponentHealth}, OpponentStats: {opponentStats}");
+
+            GameObject targetObject = target == TargetType.Player ? player : opponent;
+            MultiplayerHealth targetHealth = targetObject.GetComponent<MultiplayerHealth>();
+            PlayerStats targetStats = targetObject.GetComponent<PlayerStats>();
+
+            if (targetHealth == null || targetStats == null)
+            {
+                Debug.LogError("Target (player or opponent) is missing required components in multiplayer mode!");
+                return;
+            }
+
+            ApplyEffectLogic(targetHealth, targetStats);
         }
+    }
 
-        GameObject targetObject = target == TargetType.Player ? player : opponent;
-        MultiplayerHealth targetHealth = targetObject.GetComponent<MultiplayerHealth>();
-        PlayerStats targetStats = targetObject.GetComponent<PlayerStats>();
-
-        if (targetHealth == null || targetStats == null)
-        {
-            Debug.LogError("Target (player or opponent) is missing required components!");
-            return;
-        }
-
+    private void ApplyEffectLogic(dynamic targetHealth, PlayerStats targetStats)
+    {
         switch (effectType)
         {
             case EffectType.Attack:
                 targetHealth.TakeDamage(effectValue);
-                Debug.Log(targetObject.name + " took " + effectValue + " damage!");
+                Debug.Log(targetHealth.name + " took " + effectValue + " damage!");
                 break;
 
             case EffectType.Defense:
                 targetStats.IncreaseDefense(effectValue);
                 break;
 
-            case EffectType.DefenseAndDebuff:
-                targetStats.IncreaseDefenseAndDebuff(effectValue);
+            case EffectType.StrongPassword:
+                targetHealth.Buff();
+                ApplyStrongPassword(targetStats);
                 break;
 
             case EffectType.Heal:
@@ -128,7 +113,7 @@ public class Cards : ScriptableObject
                 TurnManager turnManager = TurnManager.Instance;
                 if (turnManager != null)
                 {
-                    turnManager.StartCoroutine(ApplyShieldAndRetaliate(playerHealth, opponentStats, effectValue));
+                    turnManager.StartCoroutine(ApplyShieldAndRetaliate(targetHealth, targetStats, effectValue));
                 }
                 else
                 {
@@ -136,13 +121,195 @@ public class Cards : ScriptableObject
                 }
                 break;
 
+            case EffectType.Burn:
+                StartBurnEffect(targetHealth, effectValue);
+                break;
+
+            case EffectType.DataLeak:
+                targetHealth.Debuff();
+                ApplyDataLeak(targetStats);
+                break;
+
+            case EffectType.ZeroDayExploit:
+                ApplyZeroDayExploit(targetHealth, targetStats, targetStats);
+                break;
+
+            case EffectType.ForgetPassword:
+                ApplyForgetPasswordFromGraveyard();
+                break;
+
+            case EffectType.RansomwareAttack:
+                targetHealth.Debuff();
+                ApplyRansomwareAttack();
+                break;
+
             default:
                 break;
         }
     }
 
+    private void ApplyForgetPasswordFromGraveyard()
+    {
+        CardManager cardManager = FindObjectOfType<CardManager>();
+        Discard discard = FindObjectOfType<Discard>();
+        if (cardManager == null || discard == null)
+        {
+            Debug.LogError("CardManager or Discard not found!");
+            return;
+        }
 
-    private IEnumerator ApplyShieldAndRetaliate(MultiplayerHealth playerHealth, PlayerStats opponentStats, int effectValue)
+        Transform graveyardTransform = discard.graveyard.transform;
+
+        int graveyardCount = graveyardTransform.childCount;
+        if (graveyardCount == 0)
+        {
+            Debug.LogWarning("No cards in the graveyard.");
+            return;
+        }
+
+        Health playerHealth = cardManager.player.GetComponent<Health>();
+        if (playerHealth != null)
+        {
+            playerHealth.TakeDamage(5);
+        }
+
+        int randomIndex = Random.Range(0, graveyardCount);
+        Transform cardTransform = graveyardTransform.GetChild(randomIndex);
+
+        cardTransform.SetParent(cardManager.hand.transform, false);
+        cardTransform.gameObject.SetActive(true);
+        cardTransform.localScale = Vector3.zero;
+        cardTransform.DOScale(Vector3.one, 0.3f);
+
+        cardManager.CardPosition();
+        discard.UpdateGraveyardCounter();
+
+        cardText = GameObject.Find("CardText").GetComponent<TextMeshProUGUI>();
+        cardText.text = "Forget Password retrieved: " + cardTransform.name;
+        cardText.color = new Color(cardText.color.r, cardText.color.g, cardText.color.b, 1);
+        cardText.gameObject.SetActive(true);
+        cardText.DOFade(1, 1f).OnComplete(() => cardText.DOFade(0, 1f));
+
+        Debug.Log("Forget Password retrieved: " + cardTransform.name);
+    }
+
+    private void ApplyRansomwareAttack()
+    {
+        CardManager cardManager = FindObjectOfType<CardManager>();
+
+        cardText = GameObject.Find("CardText").GetComponent<TextMeshProUGUI>();
+        cardText.text = "Opponent has discarded 2 cards";
+        cardText.color = new Color(cardText.color.r, cardText.color.g, cardText.color.b, 1);
+        cardText.gameObject.SetActive(true);
+        cardText.DOFade(1, 1f).OnComplete(() => cardText.DOFade(0, 1f));
+
+        cardManager.DiscardCardFromOpponentDeck();
+        cardManager.DiscardCardFromOpponentDeck();
+    }
+
+    private void ApplyStrongPassword(PlayerStats targetStats)
+    {
+        targetStats.isProtected = true;
+        targetStats.damageTakenMultiplier *= 0.5f;
+
+        PlayerHealth playerHealth = targetStats.GetComponent<PlayerHealth>();
+        Debug.Log("Strong Password applied! Target takes half damage and ignores debuffs for a turn.");
+
+        cardText = GameObject.Find("CardText").GetComponent<TextMeshProUGUI>();
+        cardText.text = "Strong Password applied! Target takes half damage and ignores debuffs for a turn.";
+        cardText.color = new Color(cardText.color.r, cardText.color.g, cardText.color.b, 1);
+        cardText.gameObject.SetActive(true);
+        cardText.DOFade(1, 1f).OnComplete(() => cardText.DOFade(0, 1f));
+
+        TurnManager.Instance.StartCoroutine(RemoveStrongPasswordAfterTurn(targetStats));
+    }
+
+    private IEnumerator RemoveStrongPasswordAfterTurn(PlayerStats targetStats)
+    {
+        yield return new WaitUntil(() => !TurnManager.Instance.isPlayerTurn);
+        yield return new WaitUntil(() => TurnManager.Instance.isPlayerTurn);
+
+        targetStats.isProtected = false;
+        targetStats.damageTakenMultiplier = 1f;
+        Debug.Log("Strong Password expired. Target is now vulnerable again.");
+    }
+
+    private void StartBurnEffect(dynamic targetHealth, int effectValue)
+    {
+        PlayerStats targetStats = targetHealth.GetComponent<PlayerStats>();
+        if (targetStats != null)
+        {
+            targetStats.StartBurnEffect(effectRounds, effectValue);
+        }
+        else
+        {
+            Debug.LogError("Target does not have PlayerStats to apply burn effect.");
+        }
+    }
+
+    private void ApplyDataLeak(PlayerStats targetStats)
+    {
+        targetStats.damageTakenMultiplier *= 1.2f;
+
+        cardText = GameObject.Find("CardText").GetComponent<TextMeshProUGUI>();
+        cardText.text = "Opponent is now vulnerable to 20% more damage!";
+        cardText.color = new Color(cardText.color.r, cardText.color.g, cardText.color.b, 1);
+        cardText.gameObject.SetActive(true);
+        cardText.DOFade(1, 1f).OnComplete(() => cardText.DOFade(0, 1f));
+
+        Debug.Log("Target is now vulnerable to 20% more damage.");
+    }
+
+    private void ApplyZeroDayExploit(Health targetHealth, PlayerStats targetStats, PlayerStats opponentStats)
+    {
+        int damage = effectValue;
+
+        if (!targetStats.isProtected)
+        {
+            damage *= 2;
+        }
+
+        targetHealth.TakeDamage(damage);
+        Debug.Log(targetHealth.name + " took " + damage + " damage due to Zero-Day Exploit!");
+
+        cardText = GameObject.Find("CardText").GetComponent<TextMeshProUGUI>();
+        cardText.text = "Opponent took " + damage + " damage!";
+        cardText.color = new Color(cardText.color.r, cardText.color.g, cardText.color.b, 1);
+        cardText.gameObject.SetActive(true);
+        cardText.DOFade(1, 1f).OnComplete(() => cardText.DOFade(0, 1f));
+
+        if (targetStats.isProtected)
+        {
+            Debug.Log(targetHealth.name + " was protected from the exploit.");
+        }
+    }
+
+    private IEnumerator ApplyShieldAndRetaliate(Health playerHealth, PlayerStats opponentStats, int effectValue)
+    {
+        TurnManager turnManager = TurnManager.Instance;
+
+        playerHealth.TakeDamage(effectValue);
+        Debug.Log(playerHealth.name + " took " + effectValue + " immediate damage!");
+
+        yield return new WaitUntil(() => !turnManager.isPlayerTurn);
+
+        opponentStats.isInvulnerable = true;
+
+        cardText = GameObject.Find("CardText").GetComponent<TextMeshProUGUI>();
+        cardText.text = "You are now invulnerable!";
+        cardText.color = new Color(cardText.color.r, cardText.color.g, cardText.color.b, 1);
+        cardText.gameObject.SetActive(true);
+        cardText.DOFade(1, 1f).OnComplete(() => cardText.DOFade(0, 1f));
+
+        Debug.Log(opponentStats.name + " is now invulnerable!");
+
+        yield return new WaitUntil(() => turnManager.isPlayerTurn);
+
+        opponentStats.isInvulnerable = false;
+        Debug.Log(opponentStats.name + " is no longer invulnerable.");
+    }
+
+    private IEnumerator ApplyShieldAndRetaliateMultiplayer(MultiplayerHealth playerHealth, PlayerStats opponentStats, int effectValue)
     {
         TurnManager turnManager = TurnManager.Instance;
 
@@ -166,10 +333,15 @@ public enum EffectType
     None,
     Attack,
     Defense,
-    DefenseAndDebuff,
     Heal,
     Draw,
-    ShieldAndRetaliate
+    ShieldAndRetaliate,
+    Burn,
+    DataLeak,
+    ZeroDayExploit,
+    StrongPassword,
+    ForgetPassword,
+    RansomwareAttack
 }
 
 public enum ClassType

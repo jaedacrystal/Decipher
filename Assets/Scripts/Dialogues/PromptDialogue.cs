@@ -19,6 +19,7 @@ public class PromptDialogue : MonoBehaviour
 
     public Class classSelect;
     public ClassSelectMultiplayer classSelectMultiplayer;
+    public LeanTweenUIManager tween;
 
     [Serializable]
     public class Dialogue
@@ -54,6 +55,11 @@ public class PromptDialogue : MonoBehaviour
                 classSelect = FindObjectOfType<Class>();
             }
         }
+
+        if (tween == null)
+        {
+            return;
+        }
     }
 
     public void ShowDialogue()
@@ -67,6 +73,22 @@ public class PromptDialogue : MonoBehaviour
         textReveal.StartReveal(dialogues[counter].dialogue);
     }
 
+    public void NormalDialogue()
+    {
+        dialogueBG.SetActive(true);
+        dialogue.gameObject.SetActive(true);
+        counter = 0;
+
+        string soundToPlay = GetTypingSound();
+        textReveal.SetTypingSound(soundToPlay);
+        textReveal.StartReveal(dialogues[counter].dialogue);
+    }
+
+    public void HideDialogue()
+    {
+        dialogue.text = "";
+        tween.PlayEndAnimation();
+    }
 
     public void SecondDialogue()
     {

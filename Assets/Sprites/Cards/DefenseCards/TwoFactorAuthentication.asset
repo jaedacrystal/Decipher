@@ -18,6 +18,9 @@ MonoBehaviour:
   flavorTxt: Adds an extra layer of security by requiring extra verification on sign-in.
   bandwidth: 3
   effectValue: 5
+  effectRounds: 0
   classType: 1
-  effectType: 6
+  effectType: 5
   target: 0
+  isSingleplayer: 1
+  cardText: {fileID: 0}

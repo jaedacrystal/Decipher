@@ -6,6 +6,7 @@ public class LoadPlayerScenes : MonoBehaviour
     public void PlaySingleplayer()
     {
         Animation();
+        GameManager.Instance.IsSingleplayer = true;
         Invoke("SingleplayerLoadNext", 1f);
     }
 

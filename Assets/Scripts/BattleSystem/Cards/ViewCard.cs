@@ -1,6 +1,7 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ViewCard : MonoBehaviour
 {
@@ -28,14 +29,32 @@ public class ViewCard : MonoBehaviour
     {
         transformObject = GetComponent<RectTransform>();
         originalSiblingIndex = transform.GetSiblingIndex();
-        cardDisplay = FindObjectOfType<CardDisplay>();
-        cardData = GetComponent<CardDisplay>();
 
+        cardDisplay = GetComponent<CardDisplay>();
+        if (cardDisplay == null)
+        {
+            Debug.LogError("CardDisplay component is missing on the same GameObject as ViewCard.");
+            return;
+        }
+
+        cardData = cardDisplay;
         cardDesc = GameObject.Find("DescriptionPrompt");
+        if (cardDesc == null)
+        {
+            Debug.LogError("DescriptionPrompt GameObject not found in the scene.");
+            return;
+        }
+
         desc = cardDesc.GetComponentInChildren<TextMeshProUGUI>();
+        if (desc == null)
+        {
+            Debug.LogError("TextMeshProUGUI component not found in DescriptionPrompt.");
+            return;
+        }
 
         cardDisplay.descPrompt.gameObject.SetActive(false);
     }
+
 
     public void cardClicked()
     {
@@ -67,10 +86,10 @@ public class ViewCard : MonoBehaviour
 
     private void ResetCard()
     {
-        transform.DOLocalMove(originalLocalPosition, transitionSpeed);
         transform.DOScale(initialScale, transitionSpeed);
-
         transform.SetSiblingIndex(originalSiblingIndex);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(transformObject.parent as RectTransform);
+
         isClicked = false;
 
         cardDisplay.tween.PlayEndAnimation();
@@ -80,4 +99,5 @@ public class ViewCard : MonoBehaviour
             currentlyViewedCard = null;
         }
     }
+
 }

@@ -9,7 +9,7 @@ public class CardManager : MonoBehaviour
 {
     [Header("Card Settings")]
     [SerializeField] private GameObject cardPrefab;
-    [SerializeField] private GameObject hand;
+    [SerializeField] public GameObject hand;
     [SerializeField] private GameObject deck;
     [SerializeField] private List<Cards> listOfCards;
     [SerializeField] private int maxHandSize;
@@ -24,6 +24,7 @@ public class CardManager : MonoBehaviour
     private List<Cards> mergedDeck = new();
     private List<Cards> selectedClassCards = new();
     public List<Cards> opponentDeck;
+    private Cards reusableCard;
 
     private void Start()
     {
@@ -95,6 +96,13 @@ public class CardManager : MonoBehaviour
             cardDisplay.SetCard(cardData);
 
             cardInstances.Add(g);
+        }
+
+        foreach (Cards card in listOfCards)
+        {
+            Cards instantiatedCard = Instantiate(card);
+            instantiatedCard.isSingleplayer = GameManager.Instance.IsSingleplayer;
+            selectedClassCards.Add(instantiatedCard);
         }
     }
 
@@ -179,5 +187,16 @@ public class CardManager : MonoBehaviour
         }
     }
 
+    public void DiscardCardFromOpponentDeck()
+    {
+        if (opponentDeck.Count == 0) return;
+
+        int randomIndex = UnityEngine.Random.Range(0, opponentDeck.Count);
+        Cards cardToDiscard = opponentDeck[randomIndex];
+
+        opponentDeck.RemoveAt(randomIndex);
+
+        Debug.Log("Opponent discarded a card: " + cardToDiscard.cardName);
+    }
 }
 
