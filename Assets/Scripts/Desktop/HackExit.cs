@@ -69,7 +69,7 @@ public class HackExit : MonoBehaviour
 
         if (AllSiblingsHidden())
         {
-            text.text = "Something's wrong...";
+            text.text = "Your data has been leaked.";
             btn.SetActive(true);
         }
     }

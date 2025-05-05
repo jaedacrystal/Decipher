@@ -30,29 +30,12 @@ public class ViewCard : MonoBehaviour
         transformObject = GetComponent<RectTransform>();
         originalSiblingIndex = transform.GetSiblingIndex();
 
-        cardDisplay = GetComponent<CardDisplay>();
-        if (cardDisplay == null)
-        {
-            Debug.LogError("CardDisplay component is missing on the same GameObject as ViewCard.");
-            return;
-        }
+        //cardDisplay = GetComponent<CardDisplay>();
+        //cardData = cardDisplay;
+        //cardDesc = GameObject.Find("DescriptionPrompt");
+        //desc = cardDesc.GetComponentInChildren<TextMeshProUGUI>();
 
-        cardData = cardDisplay;
-        cardDesc = GameObject.Find("DescriptionPrompt");
-        if (cardDesc == null)
-        {
-            Debug.LogError("DescriptionPrompt GameObject not found in the scene.");
-            return;
-        }
-
-        desc = cardDesc.GetComponentInChildren<TextMeshProUGUI>();
-        if (desc == null)
-        {
-            Debug.LogError("TextMeshProUGUI component not found in DescriptionPrompt.");
-            return;
-        }
-
-        cardDisplay.descPrompt.gameObject.SetActive(false);
+        //cardDisplay.descPrompt.gameObject.SetActive(false);
     }
 
 
@@ -79,8 +62,8 @@ public class ViewCard : MonoBehaviour
             transform.SetAsLastSibling();
             isClicked = true;
 
-            cardDisplay.descPrompt.gameObject.SetActive(true);
-            desc.text = cardData.flavorText.text;
+            // cardDisplay.descPrompt.gameObject.SetActive(true);
+            // desc.text = cardData.flavorText.text;
         }
     }
 
@@ -92,7 +75,7 @@ public class ViewCard : MonoBehaviour
 
         isClicked = false;
 
-        cardDisplay.tween.PlayEndAnimation();
+        // cardDisplay.tween.PlayEndAnimation();
 
         if (currentlyViewedCard == this)
         {

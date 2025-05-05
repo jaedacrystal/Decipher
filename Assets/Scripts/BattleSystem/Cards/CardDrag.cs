@@ -7,7 +7,7 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 {
     public bool isDragging;
 
-    private GameObject graveyard;
+    [SerializeField] private GameObject graveyard;
     private TextMeshProUGUI errorText;
 
     private CanvasGroup canvasGroup;
@@ -16,7 +16,6 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     private CardDisplay cardDisplay;
     private CardManager cardManager;
-    private MultiCardManager multiCardManager;
     private RectTransform playArea;
     private Discard discard;
 
@@ -26,8 +25,7 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     {
         canvasGroup = GetComponent<CanvasGroup>();
         cardDisplay = GetComponent<CardDisplay>();
-        cardManager = FindObjectOfType<CardManager>();
-        multiCardManager = FindObjectOfType<MultiCardManager>();
+        cardManager = FindObjectOfType<CardManager>();  
         playArea = GameObject.Find("PlayArea").GetComponent<RectTransform>();
         graveyard = GameObject.Find("Graveyard");
         discard = graveyard.GetComponent<Discard>();
@@ -58,7 +56,6 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         Vector3 worldPoint;
         RectTransform rectTransform = GetComponent<RectTransform>();
         Canvas canvas = GetComponentInParent<Canvas>();
-        Camera cam = canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera;
 
         if (RectTransformUtility.ScreenPointToWorldPointInRectangle(rectTransform, eventData.position, canvas.worldCamera, out worldPoint))
         {
@@ -94,12 +91,10 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     private bool IsOverPlayArea(PointerEventData eventData)
     {
-        if (playArea == null) return false;
-
         Canvas canvas = GetComponentInParent<Canvas>();
         Camera cam = canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera;
 
-        return RectTransformUtility.RectangleContainsScreenPoint(playArea, eventData.position, cam);
+        return playArea != null && RectTransformUtility.RectangleContainsScreenPoint(playArea, eventData.position, cam);
     }
 
 

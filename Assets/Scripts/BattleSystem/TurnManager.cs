@@ -18,9 +18,6 @@ public class TurnManager : MonoBehaviour
     [HideInInspector] public CardManager cardManager;
     public GameObject turnButton;
 
-    public GameObject opponentPrefab;
-    public GameObject playerPrefab;
-
     private void Awake()
     {
         if (Instance == null)
