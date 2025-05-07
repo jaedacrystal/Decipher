@@ -6292,8 +6292,6 @@ MonoBehaviour:
   opponentCardText: {fileID: 838308141}
   cardManager: {fileID: 0}
   turnButton: {fileID: 764982659}
-  opponentPrefab: {fileID: 0}
-  playerPrefab: {fileID: 0}
 --- !u!1 &2116246075
 GameObject:
   m_ObjectHideFlags: 0

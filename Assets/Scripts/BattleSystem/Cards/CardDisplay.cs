@@ -17,13 +17,13 @@ public class CardDisplay : MonoBehaviour
     public TextMeshProUGUI flavorText;
     public TextMeshProUGUI bandwidth;
 
-    public LeanTweenUIManager tween;
-    public GameObject descPrompt;
+    //public LeanTweenUIManager tween;
+    //public GameObject descPrompt;
 
     private void Start()
     {
-        descPrompt = GameObject.Find("DescriptionPrompt");
-        tween = descPrompt.GetComponent<LeanTweenUIManager>();
+        //descPrompt = GameObject.Find("DescriptionPrompt");
+        //tween = descPrompt.GetComponent<LeanTweenUIManager>();
     }
 
     public void SetCard(Cards cardData)

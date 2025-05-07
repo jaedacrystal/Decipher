@@ -97,6 +97,11 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         return playArea != null && RectTransformUtility.RectangleContainsScreenPoint(playArea, eventData.position, cam);
     }
 
+    //private bool IsOverPlayArea()
+    //{
+    //    return playArea != null && RectTransformUtility.RectangleContainsScreenPoint(playArea, Input.mousePosition);
+    //}
+
 
     private void PlayCard()
     {
