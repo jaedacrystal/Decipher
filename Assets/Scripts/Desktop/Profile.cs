@@ -27,6 +27,12 @@ public class Profile : MonoBehaviour
         player.text = playerName;
     }
 
+    public void HideDialogue()
+    {
+        tween.dialogue.dialogue.text = "";
+        tween.PlayEndAnimation();
+    }
+
     public void ShowClassSelect()
     {
         initialClassIcon.gameObject.SetActive(false);
@@ -36,6 +42,8 @@ public class Profile : MonoBehaviour
         Invoke("Next", 0.3f);
         classBtn.enabled = false;
         btHover.buttonHover = false;
+
+        classBtn.onClick = new Button.ButtonClickedEvent();
     }
 
     void Next()

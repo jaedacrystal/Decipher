@@ -35,10 +35,13 @@ public class ClassSelectMultiplayer : MonoBehaviour
 
     public void Offense()
     {
-        dialogueCounter = 3;
-        dialogue.SelectDialogueMultiplayer();
-        classBtnText.text = "Confirm";
+        if (classSelection.activeSelf)
+        {
+            dialogueCounter = 3;
+            dialogue.SelectDialogueMultiplayer();
+        }
 
+        classBtnText.text = "Confirm";
         profile.btHover.buttonHover = true;
         confirm.enabled = true;
         confirm.onClick.AddListener(SaveOffense);
@@ -46,10 +49,13 @@ public class ClassSelectMultiplayer : MonoBehaviour
 
     public void Balanced()
     {
-        dialogueCounter = 4;
-        dialogue.SelectDialogueMultiplayer();
-        classBtnText.text = "Confirm";
+        if (classSelection.activeSelf)
+        {
+            dialogueCounter = 4;
+            dialogue.SelectDialogueMultiplayer();
+        }
 
+        classBtnText.text = "Confirm";
         profile.btHover.buttonHover = true;
         confirm.enabled = true;
         confirm.onClick.AddListener(SaveBalanced);
@@ -57,10 +63,13 @@ public class ClassSelectMultiplayer : MonoBehaviour
 
     public void Defense()
     {
-        dialogueCounter = 5;
-        dialogue.SelectDialogueMultiplayer();
-        classBtnText.text = "Confirm";
+        if (classSelection.activeSelf)
+        {
+            dialogueCounter = 5;
+            dialogue.SelectDialogueMultiplayer();
+        }
 
+        classBtnText.text = "Confirm";
         profile.btHover.buttonHover = true;
         confirm.enabled = true;
         confirm.onClick.AddListener(SaveDefense);
@@ -72,12 +81,13 @@ public class ClassSelectMultiplayer : MonoBehaviour
 
         classIcon.SetActive(true);
         classIcon.GetComponent<Image>().sprite = classIconArray[0];
+        confirm.onClick.RemoveAllListeners();
 
         Invoke("MoveProfile", 0.5f);
-        profile.dialogue.dialogue.text = "";
+
+        dialogue.HideDialogue();
 
         classSelection.SetActive(false);
-        tween.PlayEndAnimation();
     }
 
     public void SaveBalanced()
@@ -86,12 +96,12 @@ public class ClassSelectMultiplayer : MonoBehaviour
 
         classIcon.SetActive(true);
         classIcon.GetComponent<Image>().sprite = classIconArray[1];
+        confirm.onClick.RemoveAllListeners();
 
         Invoke("MoveProfile", 0.5f);
-        profile.dialogue.dialogue.text = "";
+        dialogue.HideDialogue();
 
         classSelection.SetActive(false);
-        tween.PlayEndAnimation();
     }
 
     public void SaveDefense()
@@ -100,23 +110,23 @@ public class ClassSelectMultiplayer : MonoBehaviour
 
         classIcon.SetActive(true);
         classIcon.GetComponent<Image>().sprite = classIconArray[2];
+        confirm.onClick.RemoveAllListeners();
 
         Invoke("MoveProfile", 0.5f);
-        profile.dialogue.dialogue.text = "";
+
+        dialogue.HideDialogue();
 
         classSelection.SetActive(false);
-        tween.PlayEndAnimation();
     }
 
     public void MoveProfile()
     {
         profile.profile.LeanMoveLocalY(0, 0.3f).setEaseOutCirc();
         classBtnText.text = "Change Class";
+        profile.classBtn.onClick.AddListener(ChangeClass);
 
         profile.btHover.buttonHover = true;
         confirm.enabled = true;
-
-        profile.classBtn.onClick.AddListener(ChangeClass);
     }
 
     public void ChangeClass()
