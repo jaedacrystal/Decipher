@@ -51,28 +51,6 @@ public class Cards : ScriptableObject
 
             ApplyEffectLogic(targetHealth, targetStats);
         }
-        else
-        {
-            MultiplayerHealth playerHealth = player.GetComponent<MultiplayerHealth>();
-            PlayerStats playerStats = player.GetComponent<PlayerStats>();
-            MultiplayerHealth opponentHealth = opponent.GetComponent<MultiplayerHealth>();
-            PlayerStats opponentStats = opponent.GetComponent<PlayerStats>();
-
-            Debug.Log($"PlayerHealth: {playerHealth}, PlayerStats: {playerStats}");
-            Debug.Log($"OpponentHealth: {opponentHealth}, OpponentStats: {opponentStats}");
-
-            GameObject targetObject = target == TargetType.Player ? player : opponent;
-            MultiplayerHealth targetHealth = targetObject.GetComponent<MultiplayerHealth>();
-            PlayerStats targetStats = targetObject.GetComponent<PlayerStats>();
-
-            if (targetHealth == null || targetStats == null)
-            {
-                Debug.LogError("Target (player or opponent) is missing required components in multiplayer mode!");
-                return;
-            }
-
-            ApplyEffectLogic(targetHealth, targetStats);
-        }
     }
 
     private void ApplyEffectLogic(dynamic targetHealth, PlayerStats targetStats)
@@ -212,7 +190,7 @@ public class Cards : ScriptableObject
         targetStats.isProtected = true;
         targetStats.damageTakenMultiplier *= 0.5f;
 
-        PlayerHealth playerHealth = targetStats.GetComponent<PlayerHealth>();
+        Health playerHealth = targetStats.GetComponent<Health>();
         Debug.Log("Strong Password applied! Target takes half damage and ignores debuffs for a turn.");
 
         cardText = GameObject.Find("CardText").GetComponent<TextMeshProUGUI>();
@@ -301,24 +279,6 @@ public class Cards : ScriptableObject
         cardText.gameObject.SetActive(true);
         cardText.DOFade(1, 1f).OnComplete(() => cardText.DOFade(0, 1f));
 
-        Debug.Log(opponentStats.name + " is now invulnerable!");
-
-        yield return new WaitUntil(() => turnManager.isPlayerTurn);
-
-        opponentStats.isInvulnerable = false;
-        Debug.Log(opponentStats.name + " is no longer invulnerable.");
-    }
-
-    private IEnumerator ApplyShieldAndRetaliateMultiplayer(MultiplayerHealth playerHealth, PlayerStats opponentStats, int effectValue)
-    {
-        TurnManager turnManager = TurnManager.Instance;
-
-        playerHealth.TakeDamage(effectValue);
-        Debug.Log(playerHealth.name + " took " + effectValue + " immediate damage!");
-
-        yield return new WaitUntil(() => !turnManager.isPlayerTurn);
-
-        opponentStats.isInvulnerable = true;
         Debug.Log(opponentStats.name + " is now invulnerable!");
 
         yield return new WaitUntil(() => turnManager.isPlayerTurn);

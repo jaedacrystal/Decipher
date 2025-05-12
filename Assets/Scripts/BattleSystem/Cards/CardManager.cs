@@ -11,7 +11,7 @@ public class CardManager : MonoBehaviour
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] public GameObject hand;
     [SerializeField] private GameObject deck;
-    [SerializeField] private List<Cards> listOfCards;
+    [SerializeField] public List<Cards> listOfCards;
     [SerializeField] private int maxHandSize;
     public GameObject player;
     public GameObject opponent;

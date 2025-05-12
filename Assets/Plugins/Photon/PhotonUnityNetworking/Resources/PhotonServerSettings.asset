@@ -56,6 +56,15 @@ MonoBehaviour:
   - RPC_RestoreBandwidth
   - SyncBandwidth
   - RestoreBandwidth
+  - PlayCard
+  - SyncDrawCard
+  - SyncRemoveCard
+  - RPC_Die
+  - RPC_EndPlayerTurn
+  - RPC_Heal
+  - RPC_StartPlayerTurn
+  - RPC_TakeDamage
+  - RestoreOpponentBandwidth
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

@@ -13,11 +13,14 @@ MonoBehaviour:
   m_Name: CodeInjection
   m_EditorClassIdentifier: 
   artwork: {fileID: 1461408084, guid: 81214937aebf75f42a06bcd4e8ad71fc, type: 3}
-  cardName: Code Injection
+  cardName: SQL Injection
   desc: Injects malicious code to the target's system dealing 4 damage
   flavorTxt: Exposes a user's sensitive information.
   bandwidth: 2
   effectValue: 4
+  effectRounds: 0
   classType: 1
   effectType: 1
   target: 0
+  isSingleplayer: 1
+  cardText: {fileID: 0}

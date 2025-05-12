@@ -19,7 +19,7 @@ public class PlayerStats : MonoBehaviour
     public Sprite[] bandwidthIconArray;
     public GameObject bandwidthIcon;
 
-    public CardManager cardManager;
+    public PhotonCardManager cardManager;
 
     public bool isBurning = false;
     public int burnEffectRounds = 0;
@@ -56,7 +56,6 @@ public class PlayerStats : MonoBehaviour
 
     public bool CanPlayCard(int cardBandwidth)
     {
-        Debug.Log($"Checking bandwidth: Current: {currentBandwidth}, Required: {cardBandwidth}");
         return currentBandwidth >= cardBandwidth;
     }
 
