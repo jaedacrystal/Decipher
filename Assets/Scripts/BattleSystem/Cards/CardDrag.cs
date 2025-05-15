@@ -18,6 +18,7 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     private CardManager cardManager;
     private RectTransform playArea;
     private Discard discard;
+    // private PhotonTurnManager turn;
 
     private void Start()
     {
@@ -28,6 +29,7 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         discard = GetComponent<Discard>();
         graveyard = GameObject.Find("Graveyard");
         errorText = GameObject.Find("BandwidthErrorText").GetComponent<TextMeshProUGUI>();
+        //turn = GetComponent<PhotonTurnManager>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -61,7 +63,15 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
         if (IsOverPlayArea(eventData))
         {
-            PlayCard();
+            //if (turn.isPlayerTurn == true)
+            //{
+            //    PlayCard();
+            //} else
+            //{
+            //    return;
+            //}
+
+                PlayCard();
         }
         else
         {

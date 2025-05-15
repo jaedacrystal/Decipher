@@ -22,6 +22,8 @@ public class PhotonTurnManager : MonoBehaviourPun
     public TextMeshProUGUI playerNameText;
     public TextMeshProUGUI opponentNameText;
 
+    public Cards cards;
+
     private void Awake()
     {
         if (Instance == null)
@@ -35,6 +37,9 @@ public class PhotonTurnManager : MonoBehaviourPun
         health = FindObjectOfType<Health>();
         UpdateTurnText();
         DisplayPlayerInfo();
+
+        cards = GetComponent<Cards>();
+        cards.isSingleplayer = false;
     }
 
     private void DisplayPlayerInfo()
@@ -43,9 +48,9 @@ public class PhotonTurnManager : MonoBehaviourPun
 
         if (playerNameText != null)
         {
-            string playerClass = localPlayer.CustomProperties.ContainsKey("playerClass")
-                ? localPlayer.CustomProperties["playerClass"].ToString()
-                : "None";
+            //string playerClass = localPlayer.CustomProperties.ContainsKey("playerClass")
+            //    ? localPlayer.CustomProperties["playerClass"].ToString()
+            //    : "None";
 
             playerNameText.text = $"{localPlayer.NickName}";
         }
@@ -56,9 +61,9 @@ public class PhotonTurnManager : MonoBehaviourPun
             {
                 if (!p.IsLocal)
                 {
-                    string oppClass = p.CustomProperties.ContainsKey("playerClass")
-                        ? p.CustomProperties["playerClass"].ToString()
-                        : "None";
+                    //string oppClass = p.CustomProperties.ContainsKey("playerClass")
+                    //    ? p.CustomProperties["playerClass"].ToString()
+                    //    : "None";
 
                     opponentNameText.text = $"{p.NickName}";
                     break;
@@ -71,22 +76,28 @@ public class PhotonTurnManager : MonoBehaviourPun
     {
         if (!isPlayerTurn) return;
 
-        isPlayerTurn = false;
-        photonView.RPC("RPC_EndPlayerTurn", RpcTarget.Others);
-        UpdateTurnText();
-        Invoke(nameof(OpponentTurn), 1);
+        if (photonView.IsMine)
+        {
+            isPlayerTurn = false;
+            photonView.RPC("RPC_EndPlayerTurn", RpcTarget.Others);
+            UpdateTurnText();
+            Invoke("OpponentTurn", 1);
+        }
     }
 
     private void OpponentTurn()
     {
-        if (health.currentHealth > 0)
+        if (!photonView.IsMine)
         {
-            UpdateTurnText();
-            turnButton.SetActive(false);
-            BurnEffectTrigger();
-        }
+            if (health.currentHealth > 0)
+            {
+                UpdateTurnText();
+                turnButton.SetActive(false);
+                BurnEffectTrigger();
+            }
 
-        photonView.RPC("RPC_StartPlayerTurn", RpcTarget.Others);
+            photonView.RPC("RPC_StartPlayerTurn", RpcTarget.Others);
+        }
     }
 
     public void StartPlayerTurn()
@@ -119,12 +130,12 @@ public class PhotonTurnManager : MonoBehaviourPun
     {
         if (health.currentHealth > 0)
         {
-            turnText.text = isPlayerTurn ? "Your Turn" : "Opponent's Turn";
+            turnText.text = isPlayerTurn ? "Player's Turn" : "Opponent's Turn";
             turnText.color = new Color(turnText.color.r, turnText.color.g, turnText.color.b, 1);
             turnText.gameObject.SetActive(true);
-
             turnText.DOFade(1, 1f);
-            Invoke(nameof(HideTurnText), 1);
+
+            Invoke("HideTurnText", 1);
         }
     }
 
@@ -135,11 +146,14 @@ public class PhotonTurnManager : MonoBehaviourPun
 
     public void DisplayPlayedCard(string playerName, string cardName)
     {
-        if (health.currentHealth > 0 && playerName == "Opponent" && opponentCardText != null)
+        if (health.currentHealth > 0)
         {
-            opponentCardText.text = $"Opponent played: {cardName}";
-            AnimateText(opponentCardText);
-            Invoke(nameof(HideOpponentCardText), 1.2f);
+            if (playerName == "Opponent" && opponentCardText != null)
+            {
+                opponentCardText.text = "Opponent played: " + cardName;
+                AnimateText(opponentCardText);
+                Invoke("HideOpponentCardText", 1.2f);
+            }
         }
     }
 

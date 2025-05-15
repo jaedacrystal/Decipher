@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
+using Unity.Collections.LowLevel.Unsafe;
 
 public class TurnManager : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class TurnManager : MonoBehaviour
     public TextMeshProUGUI opponentCardText;
     [HideInInspector] public CardManager cardManager;
     public GameObject turnButton;
+
+    public Cards cards;
 
     private void Awake()
     {
@@ -35,6 +38,9 @@ public class TurnManager : MonoBehaviour
         health = FindObjectOfType<Health>();
         turnText.color = new Color(turnText.color.r, turnText.color.g, turnText.color.b, 1);
         UpdateTurnText();
+
+        cards = GetComponent<Cards>();
+        cards.isSingleplayer = true;
     }
 
     public void EndPlayerTurn()

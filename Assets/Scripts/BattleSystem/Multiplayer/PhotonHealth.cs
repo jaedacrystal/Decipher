@@ -3,6 +3,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using Photon.Pun;
+using Cinemachine;
 
 public class PhotonHealth : MonoBehaviourPun
 {
@@ -29,7 +30,10 @@ public class PhotonHealth : MonoBehaviourPun
     [HideInInspector] public Color flashColor;
     public float flashDuration;
 
+    private CinemachineImpulseSource impulseSource;
+
     public GameObject retry;
+    public Cards cards;
 
     private void Start()
     {
@@ -38,6 +42,11 @@ public class PhotonHealth : MonoBehaviourPun
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
         healthBar.gameObject.SetActive(true);
+
+        impulseSource = GetComponent<CinemachineImpulseSource>();
+
+        cards = GetComponent<Cards>();
+        cards.isSingleplayer = false;
     }
 
     public void TakeDamage(int damage)
@@ -89,12 +98,9 @@ public class PhotonHealth : MonoBehaviourPun
         }
     }
 
-    /// <summary>
-    /// Heals the player and synchronizes it across all players.
-    /// </summary>
     public void Heal(int healAmount)
     {
-        if (!photonView.IsMine) return; // Only the owner of this object can apply healing
+        if (!photonView.IsMine) return;
 
         photonView.RPC("RPC_Heal", RpcTarget.All, healAmount);
     }
@@ -116,9 +122,6 @@ public class PhotonHealth : MonoBehaviourPun
         }, currentHealth, 0.5f).SetEase(Ease.OutQuad);
     }
 
-    /// <summary>
-    /// Handles the death of the player and synchronizes it across all players.
-    /// </summary>
     private void Die()
     {
         photonView.RPC("RPC_Die", RpcTarget.All);
@@ -148,9 +151,6 @@ public class PhotonHealth : MonoBehaviourPun
         }
     }
 
-    /// <summary>
-    /// Retries the game by reloading the scene.
-    /// </summary>
     public void Retry()
     {
         if (photonView.IsMine)

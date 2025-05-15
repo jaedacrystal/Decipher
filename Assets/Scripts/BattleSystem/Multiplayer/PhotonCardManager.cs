@@ -42,12 +42,11 @@ public class PhotonCardManager : MonoBehaviour
             DrawMultipleCards(playerDeckObj, playerHand, playerCardInstances, maxHandSize);
         }
 
-        // Opponent's class (from Photon custom properties)
         if (opponentPlayer != null && opponentPlayer.CustomProperties.TryGetValue("playerClass", out object opponentClassObj))
         {
             if (Enum.TryParse(opponentClassObj.ToString(), out ClassType opponentClassType))
             {
-                opponentDeckCards = BuildDeckForClass(opponentClassType, null); // No PlayerPrefs fallback
+                opponentDeckCards = BuildDeckForClass(opponentClassType, null);
                 InstantiateDeck(opponentDeckCards, opponentDeckObj, opponentCardInstances);
                 DrawMultipleCards(opponentDeckObj, opponentHand, opponentCardInstances, maxHandSize);
             }
@@ -68,12 +67,10 @@ public class PhotonCardManager : MonoBehaviour
         }
         else
         {
-            // You can create a fallback here or load from Resources by classType
             Debug.LogWarning($"No PlayerPrefsKey provided for {classType}. Using fallback.");
-            return new List<Cards>(baseDeck); // Or some other default
+            return new List<Cards>(baseDeck);
         }
 
-        // Pick 3 random class cards
         HashSet<int> selectedIndexes = new();
         List<Cards> classCardsSubset = new();
         while (classCardsSubset.Count < 3 && selectedIndexes.Count < selectedClassCards.Count)

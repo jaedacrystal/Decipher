@@ -38,8 +38,6 @@ public class Health : MonoBehaviour
 
     public GameObject retry;
 
-    public Cards cards;
-
     private void Start()
     {
         retry.SetActive(false);
@@ -50,9 +48,6 @@ public class Health : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag("Player");
         impulseSource = GetComponent<CinemachineImpulseSource>();
-
-        cards = GetComponent<Cards>();
-        cards.isSingleplayer = true;
     }
 
 

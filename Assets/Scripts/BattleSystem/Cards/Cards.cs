@@ -29,8 +29,8 @@ public class Cards : ScriptableObject
 
     public void ApplyEffect(GameObject player, GameObject opponent)
     {
-        if (isSingleplayer)
-        {
+        //if (isSingleplayer)
+        //{
             Health playerHealth = player.GetComponent<Health>();
             PlayerStats playerStats = player.GetComponent<PlayerStats>();
             Health opponentHealth = opponent.GetComponent<Health>();
@@ -50,7 +50,7 @@ public class Cards : ScriptableObject
             }
 
             ApplyEffectLogic(targetHealth, targetStats);
-        }
+        //}
     }
 
     private void ApplyEffectLogic(dynamic targetHealth, PlayerStats targetStats)

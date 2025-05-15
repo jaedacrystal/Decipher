@@ -2369,6 +2369,7 @@ MonoBehaviour:
   turnButton: {fileID: 421381042}
   playerNameText: {fileID: 1405841033}
   opponentNameText: {fileID: 1206359554}
+  cards: {fileID: 0}
 --- !u!1 &955734496
 GameObject:
   m_ObjectHideFlags: 0
@@ -3977,9 +3978,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1763882596}
-    - targetCorrespondingSourceObject: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1763882595}
     - targetCorrespondingSourceObject: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
       insertIndex: -1
@@ -3990,6 +3988,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1763882597}
+    - targetCorrespondingSourceObject: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1763882596}
   m_SourcePrefab: {fileID: 100100000, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
 --- !u!1 &1763882590 stripped
 GameObject:
@@ -4134,7 +4135,6 @@ MonoBehaviour:
   flashColor: {r: 1, g: 0, b: 0, a: 0}
   flashDuration: 0.3
   retry: {fileID: 1414238843}
-  cards: {fileID: 0}
 --- !u!114 &1763882597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5928,9 +5928,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2012004970}
-    - targetCorrespondingSourceObject: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 2012004969}
     - targetCorrespondingSourceObject: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
       insertIndex: -1
@@ -5941,6 +5938,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2012004971}
+    - targetCorrespondingSourceObject: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2012004970}
     - targetCorrespondingSourceObject: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2012004972}
@@ -6081,14 +6081,13 @@ MonoBehaviour:
   turnText: {fileID: 112483750}
   healthBar: {fileID: 1989595750}
   healthBarText: {fileID: 393462280}
-  isPlayer: 0
+  isPlayer: 1
   start: {fileID: 875278706}
   impactFlash: {fileID: 2012004968}
   spriteRenderer: {fileID: 2012004965}
   flashColor: {r: 1, g: 1, b: 1, a: 0}
   flashDuration: 0.3
   retry: {fileID: 1414238843}
-  cards: {fileID: 0}
 --- !u!114 &2012004971
 MonoBehaviour:
   m_ObjectHideFlags: 0
