@@ -1,14 +1,13 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ViewCard : MonoBehaviour
 {
-    [Header("Scale Settings")]
-    public float initialScale = 1f;
-    public float scale = 1.5f;
-    public float transitionSpeed = 0.25f;
+    [Header("Scale")]
+    public float initialScale;
+    public float scale;
+    public float transitionSpeed;
 
     [Header("Position")]
     private int originalSiblingIndex;
@@ -16,14 +15,17 @@ public class ViewCard : MonoBehaviour
     [HideInInspector] public Vector3 originalLocalPosition;
 
     [Header("Description Prompt")]
-    private CardDisplay cardDisplay;
+    public CardDisplay cardDisplay;
+    private CardDisplay cardData;
     public TextMeshProUGUI desc;
     public GameObject cardDesc;
 
-    public CardDisplay cardData;
+    public static GameObject GlobalDescPrompt;
+    public static TextMeshProUGUI GlobalDescText;
+
     public bool isClicked;
 
-    public static ViewCard currentlyViewedCard;
+    private static ViewCard currentlyViewedCard;
 
     private void Start()
     {
@@ -34,30 +36,36 @@ public class ViewCard : MonoBehaviour
             initialScale = transform.localScale.x;
 
         cardData = GetComponent<CardDisplay>();
-        cardDisplay = FindObjectOfType<CardDisplay>();
 
-        cardDesc = GameObject.Find("DescriptionPrompt");
-        desc = cardDesc.GetComponentInChildren<TextMeshProUGUI>();
-
-        if (cardDisplay != null && cardDisplay.descPrompt != null)
-            cardDisplay.descPrompt.SetActive(false);
+        if (GlobalDescPrompt == null)
+        {
+            GlobalDescPrompt = GameObject.Find("DescriptionPrompt");
+            GlobalDescText = GlobalDescPrompt.GetComponentInChildren<TextMeshProUGUI>();
+            GlobalDescPrompt.SetActive(false);
+        }
     }
+
 
     public void cardClicked()
     {
-        if (currentlyViewedCard != null && currentlyViewedCard != this)
-        {
-            currentlyViewedCard.ResetCard();
-        }
+        cardData = GetComponent<CardDisplay>();
 
         if (isClicked)
         {
-            ResetCard();
+            ResetCard(true, true);
         }
         else
         {
-            originalLocalPosition = transform.localPosition;
-            originalSiblingIndex = transform.GetSiblingIndex();
+            if (currentlyViewedCard != null && currentlyViewedCard != this)
+            {
+                currentlyViewedCard.ResetCard(false, false);
+            }
+
+            currentlyViewedCard = this;
+
+            transform.DOKill();
+
+            originalLocalPosition = transformObject.localPosition;
 
             Vector3 targetPosition = new Vector3(0, 600f, 0);
             transform.DOScale(scale, transitionSpeed);
@@ -65,30 +73,53 @@ public class ViewCard : MonoBehaviour
 
             transform.SetAsLastSibling();
             isClicked = true;
-            currentlyViewedCard = this;
 
-            if (cardDisplay != null && cardDisplay.descPrompt != null)
-                cardDisplay.descPrompt.SetActive(true);
+            if (GlobalDescPrompt != null)
+                GlobalDescPrompt.SetActive(true);
 
             if (cardData != null && cardData.card != null)
-                desc.text = cardData.card.desc;
+                GlobalDescText.text = cardData.card.flavorTxt;
             else
-                desc.text = "No description available.";
+                GlobalDescText.text = "No flavor text available.";
         }
     }
 
-    public void ResetCard()
+
+    private void ResetCard(bool animate = true, bool playEndAnim = true)
     {
-        transform.DOLocalMove(originalLocalPosition, transitionSpeed);
-        transform.DOScale(initialScale, transitionSpeed);
+        transform.DOKill();
+
+        if (animate)
+        {
+            transform.DOLocalMove(originalLocalPosition, transitionSpeed);
+            transform.DOScale(initialScale, transitionSpeed);
+        }
+        else
+        {
+            transform.localPosition = originalLocalPosition;
+            transform.localScale = Vector3.one * initialScale;
+        }
 
         transform.SetSiblingIndex(originalSiblingIndex);
         isClicked = false;
 
-        if (cardDisplay != null && cardDisplay.tween != null)
+        if (playEndAnim && cardDisplay != null && cardDisplay.tween != null)
+        {
             cardDisplay.tween.PlayEndAnimation();
+        }
 
-        if (currentlyViewedCard == this)
+        if (!isClicked && currentlyViewedCard == this)
+        {
             currentlyViewedCard = null;
+        }
+
+        if (!isClicked && currentlyViewedCard == null)
+        {
+            if (cardDisplay != null && cardDisplay.descPrompt != null)
+                cardDisplay.descPrompt.SetActive(false);
+        }
     }
+
 }
+
+
