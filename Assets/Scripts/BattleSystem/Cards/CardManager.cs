@@ -106,21 +106,35 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    public void DrawCard()
+public void DrawCard()
+{
+    GameObject drawnCard = cardInstances[0];
+    cardInstances.RemoveAt(0);
+
+    drawnCard.transform.SetParent(hand.transform);
+    drawnCard.SetActive(true);
+
+    drawnCard.transform.localScale = Vector3.zero;
+    drawnCard.transform.DOScale(Vector3.one, 0.3f);
+
+    ViewCard viewCard = drawnCard.GetComponent<ViewCard>();
+    if (viewCard != null)
     {
-        GameObject drawnCard = cardInstances[0];
-        cardInstances.RemoveAt(0);
+        viewCard.cardDesc = GameObject.Find("DescriptionPrompt");
+        if (viewCard.cardDesc != null)
+        {
+            viewCard.desc = viewCard.cardDesc.GetComponentInChildren<TextMeshProUGUI>();
+        }
 
-        drawnCard.transform.SetParent(hand.transform);
-        drawnCard.SetActive(true);
-
-        drawnCard.transform.localScale = Vector3.zero;
-        drawnCard.transform.DOScale(Vector3.one, 0.3f);
-
-        Debug.Log($"Player drew card: {drawnCard.GetComponent<CardDisplay>().card.cardName}");
-        CardPosition();
-        UpdateDeckCounter();
+        viewCard.cardDisplay = drawnCard.GetComponent<CardDisplay>();
     }
+
+    Debug.Log($"Player drew card: {drawnCard.GetComponent<CardDisplay>().card.cardName}");
+
+    CardPosition();
+    UpdateDeckCounter();
+}
+
 
     public void DrawMultipleCards(int count)
     {

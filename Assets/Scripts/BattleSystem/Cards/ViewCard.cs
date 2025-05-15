@@ -79,11 +79,8 @@ public class ViewCard : MonoBehaviour
 
             if (cardData != null && cardData.card != null)
                 GlobalDescText.text = cardData.card.flavorTxt;
-            else
-                GlobalDescText.text = "No flavor text available.";
         }
     }
-
 
     private void ResetCard(bool animate = true, bool playEndAnim = true)
     {
@@ -103,7 +100,7 @@ public class ViewCard : MonoBehaviour
         transform.SetSiblingIndex(originalSiblingIndex);
         isClicked = false;
 
-        if (playEndAnim && cardDisplay != null && cardDisplay.tween != null)
+        if (playEndAnim)
         {
             cardDisplay.tween.PlayEndAnimation();
         }

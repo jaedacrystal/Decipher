@@ -37,11 +37,7 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (viewCard != null && viewCard.isClicked)
-        {
-            isDragging = false;
-            canvasGroup.blocksRaycasts = true;
             return;
-        }
 
         isDragging = true;
 
@@ -98,11 +94,7 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     private void PlayCard()
     {
         if (viewCard != null && viewCard.isClicked)
-        {
-            ShowError("Cannot play card while viewing it!");
-            ReturnToOriginalPosition();
             return;
-        }
 
         if (cardDisplay == null || cardDisplay.card == null) return;
 
