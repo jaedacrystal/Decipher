@@ -4049,6 +4049,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3825380799446571084, guid: bc9419856b1293347b0313ddf179ea7c, type: 3}
   m_PrefabInstance: {fileID: 790570305}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &790570308 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7304889847902321678, guid: bc9419856b1293347b0313ddf179ea7c, type: 3}
+  m_PrefabInstance: {fileID: 790570305}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &790570310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8129,6 +8140,7 @@ MonoBehaviour:
   btn: {fileID: 1904887516}
   text: {fileID: 756015410}
   dialogueText: {fileID: 540887923}
+  email: {fileID: 790570308}
   folder: {fileID: 4522309411988243461}
   folderButton: {fileID: 4522309411988243464}
   folderChange: {fileID: -723310837, guid: 5d04957f2a4e991489d075b79653323b, type: 3}

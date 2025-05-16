@@ -12,6 +12,7 @@ public class HackExit : MonoBehaviour
     public GameObject btn;
     public TextMeshProUGUI text;
     public GameObject dialogueText;
+    public Button email;
 
     [Header("Folder")]
     public Image folder;
@@ -38,9 +39,13 @@ public class HackExit : MonoBehaviour
 
     public void ExitPrompt()
     {
+
         folder.GetComponent<Image>().sprite = folderChange;
         SoundFX.Play("Click");
         hidePrompt.SetActive(false);
+        email.onClick = new Button.ButtonClickedEvent();
+        email.onClick.RemoveAllListeners();
+
 
         folderButton.onClick.AddListener(OnButtonClick);
         SoundFX.Play("Ping");
