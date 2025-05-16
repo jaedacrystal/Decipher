@@ -1140,12 +1140,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 463479761}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2013430282}
+  m_Father: {fileID: 873071997}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1387,7 +1387,7 @@ MonoBehaviour:
   - {fileID: -451217994, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
   - {fileID: -825574965, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
   bandwidthIcon: {fileID: 2044135230}
-  cardManager: {fileID: 525159615}
+  cardManager: {fileID: 0}
   isBurning: 0
   burnEffectRounds: 0
   burnEffectDamage: 0
@@ -1417,7 +1417,6 @@ MonoBehaviour:
   flashColor: {r: 1, g: 0, b: 0, a: 0}
   flashDuration: 0.3
   retry: {fileID: 1292135905}
-  cards: {fileID: 0}
 --- !u!212 &488449504 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 5302353913882688442, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
@@ -2812,12 +2811,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 838308139}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2013430282}
+  m_Father: {fileID: 873071997}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2953,7 +2952,7 @@ RectTransform:
   m_Children:
   - {fileID: 1749255988}
   - {fileID: 1441795422}
-  m_Father: {fileID: 2013430282}
+  m_Father: {fileID: 873071997}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3108,6 +3107,13 @@ RectTransform:
   - {fileID: 525159614}
   - {fileID: 821857622}
   - {fileID: 1168895810}
+  - {fileID: 463479762}
+  - {fileID: 838308140}
+  - {fileID: 1578794293}
+  - {fileID: 1741304971}
+  - {fileID: 2116246076}
+  - {fileID: 870607112}
+  - {fileID: 1292135906}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3499,7 +3505,7 @@ MonoBehaviour:
   - {fileID: -451217994, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
   - {fileID: -825574965, guid: 2432a0618445dc44d902340c2e96ae75, type: 3}
   bandwidthIcon: {fileID: 2044135230}
-  cardManager: {fileID: 525159615}
+  cardManager: {fileID: 0}
   isBurning: 0
   burnEffectRounds: 0
   burnEffectDamage: 0
@@ -3529,7 +3535,6 @@ MonoBehaviour:
   flashColor: {r: 1, g: 1, b: 1, a: 0}
   flashDuration: 0.3
   retry: {fileID: 1292135905}
-  cards: {fileID: 0}
 --- !u!114 &1120444743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3750,14 +3755,14 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1292135905}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1477048183}
   - {fileID: 226425306}
-  m_Father: {fileID: 2013430282}
+  m_Father: {fileID: 873071997}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -4393,12 +4398,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1578794292}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2013430282}
+  m_Father: {fileID: 873071997}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5020,12 +5025,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1741304970}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2013430282}
+  m_Father: {fileID: 873071997}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5883,7 +5888,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2013430279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5958,14 +5963,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 463479762}
-  - {fileID: 838308140}
-  - {fileID: 1578794293}
-  - {fileID: 1741304971}
-  - {fileID: 2116246076}
-  - {fileID: 870607112}
-  - {fileID: 1292135906}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -6292,6 +6290,7 @@ MonoBehaviour:
   opponentCardText: {fileID: 838308141}
   cardManager: {fileID: 0}
   turnButton: {fileID: 764982659}
+  cards: {fileID: 0}
 --- !u!1 &2116246075
 GameObject:
   m_ObjectHideFlags: 0
@@ -6317,12 +6316,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2116246075}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2013430282}
+  m_Father: {fileID: 873071997}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

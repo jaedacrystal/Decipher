@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 146fcfd642f3fa84d8bba2dbca8504d2, type: 3}
-  m_Name: CodeInjection
+  m_Name: SQLInjection
   m_EditorClassIdentifier: 
   artwork: {fileID: 1461408084, guid: 81214937aebf75f42a06bcd4e8ad71fc, type: 3}
   cardName: SQL Injection
   desc: Injects malicious code to the target's system dealing 4 damage
-  flavorTxt: Exposes a user's sensitive information.
+  flavorTxt: it is a web security vulnerability that allows an attacker to interfere
+    with the entries users make.
   bandwidth: 2
   effectValue: 4
   effectRounds: 0

@@ -40,11 +40,17 @@ public class ViewCard : MonoBehaviour
         if (GlobalDescPrompt == null)
         {
             GlobalDescPrompt = GameObject.Find("DescriptionPrompt");
-            GlobalDescText = GlobalDescPrompt.GetComponentInChildren<TextMeshProUGUI>();
-            GlobalDescPrompt.SetActive(false);
+            if (GlobalDescPrompt != null)
+            {
+                GlobalDescText = GlobalDescPrompt.GetComponentInChildren<TextMeshProUGUI>();
+                GlobalDescPrompt.SetActive(false);
+            }
+            else
+            {
+                Debug.LogError("Could not find GameObject named 'DescriptionPrompt' in the scene.");
+            }
         }
     }
-
 
     public void cardClicked()
     {
@@ -52,34 +58,42 @@ public class ViewCard : MonoBehaviour
 
         if (isClicked)
         {
-            ResetCard(true, true);
+            PerformResetCard(true);
         }
         else
         {
-            if (currentlyViewedCard != null && currentlyViewedCard != this)
-            {
-                currentlyViewedCard.ResetCard(false, false);
-            }
-
-            currentlyViewedCard = this;
-
-            transform.DOKill();
-
-            originalLocalPosition = transformObject.localPosition;
-
-            Vector3 targetPosition = new Vector3(0, 600f, 0);
-            transform.DOScale(scale, transitionSpeed);
-            transform.DOLocalMove(targetPosition, transitionSpeed);
-
-            transform.SetAsLastSibling();
-            isClicked = true;
-
-            if (GlobalDescPrompt != null)
-                GlobalDescPrompt.SetActive(true);
-
-            if (cardData != null && cardData.card != null)
-                GlobalDescText.text = cardData.card.flavorTxt;
+            PerformViewCard();
         }
+    }
+
+    private void PerformViewCard()
+    {
+        if (currentlyViewedCard != null && currentlyViewedCard != this)
+        {
+            currentlyViewedCard.PerformResetCard(false);
+        }
+
+        currentlyViewedCard = this;
+
+        transform.DOKill();
+        originalLocalPosition = transformObject.localPosition;
+        Vector3 targetPosition = new Vector3(0, 600f, 0);
+        transform.DOScale(scale, transitionSpeed);
+        transform.DOLocalMove(targetPosition, transitionSpeed);
+
+        transform.SetAsLastSibling();
+        isClicked = true;
+
+        if (GlobalDescPrompt != null)
+            GlobalDescPrompt.SetActive(true);
+
+        if (cardData != null && cardData.card != null && GlobalDescText != null)
+            GlobalDescText.text = cardData.card.flavorTxt;
+    }
+
+    private void PerformResetCard(bool animateReset)
+    {
+        ResetCard(animateReset, true);
     }
 
     private void ResetCard(bool animate = true, bool playEndAnim = true)
@@ -100,23 +114,18 @@ public class ViewCard : MonoBehaviour
         transform.SetSiblingIndex(originalSiblingIndex);
         isClicked = false;
 
-        if (playEndAnim)
+        if (playEndAnim && cardDisplay != null && cardDisplay.tween != null)
         {
             cardDisplay.tween.PlayEndAnimation();
         }
 
-        if (!isClicked && currentlyViewedCard == this)
+        if (currentlyViewedCard == this)
         {
             currentlyViewedCard = null;
-        }
-
-        if (!isClicked && currentlyViewedCard == null)
-        {
-            if (cardDisplay != null && cardDisplay.descPrompt != null)
-                cardDisplay.descPrompt.SetActive(false);
+            if (GlobalDescPrompt != null)
+            {
+                GlobalDescPrompt.SetActive(false);
+            }
         }
     }
-
 }
-
-

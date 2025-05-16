@@ -4711,15 +4711,15 @@ MonoBehaviour:
   defenseCards:
   - {fileID: 11400000, guid: 55f3e0d406d8e9a44867c0b338e16ba6, type: 2}
   - {fileID: 11400000, guid: 52e627ef3d8db1e4892645f743ac531e, type: 2}
-  - {fileID: 11400000, guid: 52e627ef3d8db1e4892645f743ac531e, type: 2}
+  - {fileID: 11400000, guid: 37b785e06451b0e4d9e82045d7576ce8, type: 2}
   offenseCards:
-  - {fileID: 11400000, guid: 11cc32260f2721841817f8d6f5f1a642, type: 2}
-  - {fileID: 11400000, guid: 11cc32260f2721841817f8d6f5f1a642, type: 2}
-  - {fileID: 11400000, guid: 11cc32260f2721841817f8d6f5f1a642, type: 2}
+  - {fileID: 11400000, guid: 5e1b7a67f49394447a0effa606c418e0, type: 2}
+  - {fileID: 11400000, guid: 09cc6704f2e65d744a25d2cfa9d12ded, type: 2}
+  - {fileID: 11400000, guid: f6aa58d4caf39fb49a227a09662c8580, type: 2}
   balanceCards:
-  - {fileID: 11400000, guid: 52e627ef3d8db1e4892645f743ac531e, type: 2}
-  - {fileID: 11400000, guid: 55f3e0d406d8e9a44867c0b338e16ba6, type: 2}
-  - {fileID: 11400000, guid: 11cc32260f2721841817f8d6f5f1a642, type: 2}
+  - {fileID: 11400000, guid: 870660ed761d5c84983fcfe090bbc295, type: 2}
+  - {fileID: 11400000, guid: bad9eb98ce4420148a129b632dd25522, type: 2}
+  - {fileID: 11400000, guid: 37b785e06451b0e4d9e82045d7576ce8, type: 2}
   dialogue: {fileID: 566417915}
   dialogueCounter: 0
   classIconArray:
