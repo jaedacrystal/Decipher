@@ -50,7 +50,6 @@ public class Health : MonoBehaviour
         impulseSource = GetComponent<CinemachineImpulseSource>();
     }
 
-
     public void TakeDamage(int damage)
     {
         PlayerStats stats = GetComponent<PlayerStats>();
@@ -158,5 +157,3 @@ public class Health : MonoBehaviour
         start.LoadSelectedScene();
     }
 }
-
-

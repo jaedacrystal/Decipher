@@ -65,7 +65,6 @@ public class ViewCard : MonoBehaviour
             PerformViewCard();
         }
     }
-
     private void PerformViewCard()
     {
         if (currentlyViewedCard != null && currentlyViewedCard != this)

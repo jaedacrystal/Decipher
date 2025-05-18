@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -36,8 +37,7 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (viewCard != null && viewCard.isClicked)
-            return;
+        if (viewCard != null && viewCard.isClicked == true) return;
 
         isDragging = true;
 
@@ -52,7 +52,7 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (viewCard != null && viewCard.isClicked) return;
+        if (viewCard != null && viewCard.isClicked == true) return;
 
         Vector3 worldPoint;
         RectTransform rectTransform = GetComponent<RectTransform>();
@@ -69,7 +69,7 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (viewCard != null && viewCard.isClicked) return;
+        if (viewCard != null && viewCard.isClicked == true) return;
 
         isDragging = false;
         canvasGroup.blocksRaycasts = true;
@@ -86,24 +86,29 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     private bool IsOverPlayArea(PointerEventData eventData)
     {
-        if (viewCard != null && viewCard.isClicked) return false;
+        if (viewCard != null && viewCard.isClicked == true) return false;
         return playArea != null && RectTransformUtility.RectangleContainsScreenPoint(playArea, eventData.position, GetComponentInParent<Canvas>().worldCamera);
     }
 
 
     private void PlayCard()
     {
-        if (viewCard != null && viewCard.isClicked)
-            return;
-
+        if (viewCard != null && viewCard.isClicked == true) return;
         if (cardDisplay == null || cardDisplay.card == null) return;
 
-        PlayerStats playerStats = cardManager.player.GetComponent<PlayerStats>();
+        PlayerStats playerStats = cardManager != null && cardManager.player != null
+            ? cardManager.player.GetComponent<PlayerStats>()
+            : FindLocalPlayerStats();
+
+        GameObject opponent = cardManager != null
+            ? cardManager.opponent
+            : FindOpponentGameObject();
 
         if (playerStats != null && playerStats.CanPlayCard(cardDisplay.card.bandwidth))
         {
             playerStats.UseBandwidth(cardDisplay.card.bandwidth);
-            cardDisplay.card.ApplyEffect(cardManager.opponent, cardManager.player);
+
+            cardDisplay.card.ApplyEffect(playerStats.gameObject, opponent);
 
             MoveToGraveyard(this);
         }
@@ -113,6 +118,28 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             Invoke("ReturnToOriginalPosition", 0.5f);
         }
     }
+
+
+    private PlayerStats FindLocalPlayerStats()
+    {
+        foreach (PlayerStats stats in FindObjectsOfType<PlayerStats>())
+        {
+            PhotonView view = stats.GetComponent<PhotonView>();
+            if (view == null || view.IsMine) return stats;
+        }
+        return null;
+    }
+
+    private GameObject FindOpponentGameObject()
+    {
+        foreach (PlayerStats stats in FindObjectsOfType<PlayerStats>())
+        {
+            PhotonView view = stats.GetComponent<PhotonView>();
+            if (view != null && !view.IsMine) return stats.gameObject;
+        }
+        return null;
+    }
+
 
     private void MoveToGraveyard(CardDrag card)
     {

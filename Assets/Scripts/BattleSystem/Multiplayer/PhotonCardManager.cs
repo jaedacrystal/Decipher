@@ -7,32 +7,50 @@ using Photon.Pun;
 
 public class PhotonCardManager : MonoBehaviour
 {
+    public static PhotonCardManager Instance { get; private set; }
+
     [Header("Shared Settings")]
-    [SerializeField] private GameObject cardPrefab;
-    [SerializeField] private List<Cards> baseDeck;
+    [SerializeField] public GameObject cardPrefab;
+    [SerializeField] public List<Cards> baseDeck;
 
     [Header("Player References")]
-    [SerializeField] private GameObject playerHand;
-    [SerializeField] private GameObject playerDeckObj;
-    [SerializeField] private TextMeshProUGUI playerDeckCounter;
+    [SerializeField] public GameObject playerHand;
+    [SerializeField] public GameObject playerDeckObj;
+    [SerializeField] public TextMeshProUGUI playerDeckCounter;
 
     [Header("Opponent References")]
-    [SerializeField] private GameObject opponentHand;
-    [SerializeField] private GameObject opponentDeckObj;
-    [SerializeField] private TextMeshProUGUI opponentDeckCounter;
+    [SerializeField] public GameObject opponentHand;
+    [SerializeField] public GameObject opponentDeckObj;
+    [SerializeField] public TextMeshProUGUI opponentDeckCounter;
 
     [Header("Hand Settings")]
     [SerializeField] private int maxHandSize = 4;
+
+    public GameObject localPlayer;
+    public GameObject opponentPlayer;
+    [HideInInspector] public GameObject player;
+    [HideInInspector] public GameObject opponent;
+
 
     private List<Cards> playerDeckCards = new();
     private List<Cards> opponentDeckCards = new();
     private List<GameObject> playerCardInstances = new();
     private List<GameObject> opponentCardInstances = new();
 
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else if (Instance != this)
+            Destroy(gameObject);
+    }
+
     private void Start()
     {
-        Photon.Realtime.Player localPlayer = PhotonNetwork.LocalPlayer;
-        Photon.Realtime.Player opponentPlayer = GetOpponentPlayer();
+        AssignPlayers();
+
+        Photon.Realtime.Player localPlayerPhoton = PhotonNetwork.LocalPlayer;
+        Photon.Realtime.Player opponentPhoton = GetOpponentPlayer();
 
         string playerClass = PlayerPrefs.GetString("ChosenClass", "None");
         if (Enum.TryParse(playerClass, out ClassType playerClassType))
@@ -42,7 +60,7 @@ public class PhotonCardManager : MonoBehaviour
             DrawMultipleCards(playerDeckObj, playerHand, playerCardInstances, maxHandSize);
         }
 
-        if (opponentPlayer != null && opponentPlayer.CustomProperties.TryGetValue("playerClass", out object opponentClassObj))
+        if (opponentPhoton != null && opponentPhoton.CustomProperties.TryGetValue("playerClass", out object opponentClassObj))
         {
             if (Enum.TryParse(opponentClassObj.ToString(), out ClassType opponentClassType))
             {
@@ -54,6 +72,31 @@ public class PhotonCardManager : MonoBehaviour
 
         UpdateDeckCounter(playerDeckObj, playerDeckCounter);
         UpdateDeckCounter(opponentDeckObj, opponentDeckCounter);
+    }
+
+    private void AssignPlayers()
+    {
+        PlayerStats[] allPlayers = FindObjectsOfType<PlayerStats>();
+
+        foreach (var ps in allPlayers)
+        {
+            PhotonView view = ps.GetComponent<PhotonView>();
+            if (view != null && view.IsMine)
+            {
+                localPlayer = ps.gameObject;
+                player = localPlayer; // Set for CardDrag compatibility
+            }
+            else
+            {
+                opponentPlayer = ps.gameObject;
+                opponent = opponentPlayer; // Set for CardDrag compatibility
+            }
+        }
+
+        if (player == null)
+            Debug.LogError("Local player not found in PhotonCardManager!");
+        if (opponent == null)
+            Debug.LogWarning("Opponent player not found in PhotonCardManager!");
     }
 
 
@@ -135,7 +178,7 @@ public class PhotonCardManager : MonoBehaviour
 
     private void UpdateDeckCounter(GameObject deckObj, TextMeshProUGUI text)
     {
-        text.text = $"Deck: {deckObj.transform.childCount}";
+        text.text = $"{deckObj.transform.childCount}";
     }
 
     private List<Cards> LoadClassCardsFromPrefs(string prefsKey)
@@ -148,6 +191,11 @@ public class PhotonCardManager : MonoBehaviour
         return new List<Cards>();
     }
 
+    public void DrawCardsForStartOfTurn()
+    {
+        DrawMultipleCards(playerDeckObj, playerHand, playerCardInstances, 4);
+        UpdateDeckCounter(playerDeckObj, playerDeckCounter);
+    }
 
     [System.Serializable]
     private class CardListWrapper

@@ -856,6 +856,10 @@ MonoBehaviour:
   opponentDeckObj: {fileID: 356263367}
   opponentDeckCounter: {fileID: 1991704883}
   maxHandSize: 4
+  localPlayer: {fileID: 1763882590}
+  opponentPlayer: {fileID: 2012004964}
+  player: {fileID: 0}
+  opponent: {fileID: 0}
 --- !u!1 &393462279
 GameObject:
   m_ObjectHideFlags: 0
@@ -1075,7 +1079,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 939816229}
         m_TargetAssemblyTypeName: PhotonTurnManager, Assembly-CSharp
-        m_MethodName: EndPlayerTurn
+        m_MethodName: OnTurnButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2327,6 +2331,7 @@ GameObject:
   m_Component:
   - component: {fileID: 939816228}
   - component: {fileID: 939816229}
+  - component: {fileID: 939816230}
   m_Layer: 0
   m_Name: TurnManager
   m_TagString: Untagged
@@ -2361,15 +2366,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7aff4a862969a884b923a73e28bd8369, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayerTurn: 1
+  isPlayerTurn: 0
   playerStats: {fileID: 1763882595}
   health: {fileID: 1763882596}
   turnText: {fileID: 112483750}
-  opponentCardText: {fileID: 915196590}
+  opponentCardText: {fileID: 2128958525}
   turnButton: {fileID: 421381042}
   playerNameText: {fileID: 1405841033}
   opponentNameText: {fileID: 1206359554}
-  cards: {fileID: 0}
+--- !u!114 &939816230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 939816226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 3
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &955734496
 GameObject:
   m_ObjectHideFlags: 0
@@ -2664,7 +2690,7 @@ GameObject:
   - component: {fileID: 1206359555}
   - component: {fileID: 1206359554}
   m_Layer: 0
-  m_Name: Name
+  m_Name: EnemyName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3035,7 +3061,7 @@ GameObject:
   - component: {fileID: 1405841034}
   - component: {fileID: 1405841033}
   m_Layer: 0
-  m_Name: Name
+  m_Name: PlayerName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3978,9 +4004,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1763882595}
-    - targetCorrespondingSourceObject: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1763882594}
     - targetCorrespondingSourceObject: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
       insertIndex: -1
@@ -3988,6 +4011,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1763882597}
+    - targetCorrespondingSourceObject: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1763882595}
     - targetCorrespondingSourceObject: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1763882596}
@@ -4123,7 +4149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 20
   currentHealth: 0
-  ownerTag: Player
+  ownerTag: Player1
   prompt: {fileID: 1673721898}
   turnText: {fileID: 112483750}
   healthBar: {fileID: 1941830222}
@@ -5928,9 +5954,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2012004969}
-    - targetCorrespondingSourceObject: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 2012004968}
     - targetCorrespondingSourceObject: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
       insertIndex: -1
@@ -5940,10 +5963,10 @@ PrefabInstance:
       addedObject: {fileID: 2012004971}
     - targetCorrespondingSourceObject: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2012004970}
+      addedObject: {fileID: 2012004969}
     - targetCorrespondingSourceObject: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2012004972}
+      addedObject: {fileID: 2012004970}
   m_SourcePrefab: {fileID: 100100000, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
 --- !u!1 &2012004964 stripped
 GameObject:
@@ -6076,7 +6099,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 20
   currentHealth: 0
-  ownerTag: Enemy
+  ownerTag: Player2
   prompt: {fileID: 1673721898}
   turnText: {fileID: 112483750}
   healthBar: {fileID: 1989595750}
@@ -6110,22 +6133,6 @@ MonoBehaviour:
   sceneViewId: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &2012004972
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2012004964}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 850e42ae0e2640249aa70c6102723bfa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pvCache: {fileID: 0}
-  opponentStats: {fileID: 2012004969}
-  playerStats: {fileID: 1763882595}
-  cardManager: {fileID: 356263370}
 --- !u!1 &2022468751
 GameObject:
   m_ObjectHideFlags: 0

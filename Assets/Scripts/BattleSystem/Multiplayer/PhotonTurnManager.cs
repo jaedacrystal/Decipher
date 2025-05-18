@@ -1,15 +1,15 @@
+using UnityEngine;
+using TMPro;
 using DG.Tweening;
 using Photon.Pun;
 using Photon.Realtime;
-using TMPro;
-using UnityEngine;
 
-public class PhotonTurnManager : MonoBehaviourPun
+public class PhotonTurnManager : MonoBehaviourPunCallbacks
 {
     public static PhotonTurnManager Instance;
 
     [Header("Player")]
-    public bool isPlayerTurn = true;
+    public bool isPlayerTurn = false;
     public PlayerStats playerStats;
     public Health health;
 
@@ -18,28 +18,28 @@ public class PhotonTurnManager : MonoBehaviourPun
     public TextMeshProUGUI opponentCardText;
     public GameObject turnButton;
 
-    [Header("UI - Player Info")]
     public TextMeshProUGUI playerNameText;
     public TextMeshProUGUI opponentNameText;
-
-    public Cards cards;
 
     private void Awake()
     {
         if (Instance == null)
+        {
             Instance = this;
+        }
         else
+        {
             Destroy(gameObject);
+        }
     }
 
     private void Start()
     {
         health = FindObjectOfType<Health>();
-        UpdateTurnText();
-        DisplayPlayerInfo();
 
-        cards = GetComponent<Cards>();
-        cards.isSingleplayer = false;
+        turnText.color = new Color(turnText.color.r, turnText.color.g, turnText.color.b, 1);
+        DetermineStartingPlayer();
+        DisplayPlayerInfo();
     }
 
     private void DisplayPlayerInfo()
@@ -72,70 +72,58 @@ public class PhotonTurnManager : MonoBehaviourPun
         }
     }
 
-    public void EndPlayerTurn()
+    private void DetermineStartingPlayer()
+    {
+        isPlayerTurn = PhotonNetwork.IsMasterClient;
+        UpdateTurnUI();
+
+        if (isPlayerTurn)
+            BeginPlayerTurn();
+        else
+            turnButton.SetActive(false);
+    }
+
+    [PunRPC]
+    public void EndTurn()
     {
         if (!isPlayerTurn) return;
 
-        if (photonView.IsMine)
-        {
-            isPlayerTurn = false;
-            photonView.RPC("RPC_EndPlayerTurn", RpcTarget.Others);
-            UpdateTurnText();
-            Invoke("OpponentTurn", 1);
-        }
+        isPlayerTurn = false;
+        UpdateTurnUI();
+        turnButton.SetActive(false);
+
+        photonView.RPC("BeginPlayerTurn", RpcTarget.Others);
     }
 
-    private void OpponentTurn()
-    {
-        if (!photonView.IsMine)
-        {
-            if (health.currentHealth > 0)
-            {
-                UpdateTurnText();
-                turnButton.SetActive(false);
-                BurnEffectTrigger();
-            }
-
-            photonView.RPC("RPC_StartPlayerTurn", RpcTarget.Others);
-        }
-    }
-
-    public void StartPlayerTurn()
+    [PunRPC]
+    public void BeginPlayerTurn()
     {
         if (health.currentHealth > 0)
         {
-            if (PhotonNetwork.IsMasterClient)
-            {
-                isPlayerTurn = true;
-                playerStats.RestoreBandwidth();
+            isPlayerTurn = true;
 
-                CardManager cardManager = FindObjectOfType<CardManager>();
+            playerStats.RestoreBandwidth();
+            CardManager cardManager = FindObjectOfType<CardManager>();
+            if (cardManager != null)
                 cardManager.DrawMultipleCards(4);
 
-                turnButton.SetActive(true);
-                UpdateTurnText();
-            }
+            turnButton.SetActive(true);
+            UpdateTurnUI();
         }
     }
 
-    private void BurnEffectTrigger()
-    {
-        if (playerStats != null && playerStats.isBurning)
-        {
-            playerStats.StartBurnEffect(3, 5);
-        }
-    }
-
-    private void UpdateTurnText()
+    private void UpdateTurnUI()
     {
         if (health.currentHealth > 0)
         {
-            turnText.text = isPlayerTurn ? "Player's Turn" : "Opponent's Turn";
+            Debug.Log("Turn Update - isPlayerTurn: " + isPlayerTurn);
+
+            turnText.text = isPlayerTurn ? "Your Turn" : "Opponent's Turn";
             turnText.color = new Color(turnText.color.r, turnText.color.g, turnText.color.b, 1);
             turnText.gameObject.SetActive(true);
             turnText.DOFade(1, 1f);
 
-            Invoke("HideTurnText", 1);
+            Invoke(nameof(HideTurnText), 1);
         }
     }
 
@@ -144,15 +132,16 @@ public class PhotonTurnManager : MonoBehaviourPun
         turnText.DOFade(0, 1f).OnComplete(() => turnText.gameObject.SetActive(false));
     }
 
+    [PunRPC]
     public void DisplayPlayedCard(string playerName, string cardName)
     {
-        if (health.currentHealth > 0)
+        if (health.currentHealth > 0 && opponentCardText != null)
         {
-            if (playerName == "Opponent" && opponentCardText != null)
+            if (playerName != PhotonNetwork.NickName) // only show opponent's played cards
             {
-                opponentCardText.text = "Opponent played: " + cardName;
+                opponentCardText.text = playerName + " played: " + cardName;
                 AnimateText(opponentCardText);
-                Invoke("HideOpponentCardText", 1.2f);
+                Invoke(nameof(HideOpponentCardText), 1.2f);
             }
         }
     }
@@ -170,18 +159,12 @@ public class PhotonTurnManager : MonoBehaviourPun
         opponentCardText.DOFade(0, 1f).OnComplete(() => opponentCardText.gameObject.SetActive(false));
     }
 
-    [PunRPC]
-    private void RPC_EndPlayerTurn()
+    public void OnTurnButtonPressed()
     {
-        isPlayerTurn = false;
-        UpdateTurnText();
-        Invoke(nameof(OpponentTurn), 1);
-    }
-
-    [PunRPC]
-    private void RPC_StartPlayerTurn()
-    {
-        isPlayerTurn = true;
-        StartPlayerTurn();
+        // Call this from your button's OnClick event
+        if (isPlayerTurn)
+        {
+            photonView.RPC("EndTurn", RpcTarget.All);
+        }
     }
 }

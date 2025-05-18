@@ -1,161 +1,94 @@
-using System.Collections;
-using DG.Tweening;
-using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using DG.Tweening;
 using Photon.Pun;
-using Cinemachine;
 
-public class PhotonHealth : MonoBehaviourPun
+public class MultiplayerHealth : MonoBehaviourPunCallbacks
 {
     [Header("Health Settings")]
-    public int maxHealth;
+    public int maxHealth = 100; // Example default value
     public int currentHealth;
-    public string ownerTag;
 
-    [Header("Text Placeholders")]
-    public TextMeshProUGUI prompt;
-    public TextMeshProUGUI turnText;
-
-    [Header("Health")]
+    [Header("UI References")]
     public HealthBar healthBar;
     public TextMeshProUGUI healthBarText;
 
-    private string playerName;
-    private bool playerCheck;
-    public bool isPlayer = false;
-
-    [Header("Flash")]
+    // Optional: Visual feedback for damage/healing
     public ImpactFlash impactFlash;
     public SpriteRenderer spriteRenderer;
-    [HideInInspector] public Color flashColor;
-    public float flashDuration;
-
-    private CinemachineImpulseSource impulseSource;
-
-    public GameObject retry;
-    public Cards cards;
+    public float flashDuration = 0.1f;
+    public Color damageFlashColor = Color.red;
+    public Color healFlashColor = Color.green;
 
     private void Start()
     {
-        retry.SetActive(false);
-        prompt.gameObject.SetActive(false);
         currentHealth = maxHealth;
-        healthBar.SetMaxHealth(maxHealth);
-        healthBar.gameObject.SetActive(true);
-
-        impulseSource = GetComponent<CinemachineImpulseSource>();
-
-        cards = GetComponent<Cards>();
-        cards.isSingleplayer = false;
+        if (healthBar != null)
+        {
+            healthBar.SetMaxHealth(maxHealth);
+            healthBar.SetHealth(currentHealth);
+        }
+        if (healthBarText != null)
+        {
+            healthBarText.text = $"{currentHealth}/{maxHealth}";
+        }
     }
 
     public void TakeDamage(int damage)
     {
-        if (!photonView.IsMine) return;
+        if (!photonView.IsMine) return; // Only the owner can initiate damage
 
-        photonView.RPC("RPC_TakeDamage", RpcTarget.All, damage);
-    }
+        int previousHealth = currentHealth;
+        currentHealth -= damage;
+        currentHealth = Mathf.Max(0, currentHealth);
 
-    [PunRPC]
-    private void RPC_TakeDamage(int damage)
-    {
-        if (currentHealth > 0)
+        photonView.RPC("UpdateHealthUI", RpcTarget.All, currentHealth, previousHealth);
+
+        if (impactFlash != null && spriteRenderer != null)
         {
-            CameraShakeManager.instance.CameraShake(GetComponent<Cinemachine.CinemachineImpulseSource>());
-            SoundFX.Play("Hit");
+            impactFlash.Flash(spriteRenderer, flashDuration, damageFlashColor, 0.1f, ImpactFlash.FlashType.Damage);
+        }
 
-            impactFlash.Flash(spriteRenderer, flashDuration, flashColor, 0.1f, ImpactFlash.FlashType.Damage);
-
-            PlayerStats stats = GetComponent<PlayerStats>();
-            if (stats != null && stats.isStrongPasswordActive)
-            {
-                damage = Mathf.CeilToInt(damage * 0.5f);
-                Debug.Log($"{stats.name} is protected by Strong Password! Incoming damage reduced by 50%. New damage: {damage}");
-            }
-
-            if (stats != null && stats.isProtected)
-            {
-                Debug.Log(stats.name + " is protected, damage blocked!");
-                return;
-            }
-
-            float effectiveDamage = damage * (stats != null ? stats.damageTakenMultiplier : 1f);
-
-            int previousHealth = currentHealth;
-            currentHealth -= Mathf.CeilToInt(effectiveDamage);
-            if (currentHealth < 0) currentHealth = 0;
-
-            DOTween.To(() => previousHealth, x =>
-            {
-                healthBar.SetHealth(x);
-                healthBarText.text = $"{x}/{maxHealth}";
-            }, currentHealth, 0.5f).SetEase(Ease.OutQuad);
-
-            if (currentHealth <= 0)
-            {
-                Die();
-            }
+        if (currentHealth <= 0)
+        {
+            Die();
         }
     }
 
     public void Heal(int healAmount)
     {
-        if (!photonView.IsMine) return;
+        if (!photonView.IsMine) return; // Only the owner can initiate healing
 
-        photonView.RPC("RPC_Heal", RpcTarget.All, healAmount);
+        int previousHealth = currentHealth;
+        currentHealth += healAmount;
+        currentHealth = Mathf.Min(currentHealth, maxHealth);
+
+        photonView.RPC("UpdateHealthUI", RpcTarget.All, currentHealth, previousHealth);
+
+        if (impactFlash != null && spriteRenderer != null)
+        {
+            impactFlash.Flash(spriteRenderer, flashDuration, healFlashColor, 0.1f, ImpactFlash.FlashType.Heal);
+        }
     }
 
     [PunRPC]
-    private void RPC_Heal(int healAmount)
+    private void UpdateHealthUI(int newHealth, int previousHealth)
     {
-        int previousHealth = currentHealth;
-        currentHealth += healAmount;
-        if (currentHealth > maxHealth) currentHealth = maxHealth;
-
-        impactFlash.Flash(spriteRenderer, flashDuration, flashColor, 0.1f, ImpactFlash.FlashType.Heal);
-        SoundFX.Play("Heal");
-
-        DOTween.To(() => previousHealth, x =>
+        if (healthBar != null)
         {
-            healthBar.SetHealth(x);
-            healthBarText.text = $"{x}/{maxHealth}";
-        }, currentHealth, 0.5f).SetEase(Ease.OutQuad);
+            DOTween.To(() => previousHealth, x => healthBar.SetHealth(x), newHealth, 0.5f).SetEase(Ease.OutQuad);
+        }
+        if (healthBarText != null)
+        {
+            healthBarText.text = $"{newHealth}/{maxHealth}";
+        }
     }
 
     private void Die()
     {
-        photonView.RPC("RPC_Die", RpcTarget.All);
-    }
-
-    [PunRPC]
-    private void RPC_Die()
-    {
-        playerCheck = isPlayer;
-        playerName = playerCheck ? PlayerPrefs.GetString("PlayerName", "Player") : ownerTag;
-
-        prompt.text = playerName + " has been defeated";
-        prompt.gameObject.SetActive(true);
-        turnText.gameObject.SetActive(false);
-
-        transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBack);
-        GetComponent<SpriteRenderer>().DOFade(0, 0.5f).SetEase(Ease.OutQuad).OnComplete(() =>
-        {
-            gameObject.SetActive(false);
-            healthBar.gameObject.SetActive(false);
-        });
-
-        if (isPlayer)
-        {
-            retry.gameObject.SetActive(true);
-            prompt.gameObject.SetActive(false);
-        }
-    }
-
-    public void Retry()
-    {
-        if (photonView.IsMine)
-        {
-            PhotonNetwork.LoadLevel("Battle");
-        }
+        Debug.Log($"{photonView.Owner.NickName} has been defeated!");
+        // Implement your death logic here (e.g., disable controls, show game over UI, etc.)
+        // You might want to send an RPC to handle game over on all clients.
     }
 }
