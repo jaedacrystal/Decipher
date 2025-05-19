@@ -25,7 +25,7 @@ public class CardEffectManager : MonoBehaviour
         if (playerStats != null && playerStats.CanPlayCard(card.bandwidth))
         {
             playerStats.UseBandwidth(card.bandwidth);
-            card.ApplyEffect(player, opponent);
+            //card.ApplyEffect(player, opponent);
         }
     }
 }

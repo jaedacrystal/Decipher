@@ -23,7 +23,7 @@ public class CardDisplay : MonoBehaviour
     private void Start()
     {
         descPrompt = GameObject.Find("DescriptionPrompt");
-        tween = descPrompt.GetComponent<LeanTweenUIManager>();
+        //tween = descPrompt.GetComponent<LeanTweenUIManager>();
     }
 
     public void SetCard(Cards cardData)

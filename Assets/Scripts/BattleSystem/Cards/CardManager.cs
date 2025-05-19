@@ -13,10 +13,17 @@ public class CardManager : MonoBehaviour
     [SerializeField] private GameObject deck;
     [SerializeField] public List<Cards> listOfCards;
     [SerializeField] private int maxHandSize;
-    public GameObject player;
-    public GameObject opponent;
 
-    [Header("Card Counter")]
+    //public GameObject player;
+    //public GameObject opponent;
+
+    public Health playerHealth;
+    public PlayerStats playerStats;
+
+    public Health opponentHealth;
+    public PlayerStats opponentStats;
+
+    [Header ("Card Counter")]
     public TextMeshProUGUI counterText;
     public int deckCounter;
 

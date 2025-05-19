@@ -16,23 +16,35 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     private Vector3 originalPosition;
 
     private CardDisplay cardDisplay;
+
     private CardManager cardManager;
+    private PhotonCardManager photonCardManager;
+
     private RectTransform playArea;
     private Discard discard;
 
     private ViewCard viewCard;
 
+    private PlayerStats playerStats;
+    private PlayerStats opponentStats;
+
     private void Start()
     {
         canvasGroup = GetComponent<CanvasGroup>();
         cardDisplay = GetComponent<CardDisplay>();
+        
         cardManager = FindObjectOfType<CardManager>();
+
         playArea = GameObject.Find("PlayArea").GetComponent<RectTransform>();
         discard = GetComponent<Discard>();
         graveyard = GameObject.Find("Graveyard");
         errorText = GameObject.Find("BandwidthErrorText").GetComponent<TextMeshProUGUI>();
 
         viewCard = GetComponent<ViewCard>();
+
+        if ( cardManager == null ) {
+            photonCardManager = FindObjectOfType<PhotonCardManager> ();
+        }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -96,21 +108,66 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         if (viewCard != null && viewCard.isClicked == true) return;
         if (cardDisplay == null || cardDisplay.card == null) return;
 
-        PlayerStats playerStats = cardManager != null && cardManager.player != null
-            ? cardManager.player.GetComponent<PlayerStats>()
-            : FindLocalPlayerStats();
+        //PlayerStats playerStats = cardManager != null && cardManager.player != null
+        //    ? cardManager.player.GetComponent<PlayerStats>()
+        //    : FindLocalPlayerStats();
 
-        GameObject opponent = cardManager != null
-            ? cardManager.opponent
-            : FindOpponentGameObject();
+        //GameObject opponent = cardManager != null
+        //    ? cardManager.opponent
+        //    : FindOpponentGameObject();
+
+        if ( cardManager != null ) {
+            playerStats = cardManager != null && cardManager.playerStats != null
+            ? cardManager.playerStats
+            : FindLocalPlayerStats ();
+
+            opponentStats = cardManager != null
+                ? cardManager.opponentStats
+                : FindOpponentStats ();
+
+        } else {
+
+            if ( photonCardManager.player1 ) {
+                playerStats = photonCardManager != null && photonCardManager.player1Stats != null
+                ? photonCardManager.player1Stats
+                : FindLocalPlayerStats ();
+
+                opponentStats = photonCardManager != null
+                    ? photonCardManager.player2Stats
+                    : FindOpponentStats ();
+
+            } else {
+                playerStats = photonCardManager != null && photonCardManager.player2Stats != null
+                ? photonCardManager.player2Stats
+                : FindLocalPlayerStats ();
+
+                opponentStats = photonCardManager != null
+                    ? photonCardManager.player1Stats
+                    : FindOpponentStats ();
+            }
+            
+        }
+        
 
         if (playerStats != null && playerStats.CanPlayCard(cardDisplay.card.bandwidth))
         {
             playerStats.UseBandwidth(cardDisplay.card.bandwidth);
 
-            cardDisplay.card.ApplyEffect(playerStats.gameObject, opponent);
+            //cardDisplay.card.ApplyEffect(playerStats.gameObject, opponent);
 
-            MoveToGraveyard(this);
+            if ( cardManager != null ) {
+                cardDisplay.card.ApplySingleplayerEffect ( cardManager.opponentStats, cardManager.opponentHealth, cardManager.playerStats, cardManager.playerHealth, cardDisplay.card.target );
+            
+            } else {
+                if ( photonCardManager.player1 ) {
+                    cardDisplay.card.ApplyEffectMulti ( photonCardManager.player2Stats, photonCardManager.player2Health, photonCardManager.player1Stats, photonCardManager.player1Health, photonCardManager.localPlayer );
+                } else {
+                    cardDisplay.card.ApplyEffectMulti ( photonCardManager.player1Stats, photonCardManager.player1Health, photonCardManager.player2Stats, photonCardManager.player2Health, photonCardManager.opponentPlayer );
+                }
+            }
+            
+
+            MoveToGraveyard (this);
         }
         else
         {
@@ -118,6 +175,28 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             Invoke("ReturnToOriginalPosition", 0.5f);
         }
     }
+
+
+    //private void PlayCard () {
+    //    if ( cardDisplay?.card == null )
+    //        return;
+
+    //    PlayerStats playerStats = cardManager.playerStats;
+
+    //    if ( playerStats != null && playerStats.CanPlayCard ( cardDisplay.card.bandwidth ) ) {
+    //        playerStats.UseBandwidth ( cardDisplay.card.bandwidth );
+
+    //        cardDisplay.card.ApplyEffect ( cardManager.opponentStats, cardManager.opponentHealth, cardManager.playerStats, cardManager.playerHealth, cardDisplay.card.target );
+
+    //        cardManager.effectText.text = cardDisplay.card.cardName + " Played";
+    //        MoveToGraveyard ( this );
+
+    //    } else {
+    //        ShowError ( "Not enough bandwidth!" );
+    //        Invoke ( nameof ( ReturnToOriginalPosition ), 0.5f );
+    //    }
+    //}
+
 
 
     private PlayerStats FindLocalPlayerStats()
@@ -130,12 +209,21 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         return null;
     }
 
-    private GameObject FindOpponentGameObject()
-    {
-        foreach (PlayerStats stats in FindObjectsOfType<PlayerStats>())
-        {
-            PhotonView view = stats.GetComponent<PhotonView>();
-            if (view != null && !view.IsMine) return stats.gameObject;
+    //private GameObject FindOpponentGameObject()
+    //{
+    //    foreach (PlayerStats stats in FindObjectsOfType<PlayerStats>())
+    //    {
+    //        PhotonView view = stats.GetComponent<PhotonView>();
+    //        if (view != null && !view.IsMine) return stats.gameObject;
+    //    }
+    //    return null;
+    //}
+
+    private PlayerStats FindOpponentStats () {
+        foreach ( PlayerStats stats in FindObjectsOfType<PlayerStats> () ) {
+            PhotonView view = stats.GetComponent<PhotonView> ();
+            if ( view != null && !view.IsMine )
+                return stats;
         }
         return null;
     }

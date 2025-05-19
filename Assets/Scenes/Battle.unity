@@ -1792,8 +1792,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 11cc32260f2721841817f8d6f5f1a642, type: 2}
   - {fileID: 11400000, guid: 11cc32260f2721841817f8d6f5f1a642, type: 2}
   maxHandSize: 4
-  player: {fileID: 488449497}
-  opponent: {fileID: 1120444739}
+  playerHealth: {fileID: 488449500}
+  playerStats: {fileID: 488449499}
+  opponentHealth: {fileID: 1120444742}
+  opponentStats: {fileID: 1120444741}
   counterText: {fileID: 1787351812}
   deckCounter: 0
   opponentDeck:

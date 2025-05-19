@@ -858,6 +858,12 @@ MonoBehaviour:
   maxHandSize: 4
   localPlayer: {fileID: 1763882590}
   opponentPlayer: {fileID: 2012004964}
+  player1Stats: {fileID: 1763882595}
+  player1Health: {fileID: 1763882596}
+  player2Stats: {fileID: 2012004969}
+  player2Health: {fileID: 2012004970}
+  player1: 0
+  player2: 0
   player: {fileID: 0}
   opponent: {fileID: 0}
 --- !u!1 &393462279

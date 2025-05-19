@@ -28,6 +28,16 @@ public class PhotonCardManager : MonoBehaviour
 
     public GameObject localPlayer;
     public GameObject opponentPlayer;
+
+    public PlayerStats player1Stats;
+    public Health player1Health;
+
+    public PlayerStats player2Stats;
+    public Health player2Health;
+
+    public bool player1;
+    public bool player2;
+
     [HideInInspector] public GameObject player;
     [HideInInspector] public GameObject opponent;
 
@@ -36,6 +46,9 @@ public class PhotonCardManager : MonoBehaviour
     private List<Cards> opponentDeckCards = new();
     private List<GameObject> playerCardInstances = new();
     private List<GameObject> opponentCardInstances = new();
+
+    private Photon.Realtime.Player localPlayerPhoton;
+    private Photon.Realtime.Player opponentPhoton;
 
     private void Awake()
     {
@@ -49,8 +62,16 @@ public class PhotonCardManager : MonoBehaviour
     {
         AssignPlayers();
 
-        Photon.Realtime.Player localPlayerPhoton = PhotonNetwork.LocalPlayer;
-        Photon.Realtime.Player opponentPhoton = GetOpponentPlayer();
+        if ( PhotonNetwork.IsMasterClient ) {
+            player1 = true;
+            localPlayerPhoton = PhotonNetwork.LocalPlayer;
+        } else {
+            player2 = true;
+            opponentPhoton = GetOpponentPlayer ();
+        }
+
+        //Photon.Realtime.Player localPlayerPhoton = PhotonNetwork.LocalPlayer;
+        //Photon.Realtime.Player opponentPhoton = GetOpponentPlayer();
 
         string playerClass = PlayerPrefs.GetString("ChosenClass", "None");
         if (Enum.TryParse(playerClass, out ClassType playerClassType))

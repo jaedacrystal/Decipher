@@ -15,19 +15,19 @@ public class PlayArea : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        CardDrag cardDrag = eventData.pointerDrag?.GetComponent<CardDrag>();
-        if (cardDrag == null) return;
+        //CardDrag cardDrag = eventData.pointerDrag?.GetComponent<CardDrag>();
+        //if (cardDrag == null) return;
 
-        CardDisplay cardDisplay = cardDrag.GetComponent<CardDisplay>();
-        if (cardDisplay == null || cardDisplay.card == null) return;
+        //CardDisplay cardDisplay = cardDrag.GetComponent<CardDisplay>();
+        //if (cardDisplay == null || cardDisplay.card == null) return;
 
-        Debug.Log($"Card {cardDisplay.card.cardName} was played!");
+        //Debug.Log($"Card {cardDisplay.card.cardName} was played!");
 
-        GameObject player = cardManager.player;
-        GameObject opponent = cardManager.opponent;
-        cardDisplay.card.ApplyEffect(player, opponent);
+        //GameObject player = cardManager.player;
+        //GameObject opponent = cardManager.opponent;
+        //cardDisplay.card.ApplyEffect(player, opponent);
 
-        MoveToGraveyard(cardDrag);
+        //MoveToGraveyard(cardDrag);
     }
 
     private void MoveToGraveyard(CardDrag card)

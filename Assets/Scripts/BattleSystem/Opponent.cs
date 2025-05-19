@@ -29,7 +29,8 @@ public class Opponent : MonoBehaviour
             Cards chosenCard = playableCards[Random.Range(0, playableCards.Count)];
 
             opponentStats.UseBandwidth(chosenCard.bandwidth);
-            chosenCard.ApplyEffect(playerStats.gameObject, opponentStats.gameObject);
+            //chosenCard.ApplyEffect(playerStats.gameObject, opponentStats.gameObject);
+            chosenCard.ApplySingleplayerEffect ( cardManager.playerStats, cardManager.playerHealth, cardManager.opponentStats, cardManager.opponentHealth, chosenCard.target );
 
             TurnManager.Instance.DisplayPlayedCard("Opponent", chosenCard.cardName);
 
