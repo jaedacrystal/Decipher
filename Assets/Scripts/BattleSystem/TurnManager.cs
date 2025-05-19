@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.Scripting;
 using Unity.Collections.LowLevel.Unsafe;
 
 public class TurnManager : MonoBehaviour
@@ -20,6 +21,9 @@ public class TurnManager : MonoBehaviour
     public GameObject turnButton;
 
     public Cards cards;
+
+    public TextMeshProUGUI effectText;
+
 
     private void Awake()
     {
@@ -43,17 +47,18 @@ public class TurnManager : MonoBehaviour
         cards.isSingleplayer = true;
     }
 
+    [Preserve]
     public void EndPlayerTurn()
     {
         if (!isPlayerTurn) return;
 
         isPlayerTurn = false;
 
-        Invoke("OpponentTurn", 1);
+        Invoke(nameof ( OpponentTurn ), 1);
         UpdateTurnText();
     }
 
-
+    [Preserve]
     private void OpponentTurn()
     {
         if (health.currentHealth > 0)
@@ -65,9 +70,12 @@ public class TurnManager : MonoBehaviour
             opponent.RestoreBandwidth();
 
             BurnEffectTrigger();
+
+            effectText.text = "Turn End Was Called";
         }
     }
 
+    [Preserve]
     private void BurnEffectTrigger()
     {
         PlayerStats playerStats = FindObjectOfType<PlayerStats>();
@@ -79,6 +87,7 @@ public class TurnManager : MonoBehaviour
         }
     }
 
+    [Preserve]
     public void StartPlayerTurn()
     {
         if (health.currentHealth > 0)

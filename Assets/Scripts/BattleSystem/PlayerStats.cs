@@ -92,16 +92,17 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-    public void PlayCard(Cards card)
-    {
-        if (CanPlayCard(card.bandwidth))
-        {
-            UseBandwidth(card.bandwidth);
-            card.ApplyEffect(gameObject, TurnManager.Instance.opponent.gameObject);
+    //public void PlayCard(Cards card)
+    //{
+    //    if (CanPlayCard(card.bandwidth))
+    //    {
+    //        UseBandwidth(card.bandwidth);
+    //        card.ApplyEffect(gameObject, TurnManager.Instance.opponent.gameObject);
 
-            TurnManager.Instance.DisplayPlayedCard("Player", card.cardName);
-        }
-    }
+    //        TurnManager.Instance.DisplayPlayedCard("Player", card.cardName);
+    //    }
+    //}
+
     private void UpdateBandwidth()
     {
         bandwidthText.text = $"{currentBandwidth}/{maxBandwidth}";

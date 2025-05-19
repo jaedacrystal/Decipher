@@ -474,6 +474,7 @@ MonoBehaviour:
   scale: 2
   transitionSpeed: 0.3
   originalLocalPosition: {x: 0, y: 0, z: 0}
+  cardDisplay: {fileID: 0}
   desc: {fileID: 2793216232347803693}
   cardDesc: {fileID: 0}
   isClicked: 0

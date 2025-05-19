@@ -2,6 +2,7 @@ using System.Collections;
 using DG.Tweening;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEngine.Scripting;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Card", menuName = "Card")]
@@ -27,33 +28,24 @@ public class Cards : ScriptableObject
     public bool isSingleplayer = true;
     public TextMeshProUGUI cardText;
 
-    public void ApplyEffect(GameObject player, GameObject opponent)
-    {
-        //if (isSingleplayer)
-        //{
-            Health playerHealth = player.GetComponent<Health>();
-            PlayerStats playerStats = player.GetComponent<PlayerStats>();
-            Health opponentHealth = opponent.GetComponent<Health>();
-            PlayerStats opponentStats = opponent.GetComponent<PlayerStats>();
+    [Preserve]
+    public void ApplyEffect ( PlayerStats playerStats, Health playerHealth, PlayerStats opponentStats, Health opponentHealth, TargetType target ) {
+        
+        Debug.Log ( $"PlayerHealth: {playerHealth}, PlayerStats: {playerStats}" );
+        Debug.Log ( $"OpponentHealth: {opponentHealth}, OpponentStats: {opponentStats}" );
 
-            Debug.Log($"PlayerHealth: {playerHealth}, PlayerStats: {playerStats}");
-            Debug.Log($"OpponentHealth: {opponentHealth}, OpponentStats: {opponentStats}");
+        Health targetHealth = target == TargetType.Player ? playerHealth : opponentHealth;
+        PlayerStats targetStats = target == TargetType.Player ? playerStats : opponentStats;
 
-            GameObject targetObject = target == TargetType.Player ? player : opponent;
-            Health targetHealth = targetObject.GetComponent<Health>();
-            PlayerStats targetStats = targetObject.GetComponent<PlayerStats>();
+        if ( targetHealth == null || targetStats == null ) {
+            Debug.LogError ( "Target is missing required components!" );
+            return;
+        }
 
-            if (targetHealth == null || targetStats == null)
-            {
-                Debug.LogError("Target (player or opponent) is missing required components in singleplayer mode!");
-                return;
-            }
-
-            ApplyEffectLogic(targetHealth, targetStats);
-        //}
+        ApplyEffectLogic ( targetHealth, targetStats );
     }
 
-    private void ApplyEffectLogic(dynamic targetHealth, PlayerStats targetStats)
+    private void ApplyEffectLogic(Health targetHealth, PlayerStats targetStats)
     {
         switch (effectType)
         {
@@ -145,7 +137,7 @@ public class Cards : ScriptableObject
             return;
         }
 
-        Health playerHealth = cardManager.player.GetComponent<Health>();
+        Health playerHealth = cardManager.playerHealth;
         if (playerHealth != null)
         {
             playerHealth.TakeDamage(5);

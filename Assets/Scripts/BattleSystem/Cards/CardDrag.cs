@@ -3,8 +3,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
-{
+[RequireComponent ( typeof ( CanvasGroup ), typeof ( CardDisplay ) )]
+public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
     public bool isDragging;
 
     private GameObject graveyard;
@@ -20,127 +20,126 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     private Discard discard;
 
     private ViewCard viewCard;
+    private Canvas canvas;
 
-    private void Start()
-    {
-        canvasGroup = GetComponent<CanvasGroup>();
-        cardDisplay = GetComponent<CardDisplay>();
-        cardManager = FindObjectOfType<CardManager>();
-        playArea = GameObject.Find("PlayArea").GetComponent<RectTransform>();
-        discard = GetComponent<Discard>();
-        graveyard = GameObject.Find("Graveyard");
-        errorText = GameObject.Find("BandwidthErrorText").GetComponent<TextMeshProUGUI>();
-
-        viewCard = GetComponent<ViewCard>();
+    private void Awake () {
+        canvasGroup = GetComponent<CanvasGroup> ();
+        cardDisplay = GetComponent<CardDisplay> ();
+        discard = GetComponent<Discard> ();
+        viewCard = GetComponent<ViewCard> ();
+        canvas = GetComponentInParent<Canvas> ();
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        if (viewCard != null && viewCard.isClicked)
+    private void Start () {
+        // These must be present in the scene and correctly named
+        GameObject playAreaGO = GameObject.Find ( "PlayArea" );
+        GameObject graveyardGO = GameObject.Find ( "Graveyard" );
+        GameObject errorTextGO = GameObject.Find ( "BandwidthErrorText" );
+
+        if ( playAreaGO != null )
+            playArea = playAreaGO.GetComponent<RectTransform> ();
+
+        graveyard = graveyardGO;
+        errorText = errorTextGO != null ? errorTextGO.GetComponent<TextMeshProUGUI> () : null;
+
+        cardManager = FindObjectOfType<CardManager> ();
+    }
+
+    public void OnBeginDrag ( PointerEventData eventData ) {
+        if ( viewCard != null && viewCard.isClicked )
             return;
 
         isDragging = true;
-
-        if (isDragging)
-        {
-            canvasGroup.blocksRaycasts = false;
-            originalParent = transform.parent;
-            originalPosition = transform.localPosition;
-            transform.SetParent(originalParent.parent);
-        }
+        canvasGroup.blocksRaycasts = false;
+        originalParent = transform.parent;
+        originalPosition = transform.localPosition;
+        transform.SetParent ( originalParent.parent ); // Bring to top
     }
 
-    public void OnDrag(PointerEventData eventData)
-    {
-        if (viewCard != null && viewCard.isClicked) return;
+    public void OnDrag ( PointerEventData eventData ) {
+        if ( viewCard != null && viewCard.isClicked )
+            return;
+        if ( canvas == null || canvas.worldCamera == null )
+            return;
 
-        Vector3 worldPoint;
-        RectTransform rectTransform = GetComponent<RectTransform>();
-        Canvas canvas = GetComponentInParent<Canvas>();
-
-        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(rectTransform, eventData.position, canvas.worldCamera, out worldPoint))
-        {
+        RectTransform rectTransform = GetComponent<RectTransform> ();
+        if ( RectTransformUtility.ScreenPointToWorldPointInRectangle ( rectTransform, eventData.position, canvas.worldCamera, out Vector3 worldPoint ) ) {
             transform.position = worldPoint;
+            transform.SetAsLastSibling ();
         }
-
-        transform.SetAsLastSibling();
     }
 
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        if (viewCard != null && viewCard.isClicked) return;
+    public void OnEndDrag ( PointerEventData eventData ) {
+        if ( viewCard != null && viewCard.isClicked )
+            return;
 
         isDragging = false;
         canvasGroup.blocksRaycasts = true;
 
-        if (IsOverPlayArea(eventData))
-        {
-            PlayCard();
-        }
-        else
-        {
-            ReturnToOriginalPosition();
+        if ( IsOverPlayArea ( eventData ) ) {
+            PlayCard ();
+        } else {
+            ReturnToOriginalPosition ();
         }
     }
 
-    private bool IsOverPlayArea(PointerEventData eventData)
-    {
-        if (viewCard != null && viewCard.isClicked) return false;
-        return playArea != null && RectTransformUtility.RectangleContainsScreenPoint(playArea, eventData.position, GetComponentInParent<Canvas>().worldCamera);
+    private bool IsOverPlayArea ( PointerEventData eventData ) {
+        if ( playArea == null || canvas == null || canvas.worldCamera == null )
+            return false;
+
+        return RectTransformUtility.RectangleContainsScreenPoint ( playArea, eventData.position, canvas.worldCamera );
     }
 
-
-    private void PlayCard()
-    {
-        if (viewCard != null && viewCard.isClicked)
+    private void PlayCard () {
+        if ( cardDisplay?.card == null )
             return;
 
-        if (cardDisplay == null || cardDisplay.card == null) return;
+        PlayerStats playerStats = cardManager.playerStats;
 
-        PlayerStats playerStats = cardManager.player.GetComponent<PlayerStats>();
+        if ( playerStats != null && playerStats.CanPlayCard ( cardDisplay.card.bandwidth ) ) {
+            playerStats.UseBandwidth ( cardDisplay.card.bandwidth );
 
-        if (playerStats != null && playerStats.CanPlayCard(cardDisplay.card.bandwidth))
-        {
-            playerStats.UseBandwidth(cardDisplay.card.bandwidth);
-            cardDisplay.card.ApplyEffect(cardManager.opponent, cardManager.player);
+            cardDisplay.card.ApplyEffect ( cardManager.opponentStats, cardManager.opponentHealth, cardManager.playerStats, cardManager.playerHealth, cardDisplay.card.target );
 
-            MoveToGraveyard(this);
-        }
-        else
-        {
-            ShowError("Not enough bandwidth!");
-            Invoke("ReturnToOriginalPosition", 0.5f);
+            cardManager.effectText.text = cardDisplay.card.cardName + " Played";
+            MoveToGraveyard ( this );
+
+        } else {
+            ShowError ( "Not enough bandwidth!" );
+            Invoke ( nameof ( ReturnToOriginalPosition ), 0.5f );
         }
     }
 
-    private void MoveToGraveyard(CardDrag card)
-    {
-        card.transform.SetParent(graveyard.transform, false);
-        card.gameObject.SetActive(false);
-        FindObjectOfType<Discard>().UpdateGraveyardCounter();
+    private void MoveToGraveyard ( CardDrag card ) {
+        if ( graveyard == null )
+            return;
+
+        card.transform.SetParent ( graveyard.transform, false );
+        card.gameObject.SetActive ( false );
+
+        if ( discard != null ) {
+            discard.UpdateGraveyardCounter ();
+        }
     }
 
-    private void ReturnToOriginalPosition()
-    {
-        transform.SetParent(originalParent);
-        transform.DOLocalMove(originalPosition, 0.3f);
+    private void ReturnToOriginalPosition () {
+        transform.SetParent ( originalParent );
+        transform.DOLocalMove ( originalPosition, 0.3f );
     }
 
-    private void ShowError(string message)
-    {
-        if (errorText == null) return;
+    private void ShowError ( string message ) {
+        if ( errorText == null )
+            return;
 
         errorText.text = message;
-        errorText.gameObject.SetActive(true);
-        errorText.DOKill();
+        errorText.gameObject.SetActive ( true );
+        errorText.DOKill ();
         errorText.alpha = 1f;
 
-        errorText.transform.SetAsLastSibling();
+        errorText.transform.SetAsLastSibling ();
 
-        errorText.DOFade(0, 1.5f).SetDelay(1f).OnComplete(() =>
-        {
-            errorText.gameObject.SetActive(false);
-        });
+        errorText.DOFade ( 0, 1.5f ).SetDelay ( 1f ).OnComplete ( () => {
+            errorText.gameObject.SetActive ( false );
+        } );
     }
 }

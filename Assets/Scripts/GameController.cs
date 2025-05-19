@@ -13,7 +13,7 @@ public class GameController : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
 
-            Screen.SetResolution(1920, 1080, true);
+            Screen.SetResolution(Screen.width, Screen.height, true);
             Application.targetFrameRate = 60;
         }
         else
