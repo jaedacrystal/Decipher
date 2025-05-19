@@ -75,7 +75,7 @@ public class PhotonTurnManager : MonoBehaviourPunCallbacks
     private void DetermineStartingPlayer()
     {
         isPlayerTurn = PhotonNetwork.IsMasterClient;
-        UpdateTurnUI();
+        UpdateTurnText();
 
         if (isPlayerTurn)
             BeginPlayerTurn();
@@ -89,7 +89,7 @@ public class PhotonTurnManager : MonoBehaviourPunCallbacks
         if (!isPlayerTurn) return;
 
         isPlayerTurn = false;
-        UpdateTurnUI();
+        UpdateTurnText();
         turnButton.SetActive(false);
 
         photonView.RPC("BeginPlayerTurn", RpcTarget.Others);
@@ -103,16 +103,16 @@ public class PhotonTurnManager : MonoBehaviourPunCallbacks
             isPlayerTurn = true;
 
             playerStats.RestoreBandwidth();
-            CardManager cardManager = FindObjectOfType<CardManager>();
+            PhotonCardManager cardManager = FindObjectOfType<PhotonCardManager>();
             if (cardManager != null)
-                cardManager.DrawMultipleCards(4);
+                cardManager.DrawCardsForStartOfTurn();
 
             turnButton.SetActive(true);
-            UpdateTurnUI();
+            UpdateTurnText();
         }
     }
 
-    private void UpdateTurnUI()
+    private void UpdateTurnText()
     {
         if (health.currentHealth > 0)
         {

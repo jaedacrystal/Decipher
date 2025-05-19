@@ -172,7 +172,7 @@ public class PhotonCardManager : MonoBehaviour
         }
     }
 
-    private void DrawMultipleCards(GameObject deckObj, GameObject handObj, List<GameObject> cardList, int count)
+    public void DrawMultipleCards(GameObject deckObj, GameObject handObj, List<GameObject> cardList, int count)
     {
         for (int i = 0; i < count; i++)
         {

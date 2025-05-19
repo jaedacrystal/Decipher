@@ -84,6 +84,7 @@ public class Cards : ScriptableObject
 
     // MULTIPLAYER MODE
 
+    [PunRPC]
     public void ApplyEffectMulti ( PlayerStats playerStats, Health playerHealth, PlayerStats opponentStats, Health opponentHealth, GameObject target ) {
         //if ( localPlayer == null || remotePlayer == null ) {
         //    Debug.LogError ( "Local or remote player is null in multiplayer mode." );

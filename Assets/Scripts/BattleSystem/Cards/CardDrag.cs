@@ -150,7 +150,7 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         
 
         if (playerStats != null && playerStats.CanPlayCard(cardDisplay.card.bandwidth))
-        {
+        {   
             playerStats.UseBandwidth(cardDisplay.card.bandwidth);
 
             //cardDisplay.card.ApplyEffect(playerStats.gameObject, opponent);
@@ -160,7 +160,7 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             
             } else {
                 if ( photonCardManager.player1 ) {
-                    cardDisplay.card.ApplyEffectMulti ( photonCardManager.player2Stats, photonCardManager.player2Health, photonCardManager.player1Stats, photonCardManager.player1Health, photonCardManager.localPlayer );
+                    cardDisplay.card.ApplyEffectMulti ( photonCardManager.player1Stats, photonCardManager.player1Health, photonCardManager.player2Stats, photonCardManager.player2Health, photonCardManager.localPlayer );
                 } else {
                     cardDisplay.card.ApplyEffectMulti ( photonCardManager.player1Stats, photonCardManager.player1Health, photonCardManager.player2Stats, photonCardManager.player2Health, photonCardManager.opponentPlayer );
                 }

@@ -94,7 +94,6 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-
     private void UpdateTurnText()
     {
         if (health.currentHealth > 0)
@@ -127,7 +126,6 @@ public class TurnManager : MonoBehaviour
             }
         }
     }
-
     private void AnimateText(TextMeshProUGUI text)
     {
         text.gameObject.SetActive(true);
