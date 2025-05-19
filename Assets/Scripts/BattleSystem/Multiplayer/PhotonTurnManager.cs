@@ -137,7 +137,7 @@ public class PhotonTurnManager : MonoBehaviourPunCallbacks
     {
         if (health.currentHealth > 0 && opponentCardText != null)
         {
-            if (playerName != PhotonNetwork.NickName) // only show opponent's played cards
+            if (playerName != PhotonNetwork.NickName)
             {
                 opponentCardText.text = playerName + " played: " + cardName;
                 AnimateText(opponentCardText);
@@ -161,7 +161,6 @@ public class PhotonTurnManager : MonoBehaviourPunCallbacks
 
     public void OnTurnButtonPressed()
     {
-        // Call this from your button's OnClick event
         if (isPlayerTurn)
         {
             photonView.RPC("EndTurn", RpcTarget.All);
