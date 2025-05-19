@@ -5,7 +5,6 @@ using Photon.Pun;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.tvOS;
 
 [CreateAssetMenu(fileName = "New Card", menuName = "Card")]
 public class Cards : ScriptableObject
