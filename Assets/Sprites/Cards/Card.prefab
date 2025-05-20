@@ -322,6 +322,7 @@ GameObject:
   - component: {fileID: 5631259950968122366}
   - component: {fileID: 4619429165911345263}
   - component: {fileID: 9217557749534038711}
+  - component: {fileID: 2299204071621723816}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -474,9 +475,32 @@ MonoBehaviour:
   scale: 2
   transitionSpeed: 0.3
   originalLocalPosition: {x: 0, y: 0, z: 0}
+  cardDisplay: {fileID: 0}
   desc: {fileID: 2793216232347803693}
   cardDesc: {fileID: 0}
   isClicked: 0
+--- !u!114 &2299204071621723816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2559654619832128598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 1
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &2883268101580067719
 GameObject:
   m_ObjectHideFlags: 0
