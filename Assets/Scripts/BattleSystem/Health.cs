@@ -105,9 +105,24 @@ public class Health : MonoBehaviourPunCallbacks
                 healthBarText.text = $"{x}/{maxHealth}";
             }, currentHealth, 0.5f).SetEase(Ease.OutQuad);
 
+            PhotonCardManager photonCardManager = FindObjectOfType<PhotonCardManager>();
+
             if (currentHealth <= 0)
             {
-                Die();
+                if (photonCardManager != null)
+                {
+                    if (photonCardManager.player1Health)
+                    {
+                        Die();
+                    }
+                    else if (photonCardManager.player2Health)
+                    {
+                        Die();
+                    }
+                } else
+                {
+                    Die();
+                }
             }
         }
     }
@@ -182,19 +197,22 @@ public class Health : MonoBehaviourPunCallbacks
             {
                 retry.gameObject.SetActive(true);
                 prompt.gameObject.SetActive(false);
-            }
-
-            {
-                
-            }
-            if (pcm.player1)
-            {
-                retry.gameObject.SetActive(true);
-                prompt.gameObject.SetActive(false);
             } else
             {
-                retry.gameObject.SetActive(true);
-                prompt.gameObject.SetActive(false);
+                if (pcm.player1Health)
+                {
+                    retry.gameObject.SetActive(true);
+                    prompt.gameObject.SetActive(false);
+                }
+                else if (pcm.player2Health)
+                {
+                    retry.gameObject.SetActive(true);
+                    prompt.gameObject.SetActive(false);
+                }
+                else
+                {
+                    Invoke("LoadScene", 2f);
+                }
             }
         }
         else

@@ -83,6 +83,8 @@ MonoBehaviour:
   - RPC_Discard
   - SetInvulnerability
   - SetStrongPassword
+  - RPC_DataLeak
+  - RPC_Data
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

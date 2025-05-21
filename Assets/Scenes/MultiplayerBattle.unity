@@ -849,6 +849,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 11cc32260f2721841817f8d6f5f1a642, type: 2}
   - {fileID: 11400000, guid: 11cc32260f2721841817f8d6f5f1a642, type: 2}
   - {fileID: 11400000, guid: 11cc32260f2721841817f8d6f5f1a642, type: 2}
+  - {fileID: 11400000, guid: 11cc32260f2721841817f8d6f5f1a642, type: 2}
   playerHand: {fileID: 1229594255}
   playerDeckObj: {fileID: 356263367}
   playerDeckCounter: {fileID: 1991704883}
@@ -2128,7 +2129,7 @@ PrefabInstance:
       objectReference: {fileID: 875278707}
     - target: {fileID: 6628862113208020479, guid: b3f2d4ef0671ae14e9cd0fd162f2233a, type: 3}
       propertyPath: scene
-      value: NextScene
+      value: EndScene
       objectReference: {fileID: 0}
     - target: {fileID: 6628862113208020479, guid: b3f2d4ef0671ae14e9cd0fd162f2233a, type: 3}
       propertyPath: transitionTime

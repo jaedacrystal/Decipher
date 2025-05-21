@@ -4,8 +4,9 @@ using TMPro;
 using DG.Tweening;
 using System.Collections;
 using Photon.Pun;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
-public class PlayerStats : MonoBehaviour
+public class PlayerStats : MonoBehaviourPunCallbacks
 {
     public int maxBandwidth = 5;
     public int currentBandwidth;
@@ -91,6 +92,20 @@ public class PlayerStats : MonoBehaviour
                 bandwidthText.text = $"{x}/{maxBandwidth}";
             }, currentBandwidth, 0.5f).SetEase(Ease.OutQuad);
         }
+    }
+
+    [PunRPC]
+    public void RPC_DataLeak(PlayerStats stats)
+    {
+        stats.damageTakenMultiplier *= 1.2f;
+
+        Cards cards = FindObjectOfType<Cards>();
+
+        cards.cardText = GameObject.Find("CardText").GetComponent<TextMeshProUGUI>();
+        cards.cardText.text = "Opponent is now vulnerable to 20% more damage!";
+        cards.cardText.color = new Color(cards.cardText.color.r, cards.cardText.color.g, cards.cardText.color.b, 1);
+        cards.cardText.gameObject.SetActive(true);
+        cards.cardText.DOFade(1, 1f).OnComplete(() => cards.cardText.DOFade(0, 1f));
     }
 
     [PunRPC]

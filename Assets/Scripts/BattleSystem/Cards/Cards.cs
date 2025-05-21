@@ -84,11 +84,6 @@ public class Cards : ScriptableObject
                 HealSelf(targetHealth);
                 break;
 
-            case EffectType.Draw:
-
-                // cardManager.DrawMultipleCards(effectValue);
-                break;
-
             case EffectType.ShieldAndRetaliate:
                 targetHealth.Buff();
 
@@ -111,7 +106,20 @@ public class Cards : ScriptableObject
 
             case EffectType.DataLeak:
                 targetHealth.Debuff();
-                ApplyDataLeak(targetStats);
+
+                cardManager = FindObjectOfType<CardManager>();
+
+                if(cardManager == null)
+                {
+                    photonCardManager = FindObjectOfType<PhotonCardManager>();
+                    PlayerStats playerStats = targetStats;
+
+                    PhotonView photonView = targetStats.GetComponent<PhotonView>();
+                    photonView.RPC("RPC_DataLeak", RpcTarget.All);
+                } else
+                {
+                    ApplyDataLeak(targetStats);
+                }
                 break;
 
             case EffectType.ZeroDayExploit:
@@ -135,6 +143,8 @@ public class Cards : ScriptableObject
     {
         cardManager = FindObjectOfType<CardManager>();
 
+        targetHealth = cardManager.playerHealth;
+
         if (cardManager == null)
         {
             photonCardManager = FindObjectOfType<PhotonCardManager>();
@@ -147,10 +157,6 @@ public class Cards : ScriptableObject
             {
                 targetHealth = photonCardManager.player2Health;
             }
-        }
-        else
-        {
-            targetHealth = cardManager.playerHealth;
         }
 
         targetHealth.PublicHeal(effectValue);
