@@ -97,22 +97,16 @@ public class PhotonCardManager : MonoBehaviour
 
     private void AssignPlayers()
     {
-        PlayerStats[] allPlayers = FindObjectsOfType<PlayerStats>();
-
-        foreach (var ps in allPlayers)
+        if (!PhotonNetwork.IsMasterClient)
         {
-            PhotonView view = ps.GetComponent<PhotonView>();
-            if (view != null && view.IsMine)
-            {
-                localPlayer = ps.gameObject;
-                player = localPlayer; // Set for CardDrag compatibility
-            }
-            else
-            {
-                opponentPlayer = ps.gameObject;
-                opponent = opponentPlayer; // Set for CardDrag compatibility
-            }
+            // IF I'M NOT THE MASTER CLIENT, SWAP REFERENCES
+            GameObject temp = localPlayer;
+            localPlayer = opponentPlayer;
+            opponentPlayer = temp;
         }
+
+        player = localPlayer;
+        opponent = opponentPlayer;
 
         if (player == null)
             Debug.LogError("Local player not found in PhotonCardManager!");
@@ -165,12 +159,15 @@ public class PhotonCardManager : MonoBehaviour
     {
         foreach (var cardData in cardList)
         {
-            GameObject g = Instantiate(cardPrefab, deckObj.transform);
+            GameObject g = PhotonNetwork.Instantiate("Card", deckObj.transform.position, Quaternion.identity);
+            g.transform.SetParent(deckObj.transform);
             g.SetActive(false);
+
             g.GetComponent<CardDisplay>().SetCard(cardData);
             instanceList.Add(g);
         }
     }
+
 
     public void DrawMultipleCards(GameObject deckObj, GameObject handObj, List<GameObject> cardList, int count)
     {

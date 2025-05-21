@@ -3,7 +3,6 @@ using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Photon.Pun;
 
 public class CardDrag : MonoBehaviourPunCallbacks, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -161,11 +160,11 @@ public class CardDrag : MonoBehaviourPunCallbacks, IBeginDragHandler, IDragHandl
             
             } else {
                 if ( photonCardManager.player1 ) {
-                    //cardDisplay.card.ApplyEffectMulti ( photonCardManager.player1Stats, photonCardManager.player1Health, photonCardManager.player2Stats, photonCardManager.player2Health, photonCardManager.localPlayer );
-                    photonView.RPC ( "ExecuteMethodID", RpcTarget.All, "AttackProcessPLayer1" );
+                    cardDisplay.card.ApplyEffectMulti ( photonCardManager.player1Stats, photonCardManager.player1Health, photonCardManager.player2Stats, photonCardManager.player2Health, photonCardManager.localPlayer );
+                    //photonView.RPC ( "ExecuteMethodID", RpcTarget.All, "AttackProcessPlayer1");
                 } else {
-                    photonView.RPC ( "ExecuteMethodID", RpcTarget.All, "AttackProcessPLayer2" );
-                    //cardDisplay.card.ApplyEffectMulti ( photonCardManager.player1Stats, photonCardManager.player1Health, photonCardManager.player2Stats, photonCardManager.player2Health, photonCardManager.opponentPlayer );
+                    //photonView.RPC ( "ExecuteMethodID", RpcTarget.All, "AttackProcessPlayer2");
+                    cardDisplay.card.ApplyEffectMulti ( photonCardManager.player1Stats, photonCardManager.player1Health, photonCardManager.player2Stats, photonCardManager.player2Health, photonCardManager.opponentPlayer );
                 }
             }
             
@@ -182,11 +181,11 @@ public class CardDrag : MonoBehaviourPunCallbacks, IBeginDragHandler, IDragHandl
     [PunRPC]
     public void ExecuteMethodID ( string methodID ) {
         switch ( methodID ) {
-            case "AttackProcessPLayer1" :
+            case "AttackProcessPlayer1" :
             cardDisplay.card.ApplyEffectMulti ( photonCardManager.player1Stats, photonCardManager.player1Health, photonCardManager.player2Stats, photonCardManager.player2Health, photonCardManager.localPlayer );
             break;
-            case "AttackProcessPLayer2" :
-            cardDisplay.card.ApplyEffectMulti ( photonCardManager.player1Stats, photonCardManager.player1Health, photonCardManager.player2Stats, photonCardManager.player2Health, photonCardManager.opponentPlayer );
+            case "AttackProcessPlayer2" :
+            cardDisplay.card.ApplyEffectMulti ( photonCardManager.player1Stats, photonCardManager.player1Health, photonCardManager.player2Stats, photonCardManager.player2Health, photonCardManager.opponentPlayer);
             break;
             default :
             Debug.Log ("UNKNOWN METHOD ID");

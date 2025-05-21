@@ -2373,7 +2373,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayerTurn: 0
-  playerStats: {fileID: 1763882595}
+  localStats: {fileID: 1763882595}
+  opponentStats: {fileID: 2012004969}
   health: {fileID: 1763882596}
   turnText: {fileID: 112483750}
   opponentCardText: {fileID: 2128958525}
@@ -3948,7 +3949,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
       propertyPath: m_Name
-      value: Player
+      value: Player1
       objectReference: {fileID: 0}
     - target: {fileID: 2424541493866647223, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
       propertyPath: sceneViewId
@@ -5894,7 +5895,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1772447832899665877, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
       propertyPath: m_Name
-      value: Enemy
+      value: Player2
       objectReference: {fileID: 0}
     - target: {fileID: 2424541493866647223, guid: a5c8db0eff35b9b42914c06fe7fac3e5, type: 3}
       propertyPath: sceneViewId

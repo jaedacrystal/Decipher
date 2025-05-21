@@ -10,7 +10,8 @@ public class PhotonTurnManager : MonoBehaviourPunCallbacks
 
     [Header("Player")]
     public bool isPlayerTurn = false;
-    public PlayerStats playerStats;
+    public PlayerStats localStats;
+    public PlayerStats opponentStats;
     public Health health;
 
     [Header("Game Objects")]
@@ -40,6 +41,7 @@ public class PhotonTurnManager : MonoBehaviourPunCallbacks
         turnText.color = new Color(turnText.color.r, turnText.color.g, turnText.color.b, 1);
         DetermineStartingPlayer();
         DisplayPlayerInfo();
+        turnText.gameObject.SetActive(false);
     }
 
     private void DisplayPlayerInfo()
@@ -78,9 +80,12 @@ public class PhotonTurnManager : MonoBehaviourPunCallbacks
         UpdateTurnText();
 
         if (isPlayerTurn)
+        {
             BeginPlayerTurn();
-        else
+        } else
+        {
             turnButton.SetActive(false);
+        }   
     }
 
     [PunRPC]
@@ -102,10 +107,17 @@ public class PhotonTurnManager : MonoBehaviourPunCallbacks
         {
             isPlayerTurn = true;
 
-            playerStats.RestoreBandwidth();
             PhotonCardManager cardManager = FindObjectOfType<PhotonCardManager>();
             if (cardManager != null)
                 cardManager.DrawCardsForStartOfTurn();
+
+            if (cardManager.player1)
+            {
+                localStats.RestoreBandwidth();
+            } else
+            {
+                opponentStats.RestoreBandwidth();
+            }
 
             turnButton.SetActive(true);
             UpdateTurnText();
@@ -123,7 +135,7 @@ public class PhotonTurnManager : MonoBehaviourPunCallbacks
             turnText.gameObject.SetActive(true);
             turnText.DOFade(1, 1f);
 
-            Invoke(nameof(HideTurnText), 1);
+            Invoke("HideTurnText", 1);
         }
     }
 
