@@ -81,15 +81,12 @@ public class Cards : ScriptableObject
                 break;
 
             case EffectType.Heal:
-                targetHealth.PublicHeal(effectValue);
+                HealSelf(targetHealth);
                 break;
 
             case EffectType.Draw:
-                CardManager cardManager = FindObjectOfType<CardManager>();
-                if (cardManager != null)
-                {
-                    cardManager.DrawMultipleCards(effectValue);
-                }
+
+                // cardManager.DrawMultipleCards(effectValue);
                 break;
 
             case EffectType.ShieldAndRetaliate:
@@ -133,6 +130,31 @@ public class Cards : ScriptableObject
     }
 
     // SPECIAL EFFECT METHODS
+
+    public void HealSelf(Health targetHealth)
+    {
+        cardManager = FindObjectOfType<CardManager>();
+
+        if (cardManager == null)
+        {
+            photonCardManager = FindObjectOfType<PhotonCardManager>();
+
+            if (photonCardManager.player1)
+            {
+                targetHealth = photonCardManager.player1Health;
+            }
+            else
+            {
+                targetHealth = photonCardManager.player2Health;
+            }
+        }
+        else
+        {
+            targetHealth = cardManager.playerHealth;
+        }
+
+        targetHealth.PublicHeal(effectValue);
+    }
 
     private void ApplyForgetPasswordFromGraveyard()
     {
@@ -244,16 +266,30 @@ public class Cards : ScriptableObject
 
         // Coroutine
         turnManager = FindObjectOfType<TurnManager>();
-        photonTurnManager = FindObjectOfType<PhotonTurnManager>();
+        cardManager = FindObjectOfType<CardManager>();
+
+        if (turnManager == null && cardManager == null) {
+            photonTurnManager = FindObjectOfType<PhotonTurnManager>();
+            photonCardManager = FindObjectOfType<PhotonCardManager>();
+        }
 
         if (turnManager != null)
         {
+            targetStats = turnManager.playerStats;
             targetStats.isProtected = true;
             targetStats.damageTakenMultiplier *= 0.5f;
             turnManager.StartCoroutine(RemoveStrongPasswordAfterTurn(targetStats));
         }
         else if (photonTurnManager != null)
         {
+            if (photonCardManager.player1)
+            {
+                targetStats = photonCardManager.player1Stats;
+            }
+            else
+            {
+                targetStats = photonCardManager.player2Stats;
+            }
             photonView.RPC("SetStrongPassword", RpcTarget.All, true);
             photonTurnManager.StartCoroutine(RemoveStrongPasswordAfterTurn(targetStats));
         }
@@ -267,6 +303,14 @@ public class Cards : ScriptableObject
             yield return new WaitUntil(() => !TurnManager.Instance.isPlayerTurn);
             yield return new WaitUntil(() => TurnManager.Instance.isPlayerTurn);
         } else {
+            if (photonCardManager.player1)
+            {
+                targetStats = photonCardManager.player1Stats;
+            }
+            else
+            {
+                targetStats = photonCardManager.player2Stats;
+            }
             yield return new WaitUntil(() => !PhotonTurnManager.Instance.isPlayerTurn);
             yield return new WaitUntil(() => PhotonTurnManager.Instance.isPlayerTurn);
         }
