@@ -866,6 +866,8 @@ MonoBehaviour:
   player2: 0
   player: {fileID: 0}
   opponent: {fileID: 0}
+  playerNameText: {fileID: 1405841033}
+  opponentNameText: {fileID: 1206359554}
 --- !u!1 &393462279
 GameObject:
   m_ObjectHideFlags: 0
@@ -2381,6 +2383,7 @@ MonoBehaviour:
   turnButton: {fileID: 421381042}
   playerNameText: {fileID: 1405841033}
   opponentNameText: {fileID: 1206359554}
+  photonCardManager: {fileID: 356263370}
 --- !u!114 &939816230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4168,6 +4171,7 @@ MonoBehaviour:
   flashColor: {r: 1, g: 0, b: 0, a: 0}
   flashDuration: 0.3
   retry: {fileID: 1414238843}
+  pcm: {fileID: 356263370}
 --- !u!114 &1763882597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6118,6 +6122,7 @@ MonoBehaviour:
   flashColor: {r: 1, g: 1, b: 1, a: 0}
   flashDuration: 0.3
   retry: {fileID: 1414238843}
+  pcm: {fileID: 356263370}
 --- !u!114 &2012004971
 MonoBehaviour:
   m_ObjectHideFlags: 0

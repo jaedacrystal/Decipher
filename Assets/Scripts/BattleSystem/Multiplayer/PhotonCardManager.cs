@@ -50,6 +50,9 @@ public class PhotonCardManager : MonoBehaviour
     private Photon.Realtime.Player localPlayerPhoton;
     private Photon.Realtime.Player opponentPhoton;
 
+    public TextMeshProUGUI playerNameText;
+    public TextMeshProUGUI opponentNameText;
+
     private void Awake()
     {
         if (Instance == null)
@@ -113,7 +116,6 @@ public class PhotonCardManager : MonoBehaviour
         if (opponent == null)
             Debug.LogWarning("Opponent player not found in PhotonCardManager!");
     }
-
 
     private List<Cards> BuildDeckForClass(ClassType classType, string playerPrefsKey)
     {
@@ -207,6 +209,24 @@ public class PhotonCardManager : MonoBehaviour
             return JsonUtility.FromJson<CardListWrapper>(cardsJson)?.cards ?? new List<Cards>();
         }
         return new List<Cards>();
+    }
+
+    [PunRPC]
+    public void RPC_Discard()
+    {
+        DiscardCardFromOpponentDeck();
+    }
+
+    public void DiscardCardFromOpponentDeck()
+    {
+        if (opponentDeckCards.Count == 0) return;
+
+        int randomIndex = UnityEngine.Random.Range(0, opponentDeckCards.Count);
+        Cards cardToDiscard = opponentDeckCards[randomIndex];
+
+        opponentDeckCards.RemoveAt(randomIndex);
+
+        Debug.Log("Opponent discarded a card: " + cardToDiscard.cardName);
     }
 
     public void DrawCardsForStartOfTurn()

@@ -160,14 +160,13 @@ public class CardDrag : MonoBehaviourPunCallbacks, IBeginDragHandler, IDragHandl
             
             } else {
                 if ( photonCardManager.player1 ) {
-                    cardDisplay.card.ApplyEffectMulti ( photonCardManager.player1Stats, photonCardManager.player1Health, photonCardManager.player2Stats, photonCardManager.player2Health, photonCardManager.localPlayer );
+                    cardDisplay.card.ApplyEffectMulti ( photonCardManager.player1Stats, photonCardManager.player1Health, photonCardManager.player2Stats, photonCardManager.player2Health, photonCardManager.opponentPlayer );
                     //photonView.RPC ( "ExecuteMethodID", RpcTarget.All, "AttackProcessPlayer1");
                 } else {
                     //photonView.RPC ( "ExecuteMethodID", RpcTarget.All, "AttackProcessPlayer2");
-                    cardDisplay.card.ApplyEffectMulti ( photonCardManager.player1Stats, photonCardManager.player1Health, photonCardManager.player2Stats, photonCardManager.player2Health, photonCardManager.opponentPlayer );
+                    cardDisplay.card.ApplyEffectMulti ( photonCardManager.player2Stats, photonCardManager.player2Health, photonCardManager.player1Stats, photonCardManager.player1Health, photonCardManager.opponentPlayer );
                 }
             }
-            
 
             MoveToGraveyard (this);
         }
@@ -178,45 +177,6 @@ public class CardDrag : MonoBehaviourPunCallbacks, IBeginDragHandler, IDragHandl
         }
     }
 
-    [PunRPC]
-    public void ExecuteMethodID ( string methodID ) {
-        switch ( methodID ) {
-            case "AttackProcessPlayer1" :
-            cardDisplay.card.ApplyEffectMulti ( photonCardManager.player1Stats, photonCardManager.player1Health, photonCardManager.player2Stats, photonCardManager.player2Health, photonCardManager.localPlayer );
-            break;
-            case "AttackProcessPlayer2" :
-            cardDisplay.card.ApplyEffectMulti ( photonCardManager.player1Stats, photonCardManager.player1Health, photonCardManager.player2Stats, photonCardManager.player2Health, photonCardManager.opponentPlayer);
-            break;
-            default :
-            Debug.Log ("UNKNOWN METHOD ID");
-            break;
-        }
-    }
-
-
-
-    //private void PlayCard () {
-    //    if ( cardDisplay?.card == null )
-    //        return;
-
-    //    PlayerStats playerStats = cardManager.playerStats;
-
-    //    if ( playerStats != null && playerStats.CanPlayCard ( cardDisplay.card.bandwidth ) ) {
-    //        playerStats.UseBandwidth ( cardDisplay.card.bandwidth );
-
-    //        cardDisplay.card.ApplyEffect ( cardManager.opponentStats, cardManager.opponentHealth, cardManager.playerStats, cardManager.playerHealth, cardDisplay.card.target );
-
-    //        cardManager.effectText.text = cardDisplay.card.cardName + " Played";
-    //        MoveToGraveyard ( this );
-
-    //    } else {
-    //        ShowError ( "Not enough bandwidth!" );
-    //        Invoke ( nameof ( ReturnToOriginalPosition ), 0.5f );
-    //    }
-    //}
-
-
-
     private PlayerStats FindLocalPlayerStats()
     {
         foreach (PlayerStats stats in FindObjectsOfType<PlayerStats>())
@@ -226,16 +186,6 @@ public class CardDrag : MonoBehaviourPunCallbacks, IBeginDragHandler, IDragHandl
         }
         return null;
     }
-
-    //private GameObject FindOpponentGameObject()
-    //{
-    //    foreach (PlayerStats stats in FindObjectsOfType<PlayerStats>())
-    //    {
-    //        PhotonView view = stats.GetComponent<PhotonView>();
-    //        if (view != null && !view.IsMine) return stats.gameObject;
-    //    }
-    //    return null;
-    //}
 
     private PlayerStats FindOpponentStats () {
         foreach ( PlayerStats stats in FindObjectsOfType<PlayerStats> () ) {

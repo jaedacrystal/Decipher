@@ -22,6 +22,8 @@ public class PhotonTurnManager : MonoBehaviourPunCallbacks
     public TextMeshProUGUI playerNameText;
     public TextMeshProUGUI opponentNameText;
 
+    public PhotonCardManager photonCardManager;
+
     private void Awake()
     {
         if (Instance == null)
@@ -48,30 +50,37 @@ public class PhotonTurnManager : MonoBehaviourPunCallbacks
     {
         Player localPlayer = PhotonNetwork.LocalPlayer;
 
-        if (playerNameText != null)
+        if (photonCardManager.player1)
         {
-            //string playerClass = localPlayer.CustomProperties.ContainsKey("playerClass")
-            //    ? localPlayer.CustomProperties["playerClass"].ToString()
-            //    : "None";
-
             playerNameText.text = $"{localPlayer.NickName}";
-        }
 
-        if (opponentNameText != null)
-        {
-            foreach (var p in PhotonNetwork.PlayerList)
+            if (opponentNameText != null)
             {
-                if (!p.IsLocal)
+                foreach (var p in PhotonNetwork.PlayerList)
                 {
-                    //string oppClass = p.CustomProperties.ContainsKey("playerClass")
-                    //    ? p.CustomProperties["playerClass"].ToString()
-                    //    : "None";
-
-                    opponentNameText.text = $"{p.NickName}";
-                    break;
+                    if (!p.IsLocal)
+                    {
+                        opponentNameText.text = $"{p.NickName}";
+                        break;
+                    }
                 }
             }
-        }
+        } else
+        {
+            opponentNameText.text = $"{localPlayer.NickName}";
+
+            if (playerNameText != null)
+            {
+                foreach (var p in PhotonNetwork.PlayerList)
+                {
+                    if (!p.IsLocal)
+                    {
+                        playerNameText.text = $"{p.NickName}";
+                        break;
+                    }
+                }
+            }
+        }        
     }
 
     private void DetermineStartingPlayer()

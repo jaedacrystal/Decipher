@@ -27,26 +27,11 @@ public class Cards : ScriptableObject
     public bool isSingleplayer = true;
     public TextMeshProUGUI cardText;
 
-    private void Start()
-    {
-        isSingleplayer = GameManager.Instance.IsSingleplayer;
-    }
+    public CardManager cardManager;
+    public PhotonCardManager photonCardManager;
 
-    //public void ApplyEffect(GameObject player, GameObject opponent)
-    //{
-    //    if (GameManager.Instance.IsSingleplayer == true)
-    //        ApplySingleplayerEffect(player, opponent);
-    //    else
-    //        ApplyMultiplayerEffect(player, opponent);
-    //}
-
-    //public void ApplyEffect ( PlayerStats playerStats, Health playerHealth, PlayerStats opponentStats, Health opponentHealth, TargetType target ) {
-
-    //    if ( GameManager.Instance.IsSingleplayer == true )
-    //        ApplySingleplayerEffect ( playerStats, playerHealth, opponentStats, opponentHealth, target );
-    //    //else
-    //        //ApplyMultiplayerEffect ( player, opponent );
-    //}
+    TurnManager turnManager;
+    PhotonTurnManager photonTurnManager;
 
     public void ApplySingleplayerEffect ( PlayerStats playerStats, Health playerHealth, PlayerStats opponentStats, Health opponentHealth, TargetType target ) {
         Debug.Log ( $"PlayerHealth: {playerHealth}, PlayerStats: {playerStats}" );
@@ -63,33 +48,10 @@ public class Cards : ScriptableObject
         ApplyEffectLogic ( targetHealth, targetStats );
     }
 
-
-    //public void ApplySingleplayerEffect ( GameObject player, GameObject opponent ) {
-    //    Health playerHealth = player.GetComponent<Health> ();
-    //    PlayerStats playerStats = player.GetComponent<PlayerStats> ();
-    //    Health opponentHealth = opponent.GetComponent<Health> ();
-    //    PlayerStats opponentStats = opponent.GetComponent<PlayerStats> ();
-
-    //    GameObject targetObject = target == TargetType.Player ? player : opponent;
-    //    Health targetHealth = targetObject.GetComponent<Health> ();
-    //    PlayerStats targetStats = targetObject.GetComponent<PlayerStats> ();
-
-    //    if ( targetHealth == null || targetStats == null ) {
-    //        Debug.LogError ( "Target (player or opponent) is missing required components in singleplayer mode!" );
-    //        return;
-    //    }
-
-    //    ApplyEffectLogic ( targetHealth, targetStats );
-    //}
-
     // MULTIPLAYER MODE
 
     [PunRPC]
     public void ApplyEffectMulti ( PlayerStats playerStats, Health playerHealth, PlayerStats opponentStats, Health opponentHealth, GameObject target ) {
-        //if ( localPlayer == null || remotePlayer == null ) {
-        //    Debug.LogError ( "Local or remote player is null in multiplayer mode." );
-        //    return;
-        //}
 
         Health attackHealth = playerHealth;
         PlayerStats attackingStats = playerStats;
@@ -97,64 +59,8 @@ public class Cards : ScriptableObject
         Health targetHealth = opponentHealth;
         PlayerStats targetStats = opponentStats;
 
-        //if ( localHealth == null || localStats == null || remoteHealth == null || remoteStats == null ) {
-        //    Debug.LogError ( "Missing Health or PlayerStats on one of the players in multiplayer mode." );
-        //    return;
-        //}
-
-        //PhotonCardManager photonCardManager = FindAnyObjectByType<PhotonCardManager> ();
-        //TurnManager turnManager = FindAnyObjectByType<TurnManager> ();
-
-        //GameObject targetObject = target == TargetType.Player ? localPlayer : remotePlayer;
-
-
-        //if ( photonCardManager.player1 && turnManager.isPlayerTurn ) {
-        //    GameObject targetObject = remotePlayer;
-        //} else {
-        //    GameObject targetObject = localPlayer;
-        //}
-
         ApplyEffectLogic ( targetHealth, targetStats );
     }
-
-    // ORIGINAL
-    //public void ApplyMultiplayerEffect(GameObject localPlayer, GameObject remotePlayer)
-    //{
-    //    if (localPlayer == null || remotePlayer == null)
-    //    {
-    //        Debug.LogError("Local or remote player is null in multiplayer mode.");
-    //        return;
-    //    }
-
-    //    Health localHealth = localPlayer.GetComponent<Health>();
-    //    PlayerStats localStats = localPlayer.GetComponent<PlayerStats>();
-    //    Health remoteHealth = remotePlayer.GetComponent<Health>();
-    //    PlayerStats remoteStats = remotePlayer.GetComponent<PlayerStats>();
-
-    //    if (localHealth == null || localStats == null || remoteHealth == null || remoteStats == null)
-    //    {
-    //        Debug.LogError("Missing Health or PlayerStats on one of the players in multiplayer mode.");
-    //        return;
-    //    }
-
-    //    //PhotonCardManager photonCardManager = FindAnyObjectByType<PhotonCardManager> ();
-    //    //TurnManager turnManager = FindAnyObjectByType<TurnManager> ();
-
-    //    GameObject targetObject = target == TargetType.Player ? localPlayer : remotePlayer;
-
-
-    //    //if ( photonCardManager.player1 && turnManager.isPlayerTurn ) {
-    //    //    GameObject targetObject = remotePlayer;
-    //    //} else {
-    //    //    GameObject targetObject = localPlayer;
-    //    //}
-
-
-    //    Health targetHealth = targetObject.GetComponent<Health>();
-    //    PlayerStats targetStats = targetObject.GetComponent<PlayerStats>();
-
-    //    ApplyEffectLogic(targetHealth, targetStats);
-    //}
 
     // EFFECT LOGIC
     private void ApplyEffectLogic(Health targetHealth, PlayerStats targetStats)
@@ -162,7 +68,7 @@ public class Cards : ScriptableObject
         switch (effectType)
         {
             case EffectType.Attack:
-                targetHealth.TakeDamage ( effectValue );
+                targetHealth.PublicTakeDamage ( effectValue );
                 break;
 
             case EffectType.Defense:
@@ -175,19 +81,31 @@ public class Cards : ScriptableObject
                 break;
 
             case EffectType.Heal:
-                targetHealth.Heal(effectValue);
+                targetHealth.PublicHeal(effectValue);
                 break;
 
             case EffectType.Draw:
                 CardManager cardManager = FindObjectOfType<CardManager>();
                 if (cardManager != null)
+                {
                     cardManager.DrawMultipleCards(effectValue);
+                }
                 break;
 
             case EffectType.ShieldAndRetaliate:
+                targetHealth.Buff();
+
                 TurnManager turnManager = TurnManager.Instance;
                 if (turnManager != null)
+                {
                     turnManager.StartCoroutine(ApplyShieldAndRetaliate(targetHealth, targetStats, effectValue));
+                } else {
+                    PhotonTurnManager photonTurnManager = PhotonTurnManager.Instance;
+                    if (photonTurnManager != null)
+                    {
+                        photonTurnManager.StartCoroutine(ApplyShieldAndRetaliate(targetHealth, targetStats, effectValue));
+                    }
+                }
                 break;
 
             case EffectType.Burn:
@@ -219,17 +137,22 @@ public class Cards : ScriptableObject
     private void ApplyForgetPasswordFromGraveyard()
     {
         CardManager cardManager = FindObjectOfType<CardManager>();
+
+        if (cardManager == null)
+        {
+            PhotonCardManager photonCardManager = FindObjectOfType<PhotonCardManager>();
+        }
+
         Discard discard = FindObjectOfType<Discard>();
-        if (cardManager == null || discard == null) return;
+        if (discard == null) return;
 
         Transform graveyardTransform = discard.graveyard.transform;
         int graveyardCount = graveyardTransform.childCount;
         if (graveyardCount == 0) return;
 
-        //Health playerHealth = cardManager.player.GetComponent<Health>();
         Health playerHealth = cardManager.playerHealth;
         if (playerHealth != null)
-            playerHealth.TakeDamage(5);
+            playerHealth.PublicTakeDamage(2);
 
         int randomIndex = Random.Range(0, graveyardCount);
         Transform cardTransform = graveyardTransform.GetChild(randomIndex);
@@ -253,34 +176,100 @@ public class Cards : ScriptableObject
     {
         CardManager cardManager = FindObjectOfType<CardManager>();
 
+        if (cardManager != null)
+        {
+            cardManager.DiscardCardFromOpponentDeck();
+            cardManager.DiscardCardFromOpponentDeck();
+        } else
+        {
+            photonCardManager = FindObjectOfType<PhotonCardManager>();
+
+            if (photonCardManager.player1)
+            {
+                PhotonView photonView = photonCardManager.GetComponent<PhotonView>();
+                photonView.RPC("RPC_Discard", RpcTarget.Others);
+                photonView.RPC("RPC_Discard", RpcTarget.Others);
+            }
+        }
+
         cardText = GameObject.Find("CardText").GetComponent<TextMeshProUGUI>();
         cardText.text = "Opponent has discarded 2 cards";
         cardText.color = new Color(cardText.color.r, cardText.color.g, cardText.color.b, 1);
         cardText.gameObject.SetActive(true);
         cardText.DOFade(1, 1f).OnComplete(() => cardText.DOFade(0, 1f));
-
-        cardManager.DiscardCardFromOpponentDeck();
-        cardManager.DiscardCardFromOpponentDeck();
     }
+
+    //private void ApplyStrongPassword(PlayerStats targetStats)
+    //{
+    //    targetStats.isProtected = true;
+    //    targetStats.damageTakenMultiplier *= 0.5f;
+
+    //    cardText = GameObject.Find("CardText").GetComponent<TextMeshProUGUI>();
+    //    cardText.text = "Strong Password applied!";
+    //    cardText.color = new Color(cardText.color.r, cardText.color.g, cardText.color.b, 1);
+    //    cardText.gameObject.SetActive(true);
+    //    cardText.DOFade(1, 1f).OnComplete(() => cardText.DOFade(0, 1f));
+
+    //    turnManager = FindObjectOfType<TurnManager>();
+    //    photonTurnManager = FindObjectOfType<PhotonTurnManager>();
+
+    //    if (turnManager != null) {
+
+    //        TurnManager turnManager = TurnManager.Instance;
+    //        if (turnManager != null)
+    //        {
+    //            turnManager.StartCoroutine(RemoveStrongPasswordAfterTurn(targetStats));
+    //        }
+    //        else
+    //        {
+    //            PhotonTurnManager photonTurnManager = PhotonTurnManager.Instance;
+    //            if (photonTurnManager != null)
+    //            {
+    //                photonTurnManager.StartCoroutine(RemoveStrongPasswordAfterTurn(targetStats));
+    //            }
+    //        }
+    //    }
+    //}
 
     private void ApplyStrongPassword(PlayerStats targetStats)
     {
-        targetStats.isProtected = true;
-        targetStats.damageTakenMultiplier *= 0.5f;
+        PhotonView photonView = targetStats.GetComponent<PhotonView>();
 
+        // UI Feedback
         cardText = GameObject.Find("CardText").GetComponent<TextMeshProUGUI>();
         cardText.text = "Strong Password applied!";
         cardText.color = new Color(cardText.color.r, cardText.color.g, cardText.color.b, 1);
         cardText.gameObject.SetActive(true);
         cardText.DOFade(1, 1f).OnComplete(() => cardText.DOFade(0, 1f));
 
-        TurnManager.Instance.StartCoroutine(RemoveStrongPasswordAfterTurn(targetStats));
+        // Coroutine
+        turnManager = FindObjectOfType<TurnManager>();
+        photonTurnManager = FindObjectOfType<PhotonTurnManager>();
+
+        if (turnManager != null)
+        {
+            targetStats.isProtected = true;
+            targetStats.damageTakenMultiplier *= 0.5f;
+            turnManager.StartCoroutine(RemoveStrongPasswordAfterTurn(targetStats));
+        }
+        else if (photonTurnManager != null)
+        {
+            photonView.RPC("SetStrongPassword", RpcTarget.All, true);
+            photonTurnManager.StartCoroutine(RemoveStrongPasswordAfterTurn(targetStats));
+        }
     }
+
 
     private IEnumerator RemoveStrongPasswordAfterTurn(PlayerStats targetStats)
     {
-        yield return new WaitUntil(() => !TurnManager.Instance.isPlayerTurn);
-        yield return new WaitUntil(() => TurnManager.Instance.isPlayerTurn);
+        if (turnManager != null)
+        {
+            yield return new WaitUntil(() => !TurnManager.Instance.isPlayerTurn);
+            yield return new WaitUntil(() => TurnManager.Instance.isPlayerTurn);
+        } else {
+            yield return new WaitUntil(() => !PhotonTurnManager.Instance.isPlayerTurn);
+            yield return new WaitUntil(() => PhotonTurnManager.Instance.isPlayerTurn);
+        }
 
         targetStats.isProtected = false;
         targetStats.damageTakenMultiplier = 1f;
@@ -307,7 +296,7 @@ public class Cards : ScriptableObject
     private void ApplyZeroDayExploit(Health targetHealth, PlayerStats targetStats, PlayerStats opponentStats)
     {
         int damage = targetStats.isProtected ? effectValue : effectValue * 2;
-        targetHealth.TakeDamage(damage);
+        targetHealth.PublicTakeDamage(damage);
 
         cardText = GameObject.Find("CardText").GetComponent<TextMeshProUGUI>();
         cardText.text = $"Opponent took {damage} damage!";
@@ -316,14 +305,54 @@ public class Cards : ScriptableObject
         cardText.DOFade(1, 1f).OnComplete(() => cardText.DOFade(0, 1f));
     }
 
-    private IEnumerator ApplyShieldAndRetaliate(Health playerHealth, PlayerStats opponentStats, int effectValue)
+    private IEnumerator ApplyShieldAndRetaliate(Health casterHealth, PlayerStats casterStats, int effectValue)
     {
-        TurnManager turnManager = TurnManager.Instance;
+        cardManager = FindObjectOfType<CardManager>();
 
-        playerHealth.TakeDamage(effectValue);
-        yield return new WaitUntil(() => !turnManager.isPlayerTurn);
+        if (cardManager == null)
+        {
+            photonCardManager = FindObjectOfType<PhotonCardManager>();
+        }
 
-        opponentStats.isInvulnerable = true;
+        Health opponentHealth;
+        PlayerStats playerToMakeInvulnerable;
+
+        if (cardManager != null)
+        {
+            TurnManager turnManager = TurnManager.Instance;
+
+            opponentHealth = cardManager.opponentHealth;
+            playerToMakeInvulnerable = cardManager.playerStats;
+
+            opponentHealth.PublicTakeDamage(effectValue);
+
+            yield return new WaitUntil(() => !turnManager.isPlayerTurn);
+
+            playerToMakeInvulnerable.isInvulnerable = true;
+        }
+        else
+        {
+            PhotonTurnManager turnManager = PhotonTurnManager.Instance;
+
+            if (photonCardManager.player1)
+            {
+                opponentHealth = photonCardManager.player2Health;
+                playerToMakeInvulnerable = photonCardManager.player1Stats;
+            }
+            else
+            {
+                opponentHealth = photonCardManager.player1Health;
+                playerToMakeInvulnerable = photonCardManager.player2Stats;
+            }
+
+            opponentHealth.PublicTakeDamage(effectValue);
+
+            yield return new WaitUntil(() => !turnManager.isPlayerTurn);
+
+            PhotonView photonView = playerToMakeInvulnerable.GetComponent<PhotonView>();
+
+            photonView.RPC("SetInvulnerability", RpcTarget.All, true);
+        }
 
         cardText = GameObject.Find("CardText").GetComponent<TextMeshProUGUI>();
         cardText.text = "You are now invulnerable!";
@@ -331,9 +360,86 @@ public class Cards : ScriptableObject
         cardText.gameObject.SetActive(true);
         cardText.DOFade(1, 1f).OnComplete(() => cardText.DOFade(0, 1f));
 
-        yield return new WaitUntil(() => turnManager.isPlayerTurn);
-        opponentStats.isInvulnerable = false;
+        yield return new WaitUntil(() =>
+            cardManager != null
+                ? TurnManager.Instance.isPlayerTurn
+                : PhotonTurnManager.Instance.isPlayerTurn);
+
+        if (cardManager != null)
+        {
+            playerToMakeInvulnerable.isInvulnerable = false;
+        }
+        else
+        {
+            PhotonView photonView = playerToMakeInvulnerable.GetComponent<PhotonView>();
+            photonView.RPC("SetInvulnerability", RpcTarget.All, false);
+        }
     }
+
+
+    //private IEnumerator ApplyShieldAndRetaliate(Health casterHealth, PlayerStats casterStats, int effectValue)
+    //{
+    //    cardManager = FindObjectOfType<CardManager>();
+
+    //    if (cardManager == null)
+    //    {
+    //        photonCardManager = FindObjectOfType<PhotonCardManager>();
+    //    }
+
+    //    Health opponentHealth;
+    //    PlayerStats playerToMakeInvulnerable;
+
+    //    if (cardManager != null)
+    //    {
+    //        // Singleplayer
+    //        TurnManager turnManager = TurnManager.Instance;
+
+    //        opponentHealth = cardManager.opponentHealth;    // damage opponent
+    //        playerToMakeInvulnerable = cardManager.playerStats; // invulnerable = caster stats
+
+    //        opponentHealth.PublicTakeDamage(effectValue);
+
+    //        yield return new WaitUntil(() => !turnManager.isPlayerTurn);
+    //    }
+    //    else
+    //    {
+    //        // Multiplayer
+    //        PhotonTurnManager turnManager = PhotonTurnManager.Instance;
+
+    //        if (photonCardManager.player1)
+    //        {
+    //            opponentHealth = photonCardManager.player2Health; // damage opponent
+    //            playerToMakeInvulnerable = photonCardManager.player1Stats; // caster invulnerable
+    //        }
+    //        else
+    //        {
+    //            opponentHealth = photonCardManager.player1Health;
+    //            playerToMakeInvulnerable = photonCardManager.player2Stats;
+    //        }
+    //        PhotonView photonView = photonCardManager.GetComponent<PhotonView>();
+
+    //        opponentHealth.PublicTakeDamage(effectValue);
+
+    //        yield return new WaitUntil(() => !turnManager.isPlayerTurn);
+    //    }
+
+    //    // Apply invulnerability to caster
+    //    playerToMakeInvulnerable.isInvulnerable = true;
+
+    //    cardText = GameObject.Find("CardText").GetComponent<TextMeshProUGUI>();
+    //    cardText.text = "You are now invulnerable!";
+    //    cardText.color = new Color(cardText.color.r, cardText.color.g, cardText.color.b, 1);
+    //    cardText.gameObject.SetActive(true);
+    //    cardText.DOFade(1, 1f).OnComplete(() => cardText.DOFade(0, 1f));
+
+    //    // Wait until next turn starts
+    //    yield return new WaitUntil(() =>
+    //        cardManager != null
+    //            ? TurnManager.Instance.isPlayerTurn
+    //            : PhotonTurnManager.Instance.isPlayerTurn);
+
+    //    playerToMakeInvulnerable.isInvulnerable = false;
+    //}
 }
 
 public enum EffectType

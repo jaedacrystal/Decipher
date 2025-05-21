@@ -78,6 +78,11 @@ MonoBehaviour:
   - UpdateHealthUI
   - ApplyEffectMulti
   - ExecuteMethodID
+  - Player1
+  - Player2
+  - RPC_Discard
+  - SetInvulnerability
+  - SetStrongPassword
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

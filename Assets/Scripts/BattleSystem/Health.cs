@@ -7,7 +7,7 @@ using Cinemachine;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
 
-public class Health : MonoBehaviour
+public class Health : MonoBehaviourPunCallbacks
 {
     [Header("Health Settings")]
     public int maxHealth;
@@ -38,6 +38,7 @@ public class Health : MonoBehaviour
     public float flashDuration;
 
     public GameObject retry;
+    public PhotonCardManager pcm;
 
     private void Start()
     {
@@ -49,6 +50,24 @@ public class Health : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag("Player");
         impulseSource = GetComponent<CinemachineImpulseSource>();
+    }
+
+    public void PublicTakeDamage(int damage)
+    {
+        if (PhotonNetwork.InRoom)
+        {
+            photonView.RPC("RPC_TakeDamage", RpcTarget.All, damage);
+        }
+        else
+        {
+            TakeDamage(damage); // normal singleplayer call
+        }
+    }
+
+    [PunRPC]
+    public void RPC_TakeDamage(int damage)
+    {
+        TakeDamage(damage);
     }
 
     public void TakeDamage(int damage)
@@ -68,9 +87,9 @@ public class Health : MonoBehaviour
                 Debug.Log($"{stats.name} is protected by Strong Password! Incoming damage reduced by 50%. New damage: {damage}");
             }
 
-            if (stats != null && stats.isProtected)
+            if (stats != null && (stats.isProtected || stats.isInvulnerable))
             {
-                Debug.Log(stats.name + " is protected, damage blocked!");
+                Debug.Log(stats.name + " is invulnerable or protected, damage blocked!");
                 return;
             }
 
@@ -91,6 +110,24 @@ public class Health : MonoBehaviour
                 Die();
             }
         }
+    }
+
+    public void PublicHeal(int healAmount)
+    {
+        if (PhotonNetwork.InRoom)
+        {
+            photonView.RPC("RPC_Heal", RpcTarget.All, healAmount);
+        }
+        else
+        {
+            Heal(healAmount); // normal singleplayer call
+        }
+    }
+
+    [PunRPC]
+    public void RPC_Heal(int healAmount)
+    {
+        Heal(healAmount);
     }
 
     public void Heal(int healAmount)
@@ -139,8 +176,26 @@ public class Health : MonoBehaviour
 
         if (isPlayer)
         {
-            retry.gameObject.SetActive(true);
-            prompt.gameObject.SetActive(false);
+            pcm = FindAnyObjectByType<PhotonCardManager>();
+
+            if (pcm == null)
+            {
+                retry.gameObject.SetActive(true);
+                prompt.gameObject.SetActive(false);
+            }
+
+            {
+                
+            }
+            if (pcm.player1)
+            {
+                retry.gameObject.SetActive(true);
+                prompt.gameObject.SetActive(false);
+            } else
+            {
+                retry.gameObject.SetActive(true);
+                prompt.gameObject.SetActive(false);
+            }
         }
         else
         {

@@ -21,6 +21,8 @@ MonoBehaviour:
   effectRounds: 0
   classType: 0
   effectType: 3
-  target: 1
+  target: 0
   isSingleplayer: 1
   cardText: {fileID: 0}
+  cardManager: {fileID: 0}
+  photonCardManager: {fileID: 0}

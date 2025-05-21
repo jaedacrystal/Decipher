@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using System.Collections;
+using Photon.Pun;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -48,7 +49,7 @@ public class PlayerStats : MonoBehaviour
     {
         for (int i = 0; i < burnEffectRounds; i++)
         {
-            GetComponent<Health>()?.TakeDamage(burnEffectDamage);
+            GetComponent<Health>()?.PublicTakeDamage(burnEffectDamage);
             yield return new WaitForSeconds(1f);
         }
         isBurning = false;
@@ -91,6 +92,21 @@ public class PlayerStats : MonoBehaviour
             }, currentBandwidth, 0.5f).SetEase(Ease.OutQuad);
         }
     }
+
+    [PunRPC]
+    public void SetInvulnerability(bool value)
+    {
+        isInvulnerable = value;
+    }
+
+    [PunRPC]
+    public void SetStrongPassword(bool isActive)
+    {
+        isProtected = isActive;
+        damageTakenMultiplier = isActive ? damageTakenMultiplier * 0.5f : damageTakenMultiplier * 2f;
+        Debug.Log($"{gameObject.name} strong password status set to {isActive}, new multiplier: {damageTakenMultiplier}");
+    }
+
 
     //public void PlayCard(Cards card)
     //{
